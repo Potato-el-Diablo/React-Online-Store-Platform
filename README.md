@@ -7,6 +7,7 @@ The React Online store platform for Potato el Diablo
 *[Setup](#setup)
 ## Task 1
 : Add the name of your favourite softdrink name to this file using the github commands :
+Oriinga Mountain Dew
 
 ## General
 Under construction
