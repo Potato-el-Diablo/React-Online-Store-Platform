@@ -9,8 +9,10 @@ The React Online store platform for Potato el Diablo
 : Add the name of your favourite softdrink name to this file using the github commands :
 Oriinga Mountain Dew
 
+
+
 ## General
-Under construction
+Will setup correct file project structure shortly, keep track of your commits and we will probably set up another branch to to instead of main to avoid any issues- and then merge to main after a pull request?
 
 
 ## Setup
@@ -35,3 +37,4 @@ sudo npm -g install create-react-app
 
 create-react-app --version
 ```
+# testing 
