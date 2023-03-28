@@ -7,6 +7,7 @@ import Contact from "./pages/Contact";
 import About from "./pages/About";
 import Login from "./pages/Login";
 import SignupBuyer from "./pages/SignupBuyer";
+import Home from "./pages/Home";
 
 
 function App() {
