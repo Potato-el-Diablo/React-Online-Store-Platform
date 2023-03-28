@@ -357,3 +357,29 @@ inputcheckbox {
   position: relative;
   top: -1px;
 }
+
+/*Dropdown menu starts here*/
+.dropdown-menu{
+  background-color: var(--color-232f3e);
+}
+
+.dropdown-toggle{
+  text-align: left;
+  height:49px;
+}
+.dropdown-item{
+  color: white;
+}
+
+/*dropdown part ends here */
+
+/*auth-card used in login and registration */
+.auth-card{
+  padding:20px;
+  background-color: white;
+  width:500px;
+  margin:30px auto;
+  border-radius: 7px;
+}
+
+/*auth-card part ends here */
