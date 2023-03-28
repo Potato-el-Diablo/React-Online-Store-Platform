@@ -117,7 +117,7 @@ const SellerRegistration = () => {
 
                                 <div>
                                     <div className="mt-0 d-flex justify-content-center gap-15 align-items-center">
-                                        <button className="button border-0" style={{blockSize:"45px", width:"500px", backgroundColor:"lightblue",}} type="submit"> Register </button>
+                                        <button className="button border-0" style={{blockSize:"45px", width:"500px", backgroundColor:"#232f3e",}} type="submit"> Register </button>
                                     </div>
                                 </div>
                                 <div className="mt-4" style={{fontSize:10, color: "cadetblue"}}>
