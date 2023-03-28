@@ -6,6 +6,7 @@ import SellerRegistration from "./pages/SellerRegistration";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
 import Login from "./pages/Login";
+import SignupBuyer from "./pages/SignupBuyer";
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
                     <Route path="contact" element={<Contact/>}/>
                     <Route path = "login" element={<Login/>}/>
                     <Route path = "sellerregistration" element={<SellerRegistration/>}/>
+                    <Route path="buyerregistration" element={<SignupBuyer/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>
