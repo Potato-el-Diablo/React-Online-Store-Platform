@@ -1,25 +1,28 @@
 import React from 'react';
-import { Counter } from './features/counter/Counter';
+import {BrowserRouter, Routes, Route} from "react-router-dom";
 import './App.css';
-import {BrowserRouter,  Routes, Route}  from "react-router-dom";
 import Layout from "./components/Layout";
-import Home from "./pages/Home";
-import About from "./pages/About";
+import SellerRegistration from "./pages/SellerRegistration";
 import Contact from "./pages/Contact";
+import About from "./pages/About";
+import Login from "./pages/Login";
 
-//12:48
+
 function App() {
-  return (<>
+  return (
+      <>
         <BrowserRouter>
-          <Routes>
-              <Route path="/" element={<Layout />}>
-                  <Route index element={<Home />}/>
-                  <Route path="about" element={<About />} />
-                  <Route path="contact" element={<Contact />} />
-              </Route>
-          </Routes>
+            <Routes>
+                <Route path = "/" element={<Layout/>} >
+                    <Route index element={<Home />}/>
+                    <Route path = "about" element={<About/>}/>
+                    <Route path="contact" element={<Contact/>}/>
+                    <Route path = "login" element={<Login/>}/>
+                    <Route path = "sellerregistration" element={<SellerRegistration/>}/>
+                </Route>
+            </Routes>
         </BrowserRouter>
-    </>
+      </>
   );
 }
 
