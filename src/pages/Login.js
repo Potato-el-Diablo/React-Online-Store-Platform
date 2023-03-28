@@ -37,7 +37,7 @@ const Login = () => {
                                         <Link to ="/forgot-password"> Forgot Password?</Link>
 
                                         <div className="d-flex justify-content-center gap- align-items-center">
-                                            <a href="home" className="button" role="button" type="submit" >login</a>
+                                            <a href="/" className="button" role="button" type="submit" >login</a>
 
 
                                             <div className="dropdown">
