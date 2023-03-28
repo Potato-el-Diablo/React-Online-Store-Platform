@@ -13,7 +13,7 @@ const SellerRegistration = () => {
                 <div className="row">
                     <div className= "col-12">
                         <div className= "register-card">
-                            <h3 className="text-center mb-3" > Sign Up </h3>
+                            <h3 className="text-center mb-3" > Create Business Account </h3>
                             <form action="" className="d-flex flex-column gap-15">
 
                                 <link rel="stylesheet" type="text/css"
