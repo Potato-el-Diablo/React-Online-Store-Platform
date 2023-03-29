@@ -68,7 +68,7 @@ const Header = () => {
                                 <Link className="d-flex align-items-center gap text-white">
                                     <img src="image/user.svg" alt="user"/>
                                     <p className="mb-0">
-                                        Login <br/> My Account
+                                        <NavLink className="text-white" to = "login">Login <br/> My Account</NavLink>
                                     </p>
                                 </Link>
                             </div>
