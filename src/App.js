@@ -8,6 +8,7 @@ import About from "./pages/About";
 import Login from "./pages/Login";
 import SignupBuyer from "./pages/SignupBuyer";
 import Home from "./pages/Home";
+import OurStore from "./pages/OurStore"
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
                     <Route path = "login" element={<Login/>}/>
                     <Route path = "sellerregistration" element={<SellerRegistration/>}/>
                     <Route path="buyerregistration" element={<SignupBuyer/>}/>
+                    <Route path="ourstore" element={<OurStore/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>
