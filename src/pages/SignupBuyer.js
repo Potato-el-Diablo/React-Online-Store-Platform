@@ -61,7 +61,7 @@ const SignupBuyer = () => {
                                 </div>
                                 <div>
                                     <div className="d-flex justify-content-center gap-15 align-items-center">
-                                        <a href="home" className="button" role="button" type="submit">Sign up</a>
+                                        <a href="/" className="button" role="button" type="submit">Sign up</a>
                                     </div>
 
                                 </div>
