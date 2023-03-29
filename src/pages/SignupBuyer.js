@@ -45,7 +45,17 @@ const SignupBuyer = () => {
                                 <div>
                                     <input type = "password"
                                            name = "password"
-                                           placeholder="Password"
+                                           placeholder="Password (at least 6 characters)"
+                                           className="form-control"
+                                    />
+                                </div>
+                                <div className="mt-1" style={{fontSize:12}}>
+                                    Passwords must be at least 6 characters.
+                                </div>
+                                <div>
+                                    <input type = "password"
+                                           name = "re-enter password"
+                                           placeholder="Re enter password"
                                            className="form-control"
                                     />
                                 </div>
