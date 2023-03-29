@@ -17,7 +17,9 @@
 
 }
 
+
 /*lastest commit*/
+
 .section-heading{
   font-size: 26px;
   line-height: 32px;
@@ -31,16 +33,6 @@ a{
   text-decoration: none;
   display: inline-block;
 }
-
-/* register card */
-.register-card{
-  padding: 20px;
-  background-color: white;
-  width: 500px;
-  margin: 30px auto;
-}
-/* register card ends */
-
 /*for the search bar text box to have a black outline when clicked on (hence focus)
  it already has a blue focus by default but this makes it somewhat subtle*/
 .form-control:focus{
@@ -288,97 +280,6 @@ footer .input-group-text{
 /*product card ends here*/
 
 /*product card ends here*/
-
-.google-btn {
-  width: 210px;
-  height: 42px;
-  background-color: #4285f4;
-  border-radius: 2px;
-  box-shadow: 0 3px 4px 0 rgba(0, 0, 0, .25);
-}
-.google-icon-wrapper {
-  position: absolute;
-  margin-top: 1px;
-  margin-left: 1px;
-  width: 40px;
-  height: 40px;
-  border-radius: 2px;
-  background-color: #fff;
-}
-.google-icon {
-  position: absolute;
-  margin-top: 11px;
-  margin-left: 11px;
-  width: 18px;
-  height: 18px;
-}
-.btn-text {
-  float: right;
-  margin: 11px 11px 0 0;
-  color: #fff;
-  font-size: 14px;
-  letter-spacing: 0.2px;
-  font-family: "Roboto";
-}
-
-@import url(https://fonts.googleapis.com/css?family=Roboto:500);
-
-labelcheckbox {
-  display: block;
-  padding-left: 15px;
-  text-indent: -15px;
-}
-
-inputcheckbox {
-  width: 15px;
-  height: 15px;
-  padding: 0;
-  margin: 0;
-  vertical-align: bottom;
-  position: relative;
-  top: -1px;
-}
-
-/* The container <div> - needed to position the dropdown content */
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-/* Dropdown Content (Hidden by Default) */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f1f1f1;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-/* Links inside the dropdown */
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: #ddd;}
-
-/* Show the dropdown menu on hover */
-.dropdown:hover .dropdown-content {display: block;}
-
-/* Change the background color of the dropdown button when the dropdown content is shown */
-.dropdown:hover .dropbtn {background-color: #3e8e41;}
-
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-
 
 /*Dropdown menu starts here*/
 .dropdown-menu{
