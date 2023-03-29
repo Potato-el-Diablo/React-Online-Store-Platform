@@ -45,13 +45,23 @@ const SignupBuyer = () => {
                                 <div>
                                     <input type = "password"
                                            name = "password"
-                                           placeholder="Password"
+                                           placeholder="Password (at least 6 characters)"
+                                           className="form-control"
+                                    />
+                                </div>
+                                <div className="mt-1" style={{fontSize:12}}>
+                                    Passwords must be at least 6 characters.
+                                </div>
+                                <div>
+                                    <input type = "password"
+                                           name = "re-enter password"
+                                           placeholder="Re enter password"
                                            className="form-control"
                                     />
                                 </div>
                                 <div>
                                     <div className="d-flex justify-content-center gap-15 align-items-center">
-                                        <a href="home" className="button" role="button" type="submit">Sign up</a>
+                                        <a href="/" className="button" role="button" type="submit">Sign up</a>
                                     </div>
 
                                 </div>
