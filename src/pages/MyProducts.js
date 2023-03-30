@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import  {Meta}  from '../components/Meta'
+import  Meta  from '../components/Meta'
 import BreadCrumb from '../components/BreadCrumb'
 import SellerProductCard from '../components/SellerProductCard'
 import { Link } from 'react-router-dom'
