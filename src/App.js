@@ -10,6 +10,7 @@ import SignupBuyer from "./pages/SignupBuyer";
 import Home from "./pages/Home";
 import OurStore from "./pages/OurStore"
 import ForgotPassword from './pages/ForgotPassword';
+import MyProducts from './pages/MyProducts';
 /*lastest commit*/
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
                     <Route path="buyerregistration" element={<SignupBuyer/>}/>
                     <Route path="ourstore" element={<OurStore/>}/>
                     <Route path="forgot-password" element={<ForgotPassword/>} />
+                    <Route path="myproducts" element={<MyProducts/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>
