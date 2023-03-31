@@ -10,6 +10,7 @@ import SignupBuyer from "./pages/SignupBuyer";
 import Home from "./pages/Home";
 import OurStore from "./pages/OurStore"
 import ForgotPassword from './pages/ForgotPassword';
+import Cart from './pages/Cart';
 import {MyProducts} from './pages/MyProducts';
 /*lastest commit*/
 
@@ -28,6 +29,7 @@ function App() {
                     <Route path="ourstore" element={<OurStore/>}/>
                     <Route path="forgot-password" element={<ForgotPassword/>} />
                     <Route path="myproducts" element={<MyProducts/>}/>
+                    <Route path="cart" element={<Cart/>} />
                 </Route>
             </Routes>
         </BrowserRouter>

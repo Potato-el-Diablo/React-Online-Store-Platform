@@ -75,10 +75,14 @@ const Header = () => {
                             <div>
                                 {/*Cart*/}
                                 <Link className="d-flex align-items-center gap text-white">
+                                    <NavLink className="text-white" to = "cart">
                                     <img src="image/cart.svg" alt="cart"/>
+                                    </NavLink>
                                     <div className="d-flex flex-column">
                                         <span className="badge bg-white text-dark">0</span>
-                                        <p className="mb-0">R650</p> {/* CART TOTAL DISPLAYED ON HEADER*/}
+                                        <p className="mb-0">
+                                            <NavLink className="text-white" to = "cart">R650</NavLink>
+                                        </p> {/* CART TOTAL DISPLAYED ON HEADER*/}
                                     </div>
                                 </Link>
                             </div>
