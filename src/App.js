@@ -12,6 +12,7 @@ import OurStore from "./pages/OurStore"
 import ForgotPassword from './pages/ForgotPassword';
 import Cart from './pages/Cart';
 import {MyProducts} from './pages/MyProducts';
+import SingleProduct from './pages/SingleProduct';
 /*lastest commit*/
 
 function App() {
@@ -26,10 +27,12 @@ function App() {
                     <Route path = "login" element={<Login/>}/>
                     <Route path = "sellerregistration" element={<SellerRegistration/>}/>
                     <Route path="buyerregistration" element={<SignupBuyer/>}/>
-                    <Route path="ourstore" element={<OurStore/>}/>
+                    <Route path="product" element={<OurStore/>}/>
                     <Route path="forgot-password" element={<ForgotPassword/>} />
                     <Route path="myproducts" element={<MyProducts/>}/>
                     <Route path="cart" element={<Cart/>} />
+                    <Route path ="product/:id" element = {<SingleProduct/>}/>
+
                 </Route>
             </Routes>
         </BrowserRouter>
