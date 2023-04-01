@@ -50,7 +50,7 @@ const Header = () => {
                             {/*Compare products button (TO BE REMOVED IF NOT REPLACED WITH SOMETHING ELSE)*/}
                             <div>
                                 <Link className="d-flex align-items-center gap text-white">
-                                    <img src="/image/compare.svg" alt="compare"/>
+                                    <img src="/images/compare.svg" alt="compare"/>
                                     <p className="mb-0">
                                         Compare <br/> Products
                                     </p>
@@ -58,7 +58,7 @@ const Header = () => {
                             </div>
                             <div>
                                 <Link className="d-flex align-items-center gap text-white">
-                                    <img src="image/wishlist.svg" alt="wishlist"/>
+                                    <img src="images/wishlist.svg" alt="wishlist"/>
                                     <p className="mb-0">
                                         Favourite <br/> Wishlist
                                     </p>
@@ -66,7 +66,7 @@ const Header = () => {
                             </div>
                             <div>
                                 <Link className="d-flex align-items-center gap text-white">
-                                    <img src="image/user.svg" alt="user"/>
+                                    <img src="images/user.svg" alt="user"/>
                                     <p className="mb-0">
                                         <NavLink className="text-white" to = "login">Login <br/> My Account</NavLink>
                                     </p>
@@ -75,9 +75,7 @@ const Header = () => {
                             <div>
                                 {/*Cart*/}
                                 <Link className="d-flex align-items-center gap text-white">
-                                    <NavLink className="text-white" to = "cart">
-                                    <img src="image/cart.svg" alt="cart"/>
-                                    </NavLink>
+                                    <img src="images/cart.svg" alt="cart"/>
                                     <div className="d-flex flex-column">
                                         <span className="badge bg-white text-dark">0</span>
                                         <p className="mb-0">
@@ -104,7 +102,7 @@ const Header = () => {
                                     <button className="btn btn-secondary dropdown-toggle bg-transparent border-0 gap-15 me-5 d-flex align-items-center" type="button"
                                             id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                         {/*Dropdown button text*/}
-                                        <img src="image/menu.svg"/>
+                                        <img src="images/menu.svg"/>
                                         <span className="me-5 d-inline-block">
                                         Shop categories
                                     </span>
@@ -122,7 +120,7 @@ const Header = () => {
                                 <div className="d-flex align-items-center gap-50">
                                     <NavLink className="text-white" to = "/">Home</NavLink>
                                     <NavLink className="text-white" to = "/">Orders</NavLink>
-                                    <NavLink className="text-white" to = "ourstore">Our Store</NavLink>
+                                    <NavLink className="text-white" to = "/product">Our Store</NavLink>
                                     <NavLink className="text-white" to = "/contact">Contact</NavLink>
                                     <NavLink className="text-white" to = "/MyProducts">My Products</NavLink>
                                 </div>
