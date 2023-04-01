@@ -32,9 +32,9 @@ const Home = () => {
                             {/*the code for the image within this block is  above
                             and the text is the <div> below*/}
                             <div className="small-banner-content position-absolute">
-                                <h4>BEST SELLER.</h4>
-                                <h5>IPAD S13+ PRO</h5>
-                                <p> FROM R4999 <br/>or R450/mo.</p>
+                                <h4>Best Seller.</h4>
+                                <h5>Asus Laptops</h5>
+                                <p> FROM R6999 <br/>or R499/mo.</p>
                             </div>
                         </div>
                         {/*small block number 2*/}
@@ -45,8 +45,8 @@ const Home = () => {
                         />
                         <div className="small-banner-content position-absolute">
                             <h4>NEW ARRIVAL</h4>
-                            <h5>BUY IPAD AIR</h5>
-                            <p> FROM R4999 <br/>or R450/mo.</p>
+                            <h5>Smart Watch</h5>
+                            <p> FROM R1999 <br/>or R349/mo.</p>
                         </div>
                     </div>
                         {/*small banner number 3*/}
@@ -57,7 +57,7 @@ const Home = () => {
                         />
                         <div className="small-banner-content position-absolute">
                             <h4>NEW ARRIVAL</h4>
-                            <h5>BUY IPAD AIR</h5>
+                            <h5>Buy IPad Air</h5>
                             <p> FROM R4999 <br/>or R450/mo.</p>
                         </div>
                         </div>
@@ -69,8 +69,8 @@ const Home = () => {
                             />
                          <div className="small-banner-content position-absolute">
                                 <h4>NEW ARRIVAL</h4>
-                                <h5>BUY IPAD AIR</h5>
-                                <p> FROM R4999 <br/>or R450/mo.</p>
+                                <h5>JBL Headphones</h5>
+                                <p> FROM R1299 <br/>or R199/mo.</p>
                             </div>
                         </div>
                     </div>
@@ -135,7 +135,7 @@ const Home = () => {
                                 <h6>Smart TVs</h6>
                                 <p>10 items</p>
                             </div>
-                            <img src="/image/tv.jpg" alt="camera"/>
+                            <img src="/image/tv.jpg" alt="tv"/>
                         </div>
                         <div className="d-flex gap-30 align-items-center">
                             <div>
@@ -149,7 +149,7 @@ const Home = () => {
                                 <h6>Music & Gaming</h6>
                                 <p>10 items</p>
                             </div>
-                            <img src="/image/laptop.jpg" alt="camera"/>
+                            <img src="/image/laptop.jpg" alt="laptop"/>
                         </div>
                         <div className="d-flex gap-30 align-items-center">
                             <div>
