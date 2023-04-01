@@ -156,7 +156,7 @@ const Home = () => {
                                 <h6>Cameras</h6>
                                 <p>10 items</p>
                             </div>
-                            <img src="/s/camera.jpg" alt="camera"/>
+                            <img src="/images/camera.jpg" alt="camera"/>
                         </div>
                         <div className="d-flex gap-30 align-items-center">
                             <div>
