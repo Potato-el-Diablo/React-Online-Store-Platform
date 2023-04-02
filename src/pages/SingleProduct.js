@@ -8,7 +8,7 @@ import ReactImageZoom from "react-image-zoom";
 import { AiOutlineHeart} from "react-icons/ai";
 
 const SingleProduct = () =>{
-  /* const props = {width:400, height: 250,zoomWidth:500, img:"/images/watch.jpg"}; */
+ 
   
   const [orderedProduct, setorderedProduct] = useState(true);
 
