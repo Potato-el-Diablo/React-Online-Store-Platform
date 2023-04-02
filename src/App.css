@@ -724,7 +724,7 @@ color: var(--color-1c1c1b);
 }
 .review-form h4{
   font: 16px;
-  color: car(--color-777777);
+  color: var(--color-777777);
 }
 .review-form{
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
