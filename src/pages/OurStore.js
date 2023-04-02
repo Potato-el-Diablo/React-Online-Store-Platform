@@ -4,7 +4,7 @@ import Meta from "../components/Meta";
 import ProductCard from "../components/ProductCard";
 /*lastest commit*/
 const OurStore = () => {
-    
+    const[grid, setGrid] = useState(4);
     
   return (
     <>
@@ -129,10 +129,10 @@ const OurStore = () => {
                     </div>
                     <div className="products-list flex-wrap">
                         <div className="d-flex  gap-10">
-                            <ProductCard/>
-                            <ProductCard/>
-                            <ProductCard/>
-                            <ProductCard/>
+                            <ProductCard grid= {grid}/>
+                            <ProductCard grid= {grid} />
+                            <ProductCard grid= {grid}/>
+                            <ProductCard grid= {grid}/>
                         </div>
                     </div>
                 </div>
