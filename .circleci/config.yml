@@ -20,8 +20,8 @@ jobs:
      
       
       # run tests!
+      - run: npm run build
       - run: npm test
-      - run: npm start
       
       - run:
           name: Upload coverage report to Codecov
