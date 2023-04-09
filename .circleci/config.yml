@@ -16,13 +16,7 @@ jobs:
     steps:
       - checkout
       - run: npm install
-      - run:
-            name: Download and start X
-            command: |
-              sudo apt-get install -y x11vnc
-              x11vnc -forever -nopw
-              sudo apt-get install xdg-utils
-            background: true
+      
      
       
       # run tests!
