@@ -1,5 +1,6 @@
 # React-Online-Store-Platform
 The React Online store platform for Potato el Diablo
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/Potato-el-Diablo/React-Online-Store-Platform/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/Potato-el-Diablo/React-Online-Store-Platform/tree/main)
 
 ## Table of contens
 *[Task 1](#Task-1)
