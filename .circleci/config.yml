@@ -35,7 +35,7 @@ jobs:
 
       - run:
           name: Copy files to Ubuntu server
-          command: scp -i $SSH_KEY -r ./ user@10.100.15.152:/var/www/html/
+          command: scp -i $SSH_KEY -r ./ student@10.100.15.152:/var/www/html/
 
 
 
