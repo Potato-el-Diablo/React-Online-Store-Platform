@@ -32,10 +32,11 @@ jobs:
           command: |
             bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
        
+
       - run:
-         name: Copy files to server
-         #command: scp -r ./path/to/website/files student@${SERVER_IP}:/var/www/html/
-         command: scp -i <(echo "$SSH_PRIVATE_KEY" | base64 --decode) -r ./ student@$UBUNTU_SERVER_IP:/var/www/html/
+          name: Copy files to Ubuntu server
+          command: scp -i $SSH_KEY -r ./ user@10.100.15.152:/var/www/html/
+
 
 
 
