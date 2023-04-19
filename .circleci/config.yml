@@ -34,7 +34,9 @@ jobs:
        
       - run:
          name: Copy files to server
-         command: scp -r ./path/to/website/files student@${SERVER_IP}:/var/www/html/
+         #command: scp -r ./path/to/website/files student@${SERVER_IP}:/var/www/html/
+         command: scp -i $SSH_KEY -r ./ student@$UBUNTU_SERVER_IP:/var/www/html/
+
 
 
 
