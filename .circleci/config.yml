@@ -36,8 +36,6 @@ jobs:
          name: Copy files to server
          #command: scp -r ./path/to/website/files student@${SERVER_IP}:/var/www/html/
          command: scp -i $SSH_PRIVATE_KEY -r ./ student@$UBUNTU_SERVER_IP:/var/www/html/
-         environment:
-           SSH_PRIVATE_KEY: C:\Users\joshu\.ssh\id_rsa
 
 
 
