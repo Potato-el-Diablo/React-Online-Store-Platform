@@ -1,10 +1,39 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Meta from "../components/Meta";
 import BreadCrumb from "../components/BreadCrumb";
-
+import {useNavigate} from "react-router-dom";
+import {  createUserWithEmailAndPassword  } from 'firebase/auth';
+import { auth } from './firebase';
 
 /*lastest commit*/
 const SignupBuyer = () => {
+    const navigate = useNavigate();
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('');
+    const [name, setName] = useState('');
+    const [mobilenumber, setNumber] = useState('');
+
+    const onSubmit = async (e) => {
+        e.preventDefault()
+
+        await createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // Signed in
+                const user = userCredential.user;
+                console.log(user);
+                navigate("/login")
+                // ...
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode, errorMessage);
+                // ..
+            });
+
+
+    }
     return (
         <>
 
@@ -20,9 +49,11 @@ const SignupBuyer = () => {
                             </h3>
                             <form action="" className="d-flex flex-column gap-15">
                                 <div>
-                                    <input type="text"
-                                           name ="name"
-                                           id="name"
+                                    <input type="name"
+                                           label="Name"
+                                           value={name}
+                                           onChange={(e) => setName(e.target.value)}
+                                           required
                                            placeholder="Name"
                                            className="form-control"
                                            size="20"
@@ -30,21 +61,30 @@ const SignupBuyer = () => {
                                 </div>
                                 <div>
                                     <input type="email"
-                                           name ="email"
-                                           placeholder="Email"
+                                           label="Email address"
+                                           value={email}
+                                           onChange={(e) => setEmail(e.target.value)}
+                                           required
+                                           placeholder="Email address"
                                            className="form-control"
                                     />
                                 </div>
                                 <div>
                                     <input type="tel"
-                                           name ="mobile"
-                                           placeholder="Mobile Number"
+                                           label="Mobile Number"
+                                           value={mobilenumber}
+                                           onChange={(e) => setNumber(e.target.value)}
+                                           required
+                                           placeholder="Phone Number"
                                            className="form-control"
                                     />
                                 </div>
                                 <div>
-                                    <input type = "password"
-                                           name = "password"
+                                    <input type="password"
+                                           label="Password"
+                                           value={password}
+                                           onChange={(e) => setPassword(e.target.value)}
+                                           required
                                            placeholder="Password (at least 6 characters)"
                                            className="form-control"
                                     />
@@ -55,15 +95,16 @@ const SignupBuyer = () => {
                                 <div>
                                     <input type = "password"
                                            name = "re-enter password"
-                                           placeholder="Re enter password"
+                                           placeholder="Re-enter password"
                                            className="form-control"
                                     />
                                 </div>
                                 <div>
                                     <div className="d-flex justify-content-center gap-15 align-items-center">
-                                        <a href="/" className="button" role="button" type="submit">Sign up</a>
+                                        <a
+                                            onClick={onSubmit}
+                                            href="/" className="button" role="button" type="submit">Sign up</a>
                                     </div>
-
                                 </div>
                             </form>
                         </div>

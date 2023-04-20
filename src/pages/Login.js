@@ -1,9 +1,33 @@
-import React from "react";
-import {Link} from "react-router-dom"
+import React, {useState} from "react";
+import {Link, useNavigate} from "react-router-dom"
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
-/*lastest commit*/
+import {  signInWithEmailAndPassword   } from 'firebase/auth';
+import { auth } from './firebase';
+
+
 const Login = () => {
+    // Login functionality here
+    const navigate = useNavigate();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const onLogin = (e) => {
+        e.preventDefault();
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // Signed in
+                const user = userCredential.user;
+                navigate("/home")
+                console.log(user);
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode, errorMessage)
+            });
+
+    }
     return (
         <>
             <Meta title={"Login"}/>
@@ -20,16 +44,21 @@ const Login = () => {
                                 <h3 className="text-center"> Login</h3>
                                 <form action="" className="d-flex flex-column gap-15">
                                     <div>
-                                        <input type="email"
-                                               name ="email"
-                                               placeholder="Email"
+                                        <input id="email-address"
+                                               name="Email"
+                                               type="Email"
+                                               placeholder="Email address"
                                                className="form-control"
+                                               onChange={(e)=>setEmail(e.target.value)}
                                         />
                                     </div>
                                     <div>
-                                        <input type = "password"
-                                               name = "password"
+                                        <input id="password"
+                                               name="password"
+                                               type="password"
+                                               required
                                                placeholder="Password"
+                                               onChange={(e)=>setPassword(e.target.value)}
                                                className="form-control"
                                         />
                                     </div>

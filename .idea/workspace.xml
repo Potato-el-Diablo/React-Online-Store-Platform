@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="210705c5-207a-4957-8740-df7ac1b18442" name="Changes" comment="Edited Home Text">
+    <list default="true" id="210705c5-207a-4957-8740-df7ac1b18442" name="Changes" comment="Edited App.css (found errors)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.cache/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/.eslintcache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.cache/default-development/0.pack" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/default-development/0.pack" afterDir="false" />
@@ -13,7 +13,7 @@
       <change beforePath="$PROJECT_DIR$/node_modules/.cache/default-development/3.pack" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/default-development/3.pack" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.cache/default-development/index.pack" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.cache/default-development/index.pack.old" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/default-development/index.pack.old" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/Cart.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Cart.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +81,13 @@
       <workItem from="1680131552087" duration="2926000" />
       <workItem from="1680235106084" duration="6559000" />
       <workItem from="1680279280833" duration="4029000" />
-      <workItem from="1680456397827" duration="1590000" />
+      <workItem from="1680456397827" duration="1905000" />
+      <workItem from="1680601386548" duration="428000" />
+      <workItem from="1680609608068" duration="705000" />
+      <workItem from="1680800267639" duration="597000" />
+      <workItem from="1681108077707" duration="1636000" />
+      <workItem from="1681203726672" duration="173000" />
+      <workItem from="1681924085643" duration="600000" />
     </task>
     <task id="LOCAL-00001" summary="Added Cart">
       <created>1680239162000</created>
@@ -104,7 +110,14 @@
       <option name="project" value="LOCAL" />
       <updated>1680326741185</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Edited App.css (found errors)">
+      <created>1680458805013</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1680458805013</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -125,6 +138,7 @@
     <MESSAGE value="Added Cart" />
     <MESSAGE value="Updated Cart" />
     <MESSAGE value="Edited Home Text" />
-    <option name="LAST_COMMIT_MESSAGE" value="Edited Home Text" />
+    <MESSAGE value="Edited App.css (found errors)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Edited App.css (found errors)" />
   </component>
 </project>

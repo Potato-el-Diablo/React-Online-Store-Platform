@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import './App.css';
 import Layout from "./components/Layout";
@@ -13,7 +13,8 @@ import ForgotPassword from './pages/ForgotPassword';
 import Cart from './pages/Cart';
 import {MyProducts} from './pages/MyProducts';
 import SingleProduct from './pages/SingleProduct';
-/*lastest commit*/
+import {  signInWithEmailAndPassword   } from 'firebase/auth';
+import { auth } from './pages/firebase';
 
 function App() {
   return (
