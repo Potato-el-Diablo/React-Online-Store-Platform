@@ -4,6 +4,12 @@ import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 import {  signInWithEmailAndPassword   } from 'firebase/auth';
 import { auth } from './firebase';
+import { isValidEmail } from '../functions/SignupValidation';
+import {toast} from "react-toastify";
+const isValidPassword = (password) => {
+    // Add your validation rules for the password, e.g., minimum length, required characters, etc.
+    return password.trim().length >= 6;
+};
 
 
 const Login = () => {
@@ -14,20 +20,34 @@ const Login = () => {
 
     const onLogin = (e) => {
         e.preventDefault();
+
+        if (!isValidEmail(email)) {
+            toast.error("Invalid email address. Please provide a valid email address.");
+            return;
+        }
+
+        if (!isValidPassword(password)) {
+            toast.error("Invalid password. Password must be at least 6 characters long.");
+            return;
+        }
+
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 // Signed in
                 const user = userCredential.user;
-                navigate("/home")
+                navigate("/");
+                //Not an error
+                toast.success("Login Successful")
                 console.log(user);
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                console.log(errorCode, errorMessage)
+                toast.error(error.message)
+                console.log(errorCode, errorMessage);
             });
+    };
 
-    }
     return (
         <>
             <Meta title={"Login"}/>
@@ -42,7 +62,7 @@ const Login = () => {
                         <div className= "col-12">
                             <div className= "auth-card">
                                 <h3 className="text-center"> Login</h3>
-                                <form action="" className="d-flex flex-column gap-15">
+                                <form action="" className="d-flex flex-column gap-15" onSubmit={onLogin}>
                                     <div>
                                         <input id="email-address"
                                                name="Email"
@@ -56,7 +76,6 @@ const Login = () => {
                                         <input id="password"
                                                name="password"
                                                type="password"
-                                               required
                                                placeholder="Password"
                                                onChange={(e)=>setPassword(e.target.value)}
                                                className="form-control"
@@ -66,8 +85,7 @@ const Login = () => {
                                         <Link to ="/forgot-password"> Forgot Password?</Link>
 
                                         <div className="d-flex justify-content-center gap- align-items-center">
-                                            <a href="/" className="button" role="button" type="submit" >login</a>
-
+                                            <button className="button" type="submit">Login</button>
 
                                             <div className="dropdown">
                                                 <button className="button dropdown-toggle" type="button"

@@ -13,12 +13,15 @@ import ForgotPassword from './pages/ForgotPassword';
 import Cart from './pages/Cart';
 import {MyProducts} from './pages/MyProducts';
 import SingleProduct from './pages/SingleProduct';
+import { ToastContainer } from 'react-toastify';
 import {  signInWithEmailAndPassword   } from 'firebase/auth';
 import { auth } from './pages/firebase';
+
 
 function App() {
   return (
       <>
+        <ToastContainer />
         <BrowserRouter>
             <Routes>
                 <Route path = "/" element={<Layout/>} >

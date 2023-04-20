@@ -18,6 +18,11 @@
 }
 
 /*lastest commit2*/
+.search-button {
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+  height: 100%;
+}
 .section-heading{
   font-size: 26px;
   line-height: 32px;
@@ -382,6 +387,15 @@ inputcheckbox {
   box-sizing: border-box;
 }
 
+.search-container {
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  height: 100%;
+  margin-top: 4px; /* Adjust this value as needed */
+}
 
 
 /*Dropdown menu starts here*/
@@ -702,7 +716,7 @@ inputcheckbox {
 .form-control {
   padding: 10px;
   margin-top: 20px;
- 
+
 }
 .review-inner-wrapper{
   background-color: white;
@@ -717,7 +731,7 @@ font-size: 18px;
 color: var(--color-1c1c1b);
 
 }
-.review-head p, 
+.review-head p,
 .review-head a{
   font-size: 14px;
   color: var(--color-777777);
@@ -745,19 +759,19 @@ color: var(--color-1c1c1b);
 }
 .main-product-image>div{
   border: 1px solid rgba(0, 0, 0, .25);
- 
+
 }
 .main-product-image img{
   width: 100% !important;
   height: 500px !important;
   object-fit: cover;
-  
+
 }
 .other-product-images>div{
   border: 1px solid rgba(0, 0, 0, 0.25);
   padding: 20px;
-  
- 
+
+
   margin-top: 20px;
 }
 .main-product-details{
