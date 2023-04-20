@@ -3,6 +3,7 @@ import {Link, useNavigate} from "react-router-dom"
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 import {  signInWithEmailAndPassword   } from 'firebase/auth';
+import {  createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider  } from 'firebase/auth';
 import { auth } from './firebase';
 import { isValidEmail } from '../functions/SignupValidation';
 import {toast} from "react-toastify";
@@ -48,6 +49,27 @@ const Login = () => {
             });
     };
 
+    const signInWithGoogle = async () => {
+        const provider = new GoogleAuthProvider();
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+            console.log(user);
+
+            // Here, you can add code to handle successful sign-in with Google.
+            // For example, you might create a new seller account in your database
+            // using the user's Google account information.
+
+            toast.success("Account created successfully with Google!");
+            setTimeout(() => {
+                navigate("/");
+            }, 1000);
+        } catch (error) {
+            console.log(error.code, error.message);
+            toast.error(error.message);
+        }
+    };
+
     return (
         <>
             <Meta title={"Login"}/>
@@ -62,6 +84,20 @@ const Login = () => {
                         <div className= "col-12">
                             <div className= "auth-card">
                                 <h3 className="text-center"> Login</h3>
+                                <div className="mt-2 d-flex justify-content-center gap-15 align-items-center">
+                                    <div className="google-btn" onClick={signInWithGoogle}>
+                                        <div className="google-icon-wrapper">
+                                            <img className="google-icon" alt ="google-icon"
+                                                 src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
+                                        </div>
+                                        <p className="btn-text"><b>Sign in with Google</b></p>
+                                    </div>
+                                </div>
+
+
+                                <div className="mt-1" style={{fontSize:12, color: "lightgrey"}}>
+                                    ───────────────────Or───────────────────
+                                </div>
                                 <form action="" className="d-flex flex-column gap-15" onSubmit={onLogin}>
                                     <div>
                                         <input id="email-address"
