@@ -24,7 +24,7 @@ const Cart = () => {
                         <div className="card-data py-3 mb-2 d-flex justify-content-between align-items-center">
                             <div className="cart-col-1 gap-15 d-flex align-items-center">
                                 <div className="w-25">
-                                    <img src="/image/watch.jpg"
+                                    <img src="/images/watch.jpg"
                                          className="img-fluid"
                                          alt="product-image"
                                     />

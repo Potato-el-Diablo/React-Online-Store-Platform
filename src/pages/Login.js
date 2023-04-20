@@ -1,9 +1,53 @@
-import React from "react";
-import {Link} from "react-router-dom"
+import React, {useState} from "react";
+import {Link, useNavigate} from "react-router-dom"
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
-/*lastest commit*/
+import {  signInWithEmailAndPassword   } from 'firebase/auth';
+import { auth } from './firebase';
+import { isValidEmail } from '../functions/SignupValidation';
+import {toast} from "react-toastify";
+const isValidPassword = (password) => {
+    // Add your validation rules for the password, e.g., minimum length, required characters, etc.
+    return password.trim().length >= 6;
+};
+
+
 const Login = () => {
+    // Login functionality here
+    const navigate = useNavigate();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const onLogin = (e) => {
+        e.preventDefault();
+
+        if (!isValidEmail(email)) {
+            toast.error("Invalid email address. Please provide a valid email address.");
+            return;
+        }
+
+        if (!isValidPassword(password)) {
+            toast.error("Invalid password. Password must be at least 6 characters long.");
+            return;
+        }
+
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                // Signed in
+                const user = userCredential.user;
+                navigate("/");
+                //Not an error
+                toast.success("Login Successful")
+                console.log(user);
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                toast.error(error.message)
+                console.log(errorCode, errorMessage);
+            });
+    };
+
     return (
         <>
             <Meta title={"Login"}/>
@@ -18,18 +62,22 @@ const Login = () => {
                         <div className= "col-12">
                             <div className= "auth-card">
                                 <h3 className="text-center"> Login</h3>
-                                <form action="" className="d-flex flex-column gap-15">
+                                <form action="" className="d-flex flex-column gap-15" onSubmit={onLogin}>
                                     <div>
-                                        <input type="email"
-                                               name ="email"
-                                               placeholder="Email"
+                                        <input id="email-address"
+                                               name="Email"
+                                               type="Email"
+                                               placeholder="Email address"
                                                className="form-control"
+                                               onChange={(e)=>setEmail(e.target.value)}
                                         />
                                     </div>
                                     <div>
-                                        <input type = "password"
-                                               name = "password"
+                                        <input id="password"
+                                               name="password"
+                                               type="password"
                                                placeholder="Password"
+                                               onChange={(e)=>setPassword(e.target.value)}
                                                className="form-control"
                                         />
                                     </div>
@@ -37,8 +85,7 @@ const Login = () => {
                                         <Link to ="/forgot-password"> Forgot Password?</Link>
 
                                         <div className="d-flex justify-content-center gap- align-items-center">
-                                            <a href="/" className="button" role="button" type="submit" >login</a>
-
+                                            <button className="button" type="submit">Login</button>
 
                                             <div className="dropdown">
                                                 <button className="button dropdown-toggle" type="button"

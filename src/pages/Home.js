@@ -1,6 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom"
-
+import { auth } from './firebase';
+console.log(auth?.currentUser.email);
 /*lastest commit*/
 const Home = () => {
     return <>
@@ -184,7 +185,6 @@ const Home = () => {
             </div>
         </div>
     </section>
-        {/*stopped at 2:10:29*/}
     </>;
 };
 

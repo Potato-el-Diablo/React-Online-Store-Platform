@@ -23,26 +23,25 @@ const Header = () => {
     </header>
 
         {/*Header with company logo (HotPotato), search bar, wishlist, login and cart*/}
-
         <header className="header-upper py-3" >
             <div className="container-xxl">
                 <div className="row align-items-center"> {/*centers items in the vertically(vertically in the middle of the container)*/}
                     <div className="col-2">
                         <h2>
-                            <Link className="text-white">HotPotato</Link>
+                            <Link className="text-white" to = "/">HotPotato</Link>
                         </h2>
                     </div>
                     <div className="col-5">
                         {/* search bar here*/}
-                        <div className="input-group">
+                        <div className="input-group align-items-center">
                             <input type="text"
-                                   className="form-control py-2"
+                                   className="form-control search-input py-2"
                                    placeholder="Search Product Here"
                                    aria-label="Search Product Here"
                                    aria-describedby="basic-addon2"/>
-                                <span className="input-group-text p-3" id="basic-addon2">
-                                    <BsSearch className="fs-6"/>
-                                </span>
+                            <span className="input-group-text search-button p-3" id="basic-addon2">
+                                <BsSearch className="fs-6"/>
+                            </span>
                         </div>
                     </div>
                     <div className="col-5">
