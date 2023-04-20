@@ -33,11 +33,6 @@ jobs:
             bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
        
 
-      - run:
-          name: Copy files to Ubuntu server
-          command: scp -i <(echo "$SSH_KEY_PATH") -r ./ student@10.100.15.152:/var/www/html/
-          #command: scp -i $SSH_KEY -r ./ student@10.100.15.152:/var/www/html/
-
 
 
 
