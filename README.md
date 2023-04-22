@@ -5,6 +5,8 @@ The React Online store platform for Potato el Diablo
 Code Coverage:
 [![codecov](https://codecov.io/gh/Potato-el-Diablo/React-Online-Store-Platform/branch/main/graph/badge.svg?token=NPMU9NENFA)](https://codecov.io/gh/Potato-el-Diablo/React-Online-Store-Platform)
 
+https://codecov.io/gh/Potato-el-Diablo/React-Online-Store-Platform/branch/main/graphs/sunburst.svg?token=NPMU9NENFA
+
 ## Table of contens
 *[Task 1](#Task-1)
 *[General info](#general)
