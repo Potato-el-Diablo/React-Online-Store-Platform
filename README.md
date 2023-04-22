@@ -2,6 +2,9 @@
 The React Online store platform for Potato el Diablo
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/Potato-el-Diablo/React-Online-Store-Platform/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/Potato-el-Diablo/React-Online-Store-Platform/tree/main)
 
+Code Coverage:
+[![codecov](https://codecov.io/gh/Potato-el-Diablo/React-Online-Store-Platform/branch/main/graph/badge.svg?token=NPMU9NENFA)](https://codecov.io/gh/Potato-el-Diablo/React-Online-Store-Platform)
+
 ## Table of contens
 *[Task 1](#Task-1)
 *[General info](#general)
