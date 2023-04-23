@@ -7,6 +7,10 @@ import { auth } from './firebase';
 import { isValidName, isValidEmail, isValidPassword, doPasswordsMatch, isValidPhoneNumber } from '../functions/SignupValidation';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from './firebase';
+import {saveBuyerToFirestore} from "../functions/firestoreFunctions";
+
 
 
 const SignupBuyer = () => {
@@ -50,10 +54,12 @@ const SignupBuyer = () => {
 
         // Continue with the signup process if validation passes
         await createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
+            .then(async (userCredential) => {
                 // Signed in
                 const user = userCredential.user;
                 console.log(user);
+
+                await saveBuyerToFirestore(user, name, mobilenumber)
                 toast.success('User created successfully!'); // Show the success message
                 setTimeout(() => {
                     navigate('/'); // Navigate to the home page after a 1 second delay

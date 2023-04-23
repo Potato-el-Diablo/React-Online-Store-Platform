@@ -7,6 +7,8 @@ import { auth } from './firebase';
 import { isValidName, isValidEmail, isValidPassword, doPasswordsMatch, isValidPhoneNumber } from '../functions/SignupValidation';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { saveSellerToFirestore } from '../functions/firestoreFunctions';
+
 
 
 
@@ -79,10 +81,12 @@ const SellerRegistration = () => {
         // Continue with the signup process if validation passes
         // (Replace the createUserWithEmailAndPassword() call with your seller registration logic)
         await createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
+            .then(async (userCredential) => {
                 // Signed in
                 const user = userCredential.user;
                 console.log(user);
+
+                await saveSellerToFirestore(user, firstName, lastName, mobilenumber, companyName, companyPhone, companyEmail);
                 toast.success('Seller account created successfully!'); // Show the success message
                 setTimeout(() => {
                     navigate('/'); // Navigate to the home page after a 1-second delay
