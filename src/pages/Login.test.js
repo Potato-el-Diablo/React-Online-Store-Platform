@@ -3,14 +3,11 @@ import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Login from './Login';
 import '@testing-library/jest-dom/extend-expect';
-import { renderHook, act } from "@testing-library/react-hooks";
 import { isValidPassword, onLogin, signInWithGoogle } from "./Login";
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { auth } from "./firebase";
+
 
 import { isValidEmail } from '../functions/SignupValidation';
-import {toast} from "react-toastify";
-import * as _auth from "@firebase/auth";
+
 const renderLogin = () => {
     render(
         <BrowserRouter>
