@@ -50,10 +50,10 @@ console.log(products);
                 </div>
               </div>
                {/* removed additional images to avoid issues for now  */}
-               <div className="other-product-images d-flex flex-wrap gap-15">
-                <div><img src="/images/watch.jpg" alt="watch"/></div>
-                <div><img src="/images/watch.jpg" alt="watch"/></div> 
-              </div> *
+                {/* <div className="other-product-images d-flex flex-wrap gap-15"> */}
+                  {/* <div><img src="/images/watch.jpg" alt="watch"/></div> */}
+                  {/* <div><img src="/images/watch.jpg" alt="watch"/></div>  */}
+                {/* </div>  */}
              </div>
               
             <div className="col-6"> 

@@ -5,7 +5,7 @@ import Meta from "../components/Meta";
 import { db } from "./firebase";
 import ProductCard from "../components/ProductCard";
 
-import { Link,  } from "react-router-dom";
+
 /*lastest commit*/
 const OurStore = () => {
     const grid = 12;
@@ -29,6 +29,7 @@ const OurStore = () => {
     console.log(products);
 
     
+    // find how many products in stock
     
   return (
     <>
@@ -58,7 +59,9 @@ const OurStore = () => {
                             <div class="form-check">
                                 <input className="form-check-input" type="checkbox" value="checked" id="" />
                                 <label className="form-check-label" htmlfor="">
-                                    In Stock(2)
+                                    
+                                    In Stock({products.length})
+
                                 </label>
                             </div>
                             <div class="form-check">
@@ -148,13 +151,14 @@ const OurStore = () => {
                                 
                             </select>
                         </div>
-                        <div className="d-flex align-items-center gap-10">
-                            <p className="totalproducts">21 products</p>
-                        </div>
+                            <div className="d-flex align-items-center gap-10">
+                                <p className="totalproducts">Total Products: {products.length}</p>
+                            </div>
                         </div>
                     </div>
-                    <div className="products-list flex-wrap gap-5">
-                        <div className="d-flex flex-wrap">
+                    <div className="products-list ">
+                        <div className="d-flex flex-wrap gap-20">
+                            
                             {products.map((product) => (
                                 <ProductCard 
                                 key={product.id}

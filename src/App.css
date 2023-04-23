@@ -289,9 +289,10 @@ footer .input-group-text{
   padding: 5px;
   background-color: white;
   border-radius: 10px;
-  width: 250px;
+  width: 300px;
   height: 330px;
-  padding-bottom: 10px;
+  
+  
 }
 .product-details{
   color: var(--color-bf4800);
@@ -489,7 +490,7 @@ inputcheckbox {
 .filter-card{
   background-color: white;
   border-radius: 10px;
-  padding: 10px 15px 25px;
+  padding: 10px 15px 15px;
 }
 .filter-title{
   font-size: 16px;
