@@ -11,7 +11,7 @@ import Home from "./pages/Home";
 import OurStore from "./pages/OurStore"
 import ForgotPassword from './pages/ForgotPassword';
 import Cart from './pages/Cart';
-import {MyProducts} from './pages/MyProducts';
+import MyProducts from './pages/MyProducts';
 import SingleProduct from './pages/SingleProduct';
 import { ToastContainer } from 'react-toastify';
 import {  signInWithEmailAndPassword   } from 'firebase/auth';
