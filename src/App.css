@@ -286,9 +286,12 @@ footer .input-group-text{
 
 /*product card*/
 .product-card{
-  padding: 15px;
+  padding: 5px;
   background-color: white;
   border-radius: 10px;
+  width: 250px;
+  height: 330px;
+  padding-bottom: 10px;
 }
 .product-details{
   color: var(--color-bf4800);

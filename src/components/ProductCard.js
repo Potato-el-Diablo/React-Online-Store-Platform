@@ -1,21 +1,48 @@
-import React from "react";
+
+import React, { useState, useEffect } from 'react';
 import ReactStars from "react-rating-stars-component";
+
 import { Link, useLocation } from "react-router-dom";
 
-const ProductCard = (props) => {
-    const { grid } = props;
+const ProductCard = ({
+                        grid,
+                        productImage,
+                        brand,
+                        productName,
+                        productDescription,
+                        productPrice,
+                        productStock,
+                        editOnClick,
+                        removeOnClick,
+                        viewOnClick,
+                    }) => {
+    
     let location = useLocation();
+    
+
+    // const handleClick = () =>{
+        // history.push('/product/${product.id}')
+    // };
+    
   return (
     <>
     <div className={` ${location.pathname == "/store" ? `gr-${grid}`: "col-3"}`}>
-        <Link to=":id" className="product-card position-relative">
+        <Link to={productName} className="product-card position-relative">
             
             <div className="product-image">
-                <img src ="/images/watch.jpg" alt="watch"/>
+                <img src = {productImage} alt={productName} width="150" height="150"/>
             </div>
             <div className="product-details">
-                <h6 className="brand">Havels </h6>
-                <h5 className="product-title"> Smart Watch</h5>
+                <h6 className="brand">{brand} </h6>
+                
+                {/* adjusted product name so that it slices long names */}
+                {productName && typeof productName === "string" && (
+                    <h5 className="product-title">
+                      {productName.length > 25
+                        ? productName.substring(0, 25) + "..."
+                        : productName}
+                    </h5>
+                )}
                 <ReactStars
                     count={5}
                     value="3"
@@ -23,7 +50,7 @@ const ProductCard = (props) => {
                     size={24}
                     activeColor="#ffd700"
                 />
-                <p className="price">R250</p>
+                <p className="price">R {productPrice}</p>
                 <div className="add-to-cart">
                 <Link><img src="/images/add-cart.svg" alt="addcart"/>
                         </Link>
