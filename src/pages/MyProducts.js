@@ -31,6 +31,11 @@ const MyProducts = () => {
         setIsUpdateOpen(true);
     };
 
+    const refreshProducts = async () => {
+        const data = await getDocs(collection(db, 'Products'));
+        setProducts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    };
+
     return (
         <>
             <Meta title={'My Products'} />
@@ -70,6 +75,7 @@ const MyProducts = () => {
                                 {products.map((product) => (
                                     <SellerProductCard
                                         key={product.id}
+                                        productId={product.id}
                                         grid={grid}
                                         productImage={product.image}
                                         brand={product.brand}
@@ -90,12 +96,14 @@ const MyProducts = () => {
                 <UpdateProductModal
                     open={isUpdateOpen}
                     onClose={() => setIsUpdateOpen(false)}
+                    productId={selectedProduct.id}
                     productImage={selectedProduct.image}
                     brand={selectedProduct.brand}
                     productName={selectedProduct.name}
                     productDescription={selectedProduct.description}
                     productPrice={selectedProduct.price}
                     productStock={selectedProduct.stock || 'Not available'}
+                    onProductUpdate={refreshProducts}
                 />
             )}
         </>

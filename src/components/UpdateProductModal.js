@@ -1,17 +1,58 @@
-import React from 'react'
+import React, { useState, useEffect} from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import TagsForm from '../components/TagsForm'
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from "../pages/firebase";
 
 export default function UpdateProductModal({
                                                open,
                                                onClose,
+                                               productId,
                                                productImage,
                                                brand,
                                                productName,
                                                productDescription,
                                                productPrice,
                                                productStock,
+                                               onProductUpdate
                                            }) {
+    const [state, setState] = useState({
+        brand,
+        productName,
+        productDescription,
+        productPrice,
+        productStock,
+    });
+    useEffect(() => {
+        setState({
+            brand,
+            productName,
+            productDescription,
+            productPrice,
+            productStock,
+        });
+    }, [brand, productName, productDescription, productPrice, productStock]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setState((prevState) => ({ ...prevState, [name]: value }));
+    };
+
+    const handleUpdateProduct = async () => {
+        const productRef = doc(db, 'Products', productId);
+
+        await updateDoc(productRef, {
+            brand: state.brand,
+            name: state.productName,
+            description: state.productDescription,
+            price: state.productPrice,
+            stock: state.productStock,
+        });
+
+        onClose();
+        onProductUpdate();
+    };
+
     if (!open) return null
 
     return (
@@ -26,7 +67,7 @@ export default function UpdateProductModal({
 
                     <div className="product-details">
                         <div className="mb-3">
-                            <label for="exampleFormControlTextarea1" class="form-label">
+                            <label htmlFor="brand" className="form-label">
                                 Product Brand:{' '}
                             </label>
                             <input
@@ -34,9 +75,11 @@ export default function UpdateProductModal({
                                 type="text"
                                 placeholder="Product Brand"
                                 aria-label="default input example"
-                                value={brand}
+                                name="brand"
+                                value={state.brand}
+                                onChange={handleChange}
                             ></input>
-                            <label for="exampleFormControlTextarea1" class="form-label">
+                            <label htmlFor="productName" className="form-label">
                                 Product Name:{' '}
                             </label>
                             <input
@@ -44,36 +87,41 @@ export default function UpdateProductModal({
                                 type="text"
                                 placeholder="Product Name"
                                 aria-label="default input example"
-                                value={productName}
+                                name="productName"
+                                value={state.productName}
+                                onChange={handleChange}
                             ></input>
                         </div>
                         <div className="mb-3">
-                            <label for="exampleFormControlTextarea1" class="form-label">
+                            <label htmlFor="productDescription" className="form-label">
                                 Product Description
                             </label>
                             <textarea
-                                class="form-control"
-                                id="exampleFormControlTextarea1"
+                                className="form-control"
+                                id="productDescription"
                                 rows="3"
-                                value={productDescription}
+                                name="productDescription"
+                                value={state.productDescription}
+                                onChange={handleChange}
                             ></textarea>
                         </div>
                         {/* ... */}
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <label for="exampleFormControlTextarea1" class="form-label">
+                        <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <label htmlFor="productStock" className="form-label">
                                 Available Stock:{' '}
                             </label>
                             <input
                                 className="form-control"
                                 type="number"
-                                name=""
+                                name="productStock"
                                 defaultValue={1}
                                 min={1}
                                 max={99}
-                                id=""
-                                value={productStock}
+                                id="productStock"
+                                value={state.productStock}
+                                onChange={handleChange}
                             />
-                            <label for="exampleFormControlTextarea1" class="form-label">
+                            <label htmlFor="productPrice" className="form-label">
                                 Price R*:{' '}
                             </label>
                             <input
@@ -81,13 +129,17 @@ export default function UpdateProductModal({
                                 type="text"
                                 placeholder="XXX.cc"
                                 aria-label="default input example"
-                                value={productPrice}
+                                name="productPrice"
+                                value={state.productPrice}
+                                onChange={handleChange}
                             ></input>
                         </div>
                     </div>
                 </div>
                 <div className="modal-footer">
-                    <Link className="button">Update Product</Link>
+                    <Link className="button" onClick={handleUpdateProduct}>
+                        Update Product
+                    </Link>
                     <Link className="button" onClick={onClose} >Cancel</Link>
                 </div>
             </div>
