@@ -1,7 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom"
 import { auth } from './firebase';
-console.log(auth?.currentUser.email);
+//console.log(auth?.currentUser.email);
 /*lastest commit*/
 const Home = () => {
     return <>

@@ -3,10 +3,13 @@ import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 import {useNavigate} from "react-router-dom";
 import {  createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider  } from 'firebase/auth';
-import { auth } from './firebase';
+import { auth, db } from './firebase';
 import { isValidName, isValidEmail, isValidPassword, doPasswordsMatch, isValidPhoneNumber } from '../functions/SignupValidation';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {saveSellerToFirestore} from "../functions/firestoreFunctions";
+
+
 
 
 
@@ -79,10 +82,13 @@ const SellerRegistration = () => {
         // Continue with the signup process if validation passes
         // (Replace the createUserWithEmailAndPassword() call with your seller registration logic)
         await createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
+            .then(async (userCredential) => {
                 // Signed in
                 const user = userCredential.user;
                 console.log(user);
+                // Call saveSellerToFirestore here
+                await saveSellerToFirestore(user, firstName, lastName, mobilenumber, companyName, companyPhone, companyEmail);
+
                 toast.success('Seller account created successfully!'); // Show the success message
                 setTimeout(() => {
                     navigate('/'); // Navigate to the home page after a 1-second delay
@@ -95,6 +101,7 @@ const SellerRegistration = () => {
                 // Display the error message as a toast
                 toast.error(errorMessage);
             });
+
     };
 
     const signInWithGoogle = async () => {
@@ -121,8 +128,8 @@ const SellerRegistration = () => {
 
     return (
         <>
-         <Meta title = {"Sign Up"} />
-         <BreadCrumb title = "Sign Up"/>
+            <Meta title = {"Sign Up"} />
+            <BreadCrumb title = "Sign Up"/>
 
             <div className="login-wraper py-5 home-wrapper-2">
                 <div className="row">
@@ -130,7 +137,7 @@ const SellerRegistration = () => {
                         <div className= "register-card">
                             <h3 className="text-center mb-3" > Create Business Account </h3>
                             <form action="" className="d-flex flex-column gap-15" onSubmit={onSubmit}>
-                            <link rel="stylesheet" type="text/css"
+                                <link rel="stylesheet" type="text/css"
                                       href="//fonts.googleapis.com/css?family=Open+Sans"/>
                                 {/*google "button"*/}
                                 <div className="mt-2 d-flex justify-content-center gap-15 align-items-center">
@@ -179,13 +186,13 @@ const SellerRegistration = () => {
                                     />
                                 </div>
                                 <div className= "mt-1">
-                                        <input type="tel"
-                                               label="Mobile Number"
-                                               value={mobilenumber}
-                                               onChange={(e) => setNumber(e.target.value)}
-                                               placeholder="Phone Number"
-                                               className="form-control"
-                                        />
+                                    <input type="tel"
+                                           label="Mobile Number"
+                                           value={mobilenumber}
+                                           onChange={(e) => setNumber(e.target.value)}
+                                           placeholder="Phone Number"
+                                           className="form-control"
+                                    />
                                 </div>
                                 <div className="mt-1">
                                     <input type="password"
@@ -259,7 +266,7 @@ const SellerRegistration = () => {
                                     </div>
                                 </div>
                                 <div className="mt-4" style={{fontSize:10, color: "cadetblue"}}>
-                                        I would like to receive newsletters and discount offers via email
+                                    I would like to receive newsletters and discount offers via email
                                 </div>
                             </form>
                         </div>
