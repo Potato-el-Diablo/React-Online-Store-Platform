@@ -11,6 +11,7 @@ import UpdateProductModal from '../components/UpdateProductModal';
 const MyProducts = () => {
     const [isAddOpen, setIsAddOpen] = useState(false);
     const [isUpdateOpen, setIsUpdateOpen] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState(null); // New state variable
     const grid = 12;
 
     const [products, setProducts] = useState([]);
@@ -24,6 +25,11 @@ const MyProducts = () => {
     }, []);
 
     console.log(products);
+
+    const handleEditOnClick = (product) => {
+        setSelectedProduct(product);
+        setIsUpdateOpen(true);
+    };
 
     return (
         <>
@@ -71,7 +77,7 @@ const MyProducts = () => {
                                         productDescription={product.description}
                                         productPrice={product.price}
                                         productStock={product.stock || 'Not available'}
-                                        editOnClick={() => setIsUpdateOpen(true)}
+                                        editOnClick={() => handleEditOnClick(product)}
                                     />
                                 ))}
                             </div>
@@ -80,7 +86,18 @@ const MyProducts = () => {
                 </div>
             </div>
             <AddProductModal open={isAddOpen} onClose={() => setIsAddOpen(false)} />
-            <UpdateProductModal open={isUpdateOpen} onClose={() => setIsUpdateOpen(false)} />
+            {selectedProduct && (
+                <UpdateProductModal
+                    open={isUpdateOpen}
+                    onClose={() => setIsUpdateOpen(false)}
+                    productImage={selectedProduct.image}
+                    brand={selectedProduct.brand}
+                    productName={selectedProduct.name}
+                    productDescription={selectedProduct.description}
+                    productPrice={selectedProduct.price}
+                    productStock={selectedProduct.stock || 'Not available'}
+                />
+            )}
         </>
     );
 };

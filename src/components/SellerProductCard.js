@@ -16,6 +16,10 @@ const SellerProductCard = ({
                            }) => {
     let location = useLocation();
 
+    const handleEditOnClick = () => {
+        editOnClick({ productImage, brand, productName, productDescription, productPrice, productStock });
+    };
+
     return (
         <>
             <div className={` ${location.pathname === "/MyProducts" ? `gr-${grid}` : "col3"} `}>
@@ -42,7 +46,7 @@ const SellerProductCard = ({
                             <Link className="button" onClick={viewOnClick}>
                                 View Analytics
                             </Link>
-                            <Link className="button" onClick={editOnClick}>
+                            <Link className="button" onClick={handleEditOnClick}>
                                 Update Product
                             </Link>
                             <Link className="button" onClick={removeOnClick}>
