@@ -2,8 +2,9 @@ import React from "react";
 import ReactStars from "react-rating-stars-component";
 import { Link, useLocation } from "react-router-dom";
 
-const SellerProductCard = (props) => {
-    const {grid} = props;
+export default function SellerProductCard({grid, editOnClick, removeOnClick, viewOnClick}){
+    //const {grid} = props;
+    //const {editOnClick} = editClick
     let location = useLocation();
     
   return (
@@ -48,7 +49,7 @@ const SellerProductCard = (props) => {
         
                     <div className="d-grid gap-30 d-md-block">
                         <Link className="button" >View Analytics</Link>
-                        <Link className="button" >Update Product</Link>
+                        <Link className="button" onClick={editOnClick}>Update Product</Link>
                         <Link className="button">Remove Product</Link>
                     </div>
                 </div>
@@ -71,4 +72,3 @@ const SellerProductCard = (props) => {
   )
 }
 
-export default SellerProductCard;

@@ -3,13 +3,17 @@ import  Meta  from '../components/Meta'
 import BreadCrumb from '../components/BreadCrumb'
 import SellerProductCard from '../components/SellerProductCard'
 import { Link } from 'react-router-dom'
+import AddProductModal from '../components/AddProductModal'
+import UpdateProductModal from '../components/UpdateProductModal'
 
 export const MyProducts = () => {
+    const [isAddOpen, setIsAddOpen] = useState(false)
+    const [isUpdateOpen, setIsUpdateOpen] = useState(false)
     const grid = 12;
   return (
     <>
         <Meta title={"My Products"}/>
-        <BreadCrumb title="My Products" />
+        <BreadCrumb title="My Products" />    
         <div className="store-wrapper home-wrapper-2 py-5">
             <div className='row'>
                 <div className='col-9'>
@@ -20,8 +24,8 @@ export const MyProducts = () => {
                                 <select name='' className='form-control form-select' id=''>
                                     <option value="manual">Featured</option>
                                     <option value="best-selling" selected="selected">Best Selling</option>
-                                    <option value="title-ascending">Alphabetically, A-Z</option>
-                                    <option value="title-descending">Alphabetically, Z-A</option>
+                                    <option value="title-ascending">Alaphabetically, A-Z</option>
+                                    <option value="title-descending">Alaphabetically, Z-A</option>
                                     <option value="price-ascending">Price, low to high</option>
                                     <option value="price-descending">Price, high to low</option>
                                     <option value="created-ascending">Date, old to new</option>
@@ -29,22 +33,18 @@ export const MyProducts = () => {
                                 </select>
                             </div>
                             <div className='d-flex align-items-center gap-5'>
-                                <Link className="button">Add Product</Link>
+                                <Link className="button" onClick={() => setIsAddOpen(true)}>Add Product</Link>
                             </div>
                             <div className='d-flex align-items-center gap-10'>
                                 <p className='totalproducts'>21 products</p>
                             </div>
                         </div>
                     </div>
-                    <div className='products-list pb-5'>
+                    <div className='products-list pb-5'>       
                         <div className='d-flex gap-10 flex-wrap'>
-                            <SellerProductCard grid={grid}/>
-                            <SellerProductCard grid={grid}/>
-                            <SellerProductCard grid={grid}/>
-                            <SellerProductCard grid={grid}/>
-                            <SellerProductCard grid={grid}/>
-                            <SellerProductCard grid={grid}/>
-                            <SellerProductCard grid={grid}/>
+                            <SellerProductCard grid={grid} editOnClick={() => setIsUpdateOpen(true)} />
+                            <AddProductModal open={isAddOpen} onClose={() => setIsAddOpen(false)}></AddProductModal>
+                            <UpdateProductModal open={isUpdateOpen} onClose={() => setIsUpdateOpen(false)}></UpdateProductModal>
                         </div>          
                     </div>
                 </div>
