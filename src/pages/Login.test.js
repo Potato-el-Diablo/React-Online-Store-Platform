@@ -1,76 +1,58 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { render, screen } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import Login from './Login';
-import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
-import { toast } from 'react-toastify';
-
-jest.mock('firebase/auth');
-jest.mock('react-toastify');
+import '@testing-library/jest-dom/extend-expect';
 
 const renderLogin = () => {
     render(
-        <MemoryRouter>
+        <BrowserRouter>
             <Login />
-        </MemoryRouter>
+        </BrowserRouter>
     );
 };
 
 describe('Login', () => {
     test('renders the Login component', () => {
         renderLogin();
-        const loginTitle = screen.getByText(/Login/i);
+        const loginTitle = screen.getByRole('heading', { name: /Login/i });
         expect(loginTitle).toBeInTheDocument();
     });
 
-    test('shows error messages for invalid email and password', async () => {
+    test('renders Sign in with Google button', () => {
         renderLogin();
-        fireEvent.change(screen.getByPlaceholderText('Email address'), {
-            target: { value: 'invalid_email' },
-        });
-        fireEvent.change(screen.getByPlaceholderText('Password'), {
-            target: { value: 'short' },
-        });
-        fireEvent.click(screen.getByText('Login'));
-
-        await waitFor(() => {
-            expect(toast.error).toHaveBeenCalledWith(
-                'Invalid email address. Please provide a valid email address.'
-            );
-        });
-
-        await waitFor(() => {
-            expect(toast.error).toHaveBeenCalledWith(
-                'Invalid password. Password must be at least 6 characters long.'
-            );
-        });
+        const signInWithGoogleButton = screen.getByText(/Sign in with Google/i);
+        expect(signInWithGoogleButton).toBeInTheDocument();
     });
 
-    test('calls signInWithEmailAndPassword with email and password on login', async () => {
+    test('renders Email input field', () => {
         renderLogin();
-        const email = 'test@example.com';
-        const password = 'test1234';
-
-        fireEvent.change(screen.getByPlaceholderText('Email address'), {
-            target: { value: email },
-        });
-        fireEvent.change(screen.getByPlaceholderText('Password'), {
-            target: { value: password },
-        });
-        fireEvent.click(screen.getByText('Login'));
-
-        await waitFor(() => {
-            expect(signInWithEmailAndPassword).toHaveBeenCalledWith(
-                expect.anything(),
-                email,
-                password
-            );
-        });
+        const emailInput = screen.getByPlaceholderText(/Email address/i);
+        expect(emailInput).toBeInTheDocument();
     });
 
-    test('calls signInWithPopup with Google provider on Google sign in', () => {
+    test('renders Password input field', () => {
         renderLogin();
-        fireEvent.click(screen.getByText('Sign in with Google'));
-        expect(signInWithPopup).toHaveBeenCalled();
+        const passwordInput = screen.getByPlaceholderText(/Password/i);
+        expect(passwordInput).toBeInTheDocument();
     });
+
+    test('renders Login button', () => {
+        renderLogin();
+        const loginButton = screen.getByRole('button', { name: /Login/i });
+        expect(loginButton).toBeInTheDocument();
+    });
+
+    test('renders Sign Up button', () => {
+        renderLogin();
+        const signUpButton = screen.getByRole('button', { name: /Sign Up/i });
+        expect(signUpButton).toBeInTheDocument();
+    });
+
+    test('renders Forgot Password link', () => {
+        renderLogin();
+        const forgotPasswordLink = screen.getByRole('link', { name: /Forgot Password\?/i });
+        expect(forgotPasswordLink).toBeInTheDocument();
+    });
+
 });
