@@ -108,8 +108,10 @@ export default function AddProductModal({
                 <header>Add Product</header>
             </div>
 
-            <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-                <ImageInput />
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <div className="product-image">
+                    <img src="images/watch.jpg" className="img-fluid" alt="product image"/>
+                </div>
 
                 <div className="product-details">
                     <div className="mb-3">
