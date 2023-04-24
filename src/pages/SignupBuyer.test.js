@@ -7,22 +7,22 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { saveBuyerToFirestore } from '../functions/firestoreFunctions';
 import { toast } from 'react-toastify';
 import { getAuth } from 'firebase/auth';
-
-// Mock the Firebase functions and toast
-jest.mock('firebase/auth', () => ({
-    createUserWithEmailAndPassword: jest.fn(),
-}));
-
-jest.mock('../functions/firestoreFunctions', () => ({
-    saveBuyerToFirestore: jest.fn(),
-}));
-
-jest.mock('react-toastify', () => ({
-    toast: {
-        error: jest.fn(),
-        success: jest.fn(),
-    },
-}));
+//
+// // Mock the Firebase functions and toast
+// jest.mock('firebase/auth', () => ({
+//     createUserWithEmailAndPassword: jest.fn(),
+// }));
+//
+// jest.mock('../functions/firestoreFunctions', () => ({
+//     saveBuyerToFirestore: jest.fn(),
+// }));
+//
+// jest.mock('react-toastify', () => ({
+//     toast: {
+//         error: jest.fn(),
+//         success: jest.fn(),
+//     },
+// }));
 
 describe('SignupBuyer component', () => {
     beforeEach(() => {
