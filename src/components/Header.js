@@ -1,8 +1,40 @@
-import React from "react";
 import {NavLink, Link} from "react-router-dom";
 import {BsSearch} from "react-icons/bs";
+import { auth, db } from "../pages/firebase";
+import React, { useState, useEffect } from "react";
+import {collection,doc, getDoc} from "firebase/firestore";
+
 
 const Header = () => {
+    const [loggedIn, setLoggedIn] = useState(false);
+    const [isSeller, setIsSeller] = useState(false);
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                setLoggedIn(true);
+                console.log("User UID:", user.uid);
+                // Check if the user is a seller
+                const sellerRef = collection(db, "sellers");
+                const sellerDocRef = doc(sellerRef, user.uid);
+                const sellerData = await getDoc(sellerDocRef);
+                console.log("Seller data:", sellerData);
+                if (sellerData.exists()) {
+                    setIsSeller(true);
+                } else {
+                    setIsSeller(false);
+                }
+            } else {
+                setLoggedIn(false);
+                setIsSeller(false);
+            }
+        });
+
+        return () => {
+            unsubscribe();
+        };
+    }, []);
+
     return (
          <>
         {/* This header (line 8-22) is the top header with the hotline and free shipping text*/}
@@ -67,7 +99,13 @@ const Header = () => {
                                 <Link className="d-flex align-items-center gap text-white">
                                     <img src="images/user.svg" alt="user"/>
                                     <p className="mb-0">
-                                        <NavLink className="text-white" to = "login">Login <br/> My Account</NavLink>
+                                        <NavLink className="text-white" to="login">
+                                           <span
+                                               dangerouslySetInnerHTML={{
+                                                   __html: loggedIn ? "Logged In. <br /> Welcome" : "Login <br /> My Account",
+                                               }}
+                                           />
+                                        </NavLink>
                                     </p>
                                 </Link>
                             </div>
@@ -121,7 +159,7 @@ const Header = () => {
                                     <NavLink className="text-white" to = "/">Orders</NavLink>
                                     <NavLink className="text-white" to = "/product">Our Store</NavLink>
                                     <NavLink className="text-white" to = "/contact">Contact</NavLink>
-                                    <NavLink className="text-white" to = "/MyProducts">My Products</NavLink>
+                                    <NavLink className="text-white" to="/MyProducts">My Products</NavLink>}
                                 </div>
                             </div>
 
