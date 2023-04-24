@@ -20,6 +20,9 @@ jobs:
       - checkout
       - run: npm install
       - run: npm run build
+      - run: rm -rf build/*
+      - run: cp -r dist/* build/
+      - run: ls build
 
       # run tests!
       #- run: npm run build
