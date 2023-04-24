@@ -10,7 +10,7 @@ Code Coverage:
 *[General info](#general)
 *[Setup](#setup)
 ## Task 1
-: Add the name of your favourite softdrink name to this file using the github commands :
+: Add the name of your favourite softdrink name to this file using the github commands :.
 Oriinga Mountain Dew
 
 
