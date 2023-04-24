@@ -39,7 +39,7 @@ jobs:
       - run:
           name: Deploy to Firebase
           command: |
-            echo $FIREBASE_SERVICE_ACCOUNT_TESTING_E6EE0 > /tmp/firebase-service-account.json
+            echo $FIREBASE_TOKEN > /tmp/firebase-service-account.json
             firebase deploy --only hosting --project testing-e6ee0 --non-interactive --token "$(cat /tmp/firebase-service-account.json)"
           environment:
             GOOGLE_APPLICATION_CREDENTIALS: /tmp/firebase-service-account.json
