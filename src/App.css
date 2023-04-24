@@ -391,15 +391,7 @@ inputcheckbox {
   box-sizing: border-box;
 }
 
-.search-container {
-  display: flex;
-  align-items: center;
-}
 
-.search-input {
-  height: 100%;
-  margin-top: 4px; /* Adjust this value as needed */
-}
 
 
 /*Dropdown menu starts here*/
@@ -719,7 +711,7 @@ inputcheckbox {
 }
 .form-control {
   padding: 10px;
-  margin-top: 20px;
+  margin-top: 0px;
 
 }
 .review-inner-wrapper{
