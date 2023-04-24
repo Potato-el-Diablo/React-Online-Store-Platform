@@ -43,11 +43,17 @@ class TagsForm extends Component {
             <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Select Categories</button>
             <ul class="dropdown-menu">
                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                <li><a class="dropdown-item" href="#" onClick={this.handleAddTag}>Action</a></li>
+                <li><a class="dropdown-item" href="#" onClick={this.handleAddTag}>Books and Courses</a></li>
                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                <li><a class="dropdown-item" href="#" onClick={this.handleAddTag}>Another action</a></li>
+                <li><a class="dropdown-item" href="#" onClick={this.handleAddTag}>Cellphones and Smartwatches</a></li>
                 {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                <li><a class="dropdown-item" href="#" onClick={this.handleAddTag}>Something else here</a></li>
+                <li><a class="dropdown-item" href="#" onClick={this.handleAddTag}>Computers and Electronics</a></li>
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                <li><a class="dropdown-item" href="#" onClick={this.handleAddTag}>Gaming</a></li>
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                <li><a class="dropdown-item" href="#" onClick={this.handleAddTag}>Home and Appliances</a></li>
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                <li><a class="dropdown-item" href="#" onClick={this.handleAddTag}>TV, Audio and Media</a></li>
             </ul>
         </div>
         <ul style={{ listStyle: 'none', padding: 5 }}>

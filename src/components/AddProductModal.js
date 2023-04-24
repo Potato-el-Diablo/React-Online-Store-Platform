@@ -49,29 +49,34 @@ export default function AddProductModal({
         onClose();
     };  
 
-    const ImageInput = ({ value, onChange }) => {
-        const handleInputChange = (event) => {
-            onChange(event.target.value);
-        };
+    const handleChange = (event) => {
+        setImageLink(event.target.value);
+      };
+
+    // const ImageInput = () => {
+    //     const handleInputChange = (event) => {
+    //         onChange(event.target.value);
+    //     };
+    
 
 
-    return (
-        <div>
-            <div className="product-image">
-                {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
-                {value && <img src={value} className="img-fluid" alt="product image" />}
-            </div>
-            <div className="image-link-input">
-                <input
-                    type="text"
-                    value={value}
-                    onChange={handleInputChange}
-                    placeholder="Enter image link"
-                />
-            </div>
-        </div>
-    );
-        };
+    //     return (
+    //         <div>
+    //             <div className="product-image">
+    //                 {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
+    //                 {value && <img src={value} className="img-fluid" alt="product image" />}
+    //             </div>
+    //             <div className="image-link-input">
+    //                 <input
+    //                     type="text"
+    //                     value={value}
+    //                     onChange={ImageInput}
+    //                     placeholder="Enter image link"
+    //                 />
+    //             </div>
+    //         </div>
+    //     );
+    // };
         
     if(!open) return null;
 
@@ -84,10 +89,17 @@ export default function AddProductModal({
             </div>
 
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <ImageInput
-                    value={imageLink}
-                    onChange={(value) => setImageLink({ imageLink: value })}
-                />
+            <div className="image-link-input">
+                {imageLink && <img src={imageLink} alt="Uploud Image" />}
+                    <input
+                        type="text"
+                        value=""
+                        onChange={handleChange}
+                        placeholder="Enter image link"
+                    />
+                </div>
+               {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
+               
 
 
                 <div className="product-details">
