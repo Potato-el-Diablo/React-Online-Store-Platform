@@ -37,12 +37,13 @@ export const saveSellerToFirestore = async (user, firstName, lastName, mobileNum
     }
 };
 
-export const saveProductToFirestore = async (productbrand, productName, productDescription, productPrice, productStock, imageLink, sellerEmail) => {
+export const saveProductToFirestore = async (productbrand, productName, productDescription,productTags, productPrice, productStock, imageLink, sellerEmail) => {
     try {
         const product = {
             brand: productbrand,
             name: productName,
             description: productDescription,
+            tags: productTags,
             price: productPrice,
             stock: productStock,
             image: imageLink,

@@ -12,69 +12,42 @@ import { auth } from "../pages/firebase";
 export default function AddProductModal({
     open,
     onClose,
-    productId,
-    brand,
-    productName,
-    productDescription,
-    productTags,
-    productPrice,
-    productStock,
     onProductAdd}){
 
+        const [brand, setBrand] = useState("");
+        const [productName, setProductName] = useState("");
+        const [productDescription, setProductDescription] = useState("");
+        const [productPrice, setProductPrice] = useState("");
+        const [productStock, setProductStock] = useState("");
+        const [imageLink, setImageLink] = useState("");
+        const [productTags, setProductTags] = useState([]);
 
-        const [state, setState] = useState({
-            brand,
-            productName,
-            productDescription,
-            productPrice,
-            productStock,
-            imageLink:'',
-        });
 
-        useEffect(() => {
-            setState({
-                brand,
-                productName,
-                productDescription,
-                productPrice,
-                productStock,
-            });
-        }, [brand, productName, productDescription, productPrice, productStock]);
-    
-        const handleChange = (event) => {
-            const { name, value } = event.target;
-            console.log(name,value)
-            setState((prevState) => ({ ...prevState, [name]: value }));
+        const myHandleAddTag= (event) =>{
+            setProductTags((prevTags) => {
+                if (prevTags && Array.isArray(prevTags)) { // Check if prevTags is defined and an array
+                  return [...prevTags, event.target.text]; // If it is, add the new tag to the array
+                } else {
+                  return [event.target.text]; // Otherwise, create a new array with the new tag
+                }
+              });
+        };
+
+        const myHandleRemoveTag = (index) => {
+            setProductTags(prevTags => prevTags.filter((_, i) => i !== index));  
         };
 
     const handleAddProduct = async () => {
         try {
             const email = auth.currentUser.email;
-            await saveProductToFirestore(state.brand, state.productName, state.productDescription, state.productPrice, state.productStock, state.imageLink, email);
+            await saveProductToFirestore(brand, productName, productDescription, productTags, productPrice, productStock, imageLink, email);
             toast.success('Product created successfully!');
         } catch {
             toast.success('Product invalid');
         }
         onProductAdd();
         onClose();
-    };
-
-        const handleAddTag = (event) => {
-            const { tags } = this.state;
-        
-            this.setState({
-                tags: [...tags, event.target.text]
-            });
-        
-        }
-
-        const handleRemoveTag = (index) => {
-            const { tags } = this.state;
-            this.setState({
-              tags: tags.filter((tag, i) => i !== index)
-            });
-        
-        }
+    };  
 
     const ImageInput = ({ value, onChange }) => {
         const handleInputChange = (event) => {
@@ -111,29 +84,30 @@ export default function AddProductModal({
 
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <ImageInput
-                    value={state.imageLink}
-                    onChange={(value) => setState({ ...state, imageLink: value })}
+                    value={imageLink}
+                    onChange={(value) => setImageLink({ imageLink: value })}
                 />
 
 
                 <div className="product-details">
                     <div className="mb-3">
                         <label for="exampleFormControlTextarea1" class="form-label">Product Brand: </label>
-                        <input className="form-control" type="text" placeholder="Product Brand" aria-label="default input example" name="brand" onChange={handleChange}></input>
+                        <input className="form-control" type="text" placeholder="Product Brand" aria-label="default input example" name="brand" onChange={(event) =>setBrand(event.target.value)}></input>
                         <label for="exampleFormControlTextarea1" class="form-label">Product Name: </label>
-                        <input className="form-control" type="text" placeholder="Product Name" aria-label="default input example" name="productName" onChange={handleChange}></input>
+                        <input className="form-control" type="text" placeholder="Product Name" aria-label="default input example" name="productName" onChange={(event) =>setProductName(event.target.value)}></input>
                     </div>
                     <div className="mb-3">
                         <label for="exampleFormControlTextarea1" class="form-label">Product Description</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="productDescription" onChange={handleChange}></textarea>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="productDescription" onChange={(event) =>setProductDescription(event.target.value)}></textarea>
                     </div>
                     <div className="mb-3">
+                        <TagsForm onAddTag={myHandleAddTag} onRemoveTag={myHandleRemoveTag}></TagsForm>
                     </div>                   
                     <div class="d-grid gap-2 d-md-flex justify-content-md-center">
                         <label for="exampleFormControlTextarea1" class="form-label">Available Stock: </label>
-                        <input className="form-control" type="number" name="productStock" defaultValue={1} min={1} max={99} id="productStock" onChange={handleChange}/>
+                        <input className="form-control" type="number" name="productStock" defaultValue={1} min={1} max={99} id="productStock" onChange={(event) =>setProductStock((event.target.value))}/>
                         <label for="exampleFormControlTextarea1" class="form-label">Price R*: </label>
-                        <input className="form-control" type="text" name="productPrice" placeholder="XXX.cc" aria-label="default input example" onChange={handleChange}></input>
+                        <input className="form-control" type="text" name="productPrice" placeholder="XXX.cc" aria-label="default input example" onChange={(event) =>setProductPrice(event.target.value)}></input>
                     </div>
                 </div>
             </div>

@@ -9,7 +9,8 @@ class TagsForm extends Component {
   }
 
   handleAddTag = (event) => {
-    const { tags, onAddTag} = this.state;
+    const { tags} = this.state;
+    const {onAddTag} = this.props;
 
     if (tags.includes(event.target.text)) {
         return; // don't add duplicate tags
@@ -19,16 +20,17 @@ class TagsForm extends Component {
         tags: [...tags, event.target.text]
     });
 
-    this.props.onAddTag();
+    onAddTag(event);
   }
 
   handleRemoveTag = (index) => {
-    const { tags,onRemoveTag } = this.state;
+    const { tags } = this.state;
+    const {onRemoveTag} = this.props;
     this.setState({
       tags: tags.filter((tag, i) => i !== index)
     });
 
-    this.props.onRemoveTag();
+    onRemoveTag(index);
   }
 
   render() {
