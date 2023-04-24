@@ -9,32 +9,23 @@ import ReactImageZoom from "react-image-zoom";
 import { AiOutlineHeart} from "react-icons/ai";
 
 import { Link, useLocation,  } from "react-router-dom";
-const SingleProduct = ({
-  grid,
-  productImage,
-  brand,
-  productName,
-  productDescription,
-  productPrice,
-  productStock,
-  editOnClick,
-  removeOnClick,
-  viewOnClick,
-}) => {
- 
+const SingleProduct = () => {
+
   const [products, setProducts] = useState([]);
   const [orderedProduct, setorderedProduct] = useState(true);
-  
+
   let location = useLocation();
+  const { productImage, brand, productName, productDescription, productPrice, productStock } = location.state;
+
   useEffect(() => {
     const fetchData = async () => {
-        const data = await getDocs(collection(db, 'Products'));
-        setProducts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      const data = await getDocs(collection(db, 'Products'));
+      setProducts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
     fetchData();
-}, []);
+  }, []);
 
-console.log(products);
+  console.log(products);
   // const history = useHistory();
   return (
     <>
@@ -81,11 +72,11 @@ console.log(products);
                     {/* <h3 className="product-heading">Type :</h3><p className="product-data">Watch</p> */}
                   {/* </div> */}
                   <div className="d-flex gap-10 align-items-center my-2">
-                    <h3 className="product-heading">Brand :</h3><p className="product-data">Havels</p>
+                    <h3 className="product-heading">Brand :</h3><p className="product-data">{brand}</p>
                   </div>
                   
                   <div className="d-flex gap-10 align-items-center my-2">
-                    <h3 className="product-heading">Availability :</h3><p className="product-data">In Stock</p>
+                    <h3 className="product-heading">Availability :</h3><p className="product-data">{productStock}</p>
                   </div>
                   <div className="d-flex gap-10 flex-column mt-2 mb-3">
                     <h3 className="product-heading">Size :</h3>
@@ -129,7 +120,7 @@ console.log(products);
               <div className="bg-white p-3">
                 
                 <p >
-                  Random description of product appears here! Testing Layout.
+                  {productDescription}
                 </p>
 
               </div>
