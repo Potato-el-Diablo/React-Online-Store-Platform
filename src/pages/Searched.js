@@ -7,7 +7,7 @@ import { Link, useSearchParams } from "react-router-dom";
 const Searched = () => {
     const [results, setResults] = useState([]);
     const [searchParams] = useSearchParams();
-    const query = searchParams.get("q");
+    const query = searchParams.get("q"); {/* gets query from header.js*/}
 
     useEffect(() => {
         if (query) {
@@ -16,7 +16,7 @@ const Searched = () => {
     }, [query]);
 
     const searchProducts = async () => {
-        const productsRef = db.collection('Products');
+        const productsRef = db.collection('Products'); {/* queries firestore for names eqaul and similar to the query given*/}
         const querySnapshot = await productsRef
             .orderBy("name")
             .startAt(query)
@@ -38,10 +38,10 @@ const Searched = () => {
             <BreadCrumb title="Search Results" />
             <ul>
                 {results.map((result) => (
-                    <li key={result.id}>
-                        <Link to={`/product/${result.id}`}>
+                    <li key={result.id}> {/*dispalys products with their images as well as the link to the product pagey*/}
+                        <Link to={`/product/${result.id}`}> 
                             <img src={result.data.image} alt={result.data.name} />
-                            <h3>{result.data.name}</h3>
+                            <h3>{result.data.name}</h3> 
                         </Link>
                     </li>
                 ))}
