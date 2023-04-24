@@ -19,9 +19,7 @@ jobs:
     steps:
       - checkout
       - run: npm install
-      - run: npm run build
-      - run: rm -rf build/*
-      - run: cp -r dist/* build/
+      - run: npm run build -- --output-path=build
       - run: ls build
 
       # run tests!
