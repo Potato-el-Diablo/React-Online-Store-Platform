@@ -1,52 +1,61 @@
-import React, { useState, useEffect } from "react";
-import BreadCrumb from "../components/BreadCrumb";
-import Meta from "../components/Meta";
-import { db } from "./firebase";
-import { Link, useSearchParams } from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import { useLocation } from 'react-router-dom';
+import {collection, getDocs} from "firebase/firestore";
+import {db} from "./firebase";
+import ProductCard from "../components/ProductCard";
+
 
 const Searched = () => {
-    const [results, setResults] = useState([]);
-    const [searchParams] = useSearchParams();
-    const query = searchParams.get("q"); {/* gets query from header.js*/}
+    const [products, setProducts] = useState([]);
+
+
+// this is for tracking user clicks
+// const history = useHistory();
+// const handleClick = () =>{
+// history.push('/product/{product.id}')
+// };
 
     useEffect(() => {
-        if (query) {
-            searchProducts();
-        }
-    }, [query]);
+        const fetchData = async () => {
+            const data = await getDocs(collection(db, 'Products'));
+            setProducts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+        };
+        fetchData();
+    }, []);
 
-    const searchProducts = async () => {
-        const productsRef = db.collection('Products'); {/* queries firestore for names eqaul and similar to the query given*/}
-        const querySnapshot = await productsRef
-            .orderBy("name")
-            .startAt(query)
-            .endAt(query + "\uf8ff")
-            .get();
+    //console.log(products);
 
-        const searchResults = [];
-        querySnapshot.forEach((doc) => {
-            searchResults.push({ id: doc.id, data: doc.data() });
-        });
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const searchQuery = searchParams.get('q');
 
-        setResults(searchResults);
-    };
+    // Filter the products based on the search query in the productName
+    const filteredProducts = products.filter((product) =>
+        product.name &&
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    console.log(filteredProducts)
 
 
     return (
-        <>
-            <Meta title={"Search Results"} />
-            <BreadCrumb title="Search Results" />
-            <ul>
-                {results.map((result) => (
-                    <li key={result.id}> {/*dispalys products with their images as well as the link to the product pagey*/}
-                        <Link to={`/product/${result.id}`}> 
-                            <img src={result.data.image} alt={result.data.name} />
-                            <h3>{result.data.name}</h3> 
-                        </Link>
-                    </li>
+        <div>
+            <h1>Searched: {searchQuery}</h1>
+            <div className="row">
+                {filteredProducts.map((product) => (
+                    <ProductCard
+                        key={product.id}
+                        grid={4}
+                        productImage={product.image}
+                        brand={product.brand}
+                        productName={product.name}
+                        productDescription={product.description}
+                        productPrice={product.price}
+                        productStock={product.stock}
+                    />
                 ))}
-            </ul>
-        </>
+            </div>
+        </div>
     );
 };
 

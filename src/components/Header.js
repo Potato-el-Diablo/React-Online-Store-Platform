@@ -49,7 +49,7 @@ const Header = () => {
                                         aria-label="Search Product Here"
                                         aria-describedby="basic-addon2"
                                         value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)} {/* sets the search as query*/}
+                                        onChange={(e) => setSearchQuery(e.target.value)} /* sets the search as query*/
                                     />
                                     <span className="input-group-text search-button py-3" id="basic-addon2">
                                         <button type="submit" className="border-0 bg-transparent">
