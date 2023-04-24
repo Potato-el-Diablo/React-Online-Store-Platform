@@ -30,6 +30,7 @@ const SellerProductCard = ({
                         </Link>
                     </div>
                     <div className="product-image">
+                        {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
                         <img src={productImage} className="img-fluid" alt="product image" />
                     </div>
                     <div className="product-details">

@@ -1,8 +1,8 @@
-import React, { useState, useEffect} from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import React, { useState} from 'react'
+import { Link } from 'react-router-dom'
 import TagsForm from '../components/TagsForm'
-import { addDoc, doc, updateDoc } from 'firebase/firestore';
-import { db } from "../pages/firebase";
+//import { addDoc, doc, updateDoc } from 'firebase/firestore';
+//import { db } from "../pages/firebase";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { saveProductToFirestore } from '../functions/firestoreFunctions';
@@ -58,6 +58,7 @@ export default function AddProductModal({
     return (
         <div>
             <div className="product-image">
+                {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
                 {value && <img src={value} className="img-fluid" alt="product image" />}
             </div>
             <div className="image-link-input">

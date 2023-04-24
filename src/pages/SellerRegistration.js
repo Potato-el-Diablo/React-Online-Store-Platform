@@ -112,6 +112,7 @@ const SellerRegistration = () => {
             });
     };
 
+    // eslint-disable-next-line no-unused-vars
     const signInWithGoogle = async () => {
         const provider = new GoogleAuthProvider();
         try {

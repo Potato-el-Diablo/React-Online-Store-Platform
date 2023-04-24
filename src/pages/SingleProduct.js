@@ -5,14 +5,15 @@ import Meta from "../components/Meta";
 import { collection, getDocs } from "firebase/firestore";
 import ReactStars from "react-rating-stars-component";
 import { db } from "./firebase";
-import ReactImageZoom from "react-image-zoom";
+//import ReactImageZoom from "react-image-zoom";
 import { AiOutlineHeart} from "react-icons/ai";
 
-import { Link, useLocation,  } from "react-router-dom";
+import { useLocation,  } from "react-router-dom";
  const grid = 12;
 const SingleProduct = () => {
 
   const [products, setProducts] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [orderedProduct, setorderedProduct] = useState(true);
 
   let location = useLocation();
@@ -106,6 +107,7 @@ const SingleProduct = () => {
                     </div>
                     
                   </div>
+                  {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                   <div><a href=""><AiOutlineHeart className="fs-5 me-2"/>Add to Wishlist</a></div>
                 </div>
               </div>
@@ -151,6 +153,7 @@ const SingleProduct = () => {
                 </div>
                 {
                   orderedProduct && <div>
+                      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                   <a className ="text-dark text-decoration-underline" href=""> Write a Review</a>
                 </div>
                 }

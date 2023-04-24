@@ -1,4 +1,5 @@
 
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
 import ReactStars from "react-rating-stars-component";
 
@@ -26,7 +27,7 @@ const ProductCard = ({
     
   return (
     <>
-        <div className={` ${location.pathname == "/store" ? `gr-${grid}`: "col-3"}`}>
+        <div className={` ${location.pathname === "/store" ? `gr-${grid}`: "col-3"}`}>
             <Link to={`/product/${productName}`} className="product-card position-relative" state={{
                 productImage,
                 brand,

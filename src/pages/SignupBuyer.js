@@ -7,8 +7,8 @@ import { auth } from './firebase';
 import { isValidName, isValidEmail, isValidPassword, doPasswordsMatch, isValidPhoneNumber } from '../functions/SignupValidation';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { collection, addDoc } from 'firebase/firestore';
-import { db } from './firebase';
+//import { collection, addDoc } from 'firebase/firestore';
+//import { db } from './firebase';
 import {saveBuyerToFirestore} from "../functions/firestoreFunctions";
 
 

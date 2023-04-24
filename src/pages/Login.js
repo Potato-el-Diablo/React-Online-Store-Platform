@@ -3,7 +3,7 @@ import {Link, useNavigate} from "react-router-dom"
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 import {  signInWithEmailAndPassword   } from 'firebase/auth';
-import {  createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider  } from 'firebase/auth';
+import {  signInWithPopup, GoogleAuthProvider  } from 'firebase/auth';
 import { auth } from './firebase';
 import { isValidEmail } from '../functions/SignupValidation';
 import {toast} from "react-toastify";

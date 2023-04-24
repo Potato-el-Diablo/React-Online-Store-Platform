@@ -42,8 +42,11 @@ class TagsForm extends Component {
         <div class="btn-group">
             <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Select Categories</button>
             <ul class="dropdown-menu">
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <li><a class="dropdown-item" href="#" onClick={this.handleAddTag}>Action</a></li>
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <li><a class="dropdown-item" href="#" onClick={this.handleAddTag}>Another action</a></li>
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                 <li><a class="dropdown-item" href="#" onClick={this.handleAddTag}>Something else here</a></li>
             </ul>
         </div>

@@ -7,6 +7,7 @@ import {collection,doc, getDoc} from "firebase/firestore";
 
 const Header = () => {
     const [loggedIn, setLoggedIn] = useState(false);
+    // eslint-disable-next-line no-unused-vars
     const [isSeller, setIsSeller] = useState(false);
 
     useEffect(() => {
@@ -139,6 +140,7 @@ const Header = () => {
                                     <button className="btn btn-secondary dropdown-toggle bg-transparent border-0 gap-15 me-5 d-flex align-items-center" type="button"
                                             id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                         {/*Dropdown button text*/}
+                                        {/* eslint-disable-next-line jsx-a11y/alt-text */}
                                         <img src="images/menu.svg"/>
                                         <span className="me-5 d-inline-block">
                                         Shop categories

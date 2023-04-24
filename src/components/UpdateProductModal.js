@@ -1,6 +1,7 @@
 import React, { useState, useEffect} from 'react'
+// eslint-disable-next-line no-unused-vars
 import { Link, useLocation } from 'react-router-dom'
-import TagsForm from '../components/TagsForm'
+//import TagsForm from '../components/TagsForm'
 import { doc, updateDoc } from 'firebase/firestore';
 import {auth, db} from "../pages/firebase";
 
@@ -65,6 +66,7 @@ export default function UpdateProductModal({
                 {/* ... */}
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <div className="product-image">
+                        {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
                         <img src={productImage} className="img-fluid" alt="product image" />
                     </div>
 

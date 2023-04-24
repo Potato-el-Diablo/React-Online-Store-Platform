@@ -1,7 +1,8 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
 import BreadCrumb from '../components/BreadCrumb';
 import Meta from '../components/Meta';
-import { AiFillDelete } from 'react-icons/ai';
+//import { AiFillDelete } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import CartItem from '../components/CartItem';
 

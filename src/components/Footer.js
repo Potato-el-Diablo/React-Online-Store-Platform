@@ -1,5 +1,5 @@
 import React from "react";
-import {BsSearch} from "react-icons/bs";
+//import {BsSearch} from "react-icons/bs";
 
 const Footer = () => {
     return (
