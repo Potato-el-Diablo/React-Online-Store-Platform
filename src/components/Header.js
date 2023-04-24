@@ -7,7 +7,7 @@ const Header = () => {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        navigate(`/search?q=${searchQuery}`); {/* takes the search as query*/}
+        navigate(`/search?q=${searchQuery}`);
     };
 
     return (
@@ -116,6 +116,7 @@ const Header = () => {
                                         <button className="btn btn-secondary dropdown-toggle bg-transparent border-0 gap-15 me-5 d-flex align-items-center" type="button"
                                                 id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                             {/*Dropdown button text*/}
+                                            {/* eslint-disable-next-line jsx-a11y/alt-text */}
                                             <img src="images/menu.svg"/>
                                             <span className="me-5 d-inline-block">
                                         Shop categories
