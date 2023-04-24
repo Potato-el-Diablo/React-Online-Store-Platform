@@ -1,4 +1,4 @@
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
 import {db} from "../pages/firebase";
 
 
@@ -35,6 +35,13 @@ export const saveSellerToFirestore = async (user, firstName, lastName, mobileNum
     } catch (error) {
         console.error("Error adding seller document: ", error);
     }
+};
+
+export const doesEmailExistInSellerCollection = async (email, emailType) => {
+    const sellersRef = collection(db, 'sellers');
+    const q = query(sellersRef, where(emailType, '==', email));
+    const querySnapshot = await getDocs(q);
+    return !querySnapshot.empty;
 };
 
 

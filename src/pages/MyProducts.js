@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, where } from "firebase/firestore";
 import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
 import SellerProductCard from '../components/SellerProductCard';

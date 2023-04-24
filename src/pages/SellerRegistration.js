@@ -7,7 +7,7 @@ import { auth } from './firebase';
 import { isValidName, isValidEmail, isValidPassword, doPasswordsMatch, isValidPhoneNumber } from '../functions/SignupValidation';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { saveSellerToFirestore } from '../functions/firestoreFunctions';
+import {doesEmailExistInSellerCollection, saveSellerToFirestore} from '../functions/firestoreFunctions';
 
 
 
@@ -77,6 +77,17 @@ const SellerRegistration = () => {
             toast.error('Please accept the Terms and Conditions to proceed.');
             return;
         }
+        const emailExists = await doesEmailExistInSellerCollection(email, 'email');
+        if (emailExists) {
+            toast.error('An account already exists with this email. Please use a different email.');
+            return;
+        }
+
+        const companyEmailExists = await doesEmailExistInSellerCollection(companyEmail, 'companyEmail');
+        if (companyEmailExists) {
+            toast.error('An account already exists with this company email. Please use a different email.');
+            return;
+        }
 
         // Continue with the signup process if validation passes
         // (Replace the createUserWithEmailAndPassword() call with your seller registration logic)
@@ -136,21 +147,6 @@ const SellerRegistration = () => {
                             <form action="" className="d-flex flex-column gap-15" onSubmit={onSubmit}>
                             <link rel="stylesheet" type="text/css"
                                       href="//fonts.googleapis.com/css?family=Open+Sans"/>
-                                {/*google "button"*/}
-                                <div className="mt-2 d-flex justify-content-center gap-15 align-items-center">
-                                    <div className="google-btn" onClick={signInWithGoogle}>
-                                        <div className="google-icon-wrapper">
-                                            <img className="google-icon"
-                                                 src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
-                                        </div>
-                                        <p className="btn-text"><b>Register with Google</b></p>
-                                    </div>
-                                </div>
-
-
-                                <div className="mt-1" style={{fontSize:12, color: "lightgrey"}}>
-                                    ───────────────────Or───────────────────
-                                </div>
                                 {/*the Personal details section*/}
                                 <div className="mt-2" style={{fontSize:18, fontWeight:"bold"}}>
                                     Personal details

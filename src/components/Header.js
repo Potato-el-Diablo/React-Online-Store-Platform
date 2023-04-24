@@ -35,7 +35,7 @@ const Header = () => {
                         {/* search bar here*/}
                         <div className="input-group align-items-center">
                             <input type="text"
-                                   className="form-control search-input py-2"
+                                   className="form-control search-input"
                                    placeholder="Search Product Here"
                                    aria-label="Search Product Here"
                                    aria-describedby="basic-addon2"/>
