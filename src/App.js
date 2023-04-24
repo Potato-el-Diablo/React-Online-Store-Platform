@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import './App.css';
 import Layout from "./components/Layout";
@@ -14,8 +14,9 @@ import Cart from './pages/Cart';
 import MyProducts from './pages/MyProducts';
 import SingleProduct from './pages/SingleProduct';
 import { ToastContainer } from 'react-toastify';
-//import {  signInWithEmailAndPassword   } from 'firebase/auth';
-//import { auth } from './pages/firebase';
+import {  signInWithEmailAndPassword   } from 'firebase/auth';
+import { auth } from './pages/firebase';
+import Searched from './pages/Searched';
 
 
 function App() {
@@ -35,9 +36,7 @@ function App() {
                     <Route path="forgot-password" element={<ForgotPassword/>} />
                     <Route path="myproducts" element={<MyProducts/>}/>
                     <Route path="cart" element={<Cart/>} />
-                    
-                    
-                    
+                    <Route path = "search" element={<Searched/>} />
                     <Route path ="product/:id" element = {<SingleProduct/>}/>
                     
                 </Route>
