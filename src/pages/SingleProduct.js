@@ -98,7 +98,7 @@ const SingleProduct = () => {
                     </div>
                     <div className="d-flex align-items-center gap-30">
                     <button className="button border-0" style={{blockSize:"45px", width:"200px", backgroundColor:"#232f3e",}} type="submit"> Add to Cart </button>
-                    <button className="button border-0" style={{blockSize:"45px", width:"200px", backgroundColor:"gold",}} type="submit"> Buy Now </button>
+                    <button className="button border-0" style={{blockSize:"45px", width:"200px", backgroundColor:"#febd69",}} type="submit"> Buy Now </button>
 
                     </div>
                     <div className="d-flex align-items-center gap-15">
