@@ -9,6 +9,7 @@ import ReactImageZoom from "react-image-zoom";
 import { AiOutlineHeart} from "react-icons/ai";
 
 import { Link, useLocation,  } from "react-router-dom";
+ const grid = 12;
 const SingleProduct = () => {
 
   const [products, setProducts] = useState([]);
@@ -214,11 +215,22 @@ const SingleProduct = () => {
             </div>
           </div>
           <div className="row"> 
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-
+          {products.slice(0,4).map((product) => (
+                                <ProductCard 
+                                key={product.id}
+                                productId={product.id}
+                                grid={grid}
+                                productImage={product.image}
+                                brand={product.brand}
+                                productName={product.name}
+                                productDescription={product.description}
+                                productPrice={product.price}
+                                productStock={product.stock || 'Not available'}
+                                // editOnClick={() => handleEditOnClick(product)}
+                                // onClick={() => handleProductCardClick(product.id)}
+                                
+                                />
+                            ))}    
           </div>
         </div>
       </section>
