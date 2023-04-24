@@ -34,6 +34,14 @@ jobs:
           command: |
             bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
        
+       - run:
+          name: Install Firebase CLI
+          command: |
+            sudo npm install -g firebase-tools
+       - run:
+          name: Deploy to Firebase
+          command: |
+            echo $FIREBASE_TOKEN | firebase deploy --only hosting --token $FIREBASE_TOKEN --non-interactive --project <your_project_id>
 
 
 
