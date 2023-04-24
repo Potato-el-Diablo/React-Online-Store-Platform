@@ -7,7 +7,7 @@ import {  createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider  }
 import { auth } from './firebase';
 import { isValidEmail } from '../functions/SignupValidation';
 import {toast} from "react-toastify";
-const isValidPassword = (password) => {
+export const isValidPassword = (password) => {
     // Add your validation rules for the password, e.g., minimum length, required characters, etc.
     return password.trim().length >= 6;
 };

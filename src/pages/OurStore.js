@@ -1,10 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
+import { collection, getDocs } from "firebase/firestore";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
+import { db } from "./firebase";
 import ProductCard from "../components/ProductCard";
+
+
 /*lastest commit*/
 const OurStore = () => {
-    const[grid, setGrid] = useState(4);
+    const grid = 12;
+    const [products, setProducts] = useState([]);
+    
+    
+    // this is for tracking user clicks
+    // const history = useHistory();
+    // const handleClick = () =>{
+        // history.push('/product/{product.id}')
+    // };
+    
+    useEffect(() => {
+        const fetchData = async () => {
+            const data = await getDocs(collection(db, 'Products'));
+            setProducts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+        };
+        fetchData();
+    }, []);
+
+    console.log(products);
+
+    
+    // find how many products in stock
     
   return (
     <>
@@ -14,7 +39,8 @@ const OurStore = () => {
         <div className="container-xxl">
             <div className="row" style={{"width":"1500px"}}>
                 <div className="col-2">
-                    <div className="filter-card mb-3">
+                    {/* removed this since redundancy can add back if necessary */}
+                    {/* <div className="filter-card mb-3">
                         <h3 className="filter-title">Shop By Catergory</h3>
                         <div >
                             <ul ps-0>
@@ -24,16 +50,18 @@ const OurStore = () => {
                                 <li>Laptop</li>
                             </ul>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="filter-card mb-3">
                         <h3 className="filter-title">Filter By</h3>
-                        <div>
+                        <div> 
                             <h5 className="sub-title">Availability</h5>
                             <div>
                             <div class="form-check">
                                 <input className="form-check-input" type="checkbox" value="checked" id="" />
                                 <label className="form-check-label" htmlfor="">
-                                    In Stock(2)
+                                    
+                                    In Stock({products.length})
+
                                 </label>
                             </div>
                             <div class="form-check">
@@ -54,43 +82,44 @@ const OurStore = () => {
                                     <label htmlfor="floatingInput">To</label>
                                 </div>
                             </div>
-                            <h5 className="sub-title">Colours</h5>
-                            <div>
-                                <ul className="colors ps-0">
-                                    <li className="color1"></li>
-                                    <li className="color2"></li>
-                                    <li className="color3"></li>
-                                    <li className="color4"></li>
-                                    <li className="color5"></li>
-                                    <li className="color6"></li>
-                                    <li className="color7"></li>
-                                    <li className="color8"></li>
-                                    <li className="color9"></li>
-                                    
-                                </ul>
+                            {/* removed for convenience for now */}
+                            {/* <h5 className="sub-title">Colours</h5> */}
+                            {/* <div> */}
+                                {/* <ul className="colors ps-0"> */}
+                                    {/* <li className="color1"></li> */}
+                                    {/* <li className="color2"></li> */}
+                                    {/* <li className="color3"></li> */}
+                                    {/* <li className="color4"></li> */}
+                                    {/* <li className="color5"></li> */}
+                                    {/* <li className="color6"></li> */}
+                                    {/* <li className="color7"></li> */}
+                                    {/* <li className="color8"></li> */}
+                                    {/* <li className="color9"></li> */}
+                                    {/*  */}
+                                {/* </ul> */}
 
-                            </div>
-                            <h5 className="sub-title">Sizes</h5>
-                            <div>
-                            <div class="form-check">
-                                <input className="form-check-input" type="checkbox" value="checked" id="color-1" />
-                                <label className="form-check-label" htmlfor="">
-                                    S (2)
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input className="form-check-input" type="checkbox" value="checked" id="color-2" />
-                                <label className="form-check-label" htmlfor="">
-                                    M (2)
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input className="form-check-input" type="checkbox" value="checked" id="color-3" />
-                                <label className="form-check-label" htmlfor="">
-                                    L (2)
-                                </label>
-                            </div>
-                            </div>
+                            {/* </div> */}
+                            {/* <h5 className="sub-title">Sizes</h5> */}
+                            {/* <div> */}
+                            {/* <div class="form-check"> */}
+                                {/* <input className="form-check-input" type="checkbox" value="checked" id="color-1" /> */}
+                                {/* <label className="form-check-label" htmlfor=""> */}
+                                    {/* S (2) */}
+                                {/* </label> */}
+                            {/* </div> */}
+                            {/* <div class="form-check"> */}
+                                {/* <input className="form-check-input" type="checkbox" value="checked" id="color-2" /> */}
+                                {/* <label className="form-check-label" htmlfor=""> */}
+                                    {/* M (2) */}
+                                {/* </label> */}
+                            {/* </div> */}
+                            {/* <div class="form-check"> */}
+                                {/* <input className="form-check-input" type="checkbox" value="checked" id="color-3" /> */}
+                                {/* <label className="form-check-label" htmlfor=""> */}
+                                    {/* L (2) */}
+                                {/* </label> */}
+                            {/* </div> */}
+                            {/* </div> */}
                         </div>
                     </div>
                     <div className="filter-card mb-3">
@@ -122,17 +151,30 @@ const OurStore = () => {
                                 
                             </select>
                         </div>
-                        <div className="d-flex align-items-center gap-10">
-                            <p className="totalproducts">21 products</p>
-                        </div>
+                            <div className="d-flex align-items-center gap-10">
+                                <p className="totalproducts">Total Products: {products.length}</p>
+                            </div>
                         </div>
                     </div>
-                    <div className="products-list flex-wrap">
-                        <div className="d-flex  gap-10">
-                            <ProductCard grid= {grid}/>
-                            <ProductCard grid= {grid} />
-                            <ProductCard grid= {grid}/>
-                            <ProductCard grid= {grid}/>
+                    <div className="products-list ">
+                        <div className="d-flex flex-wrap gap-20">
+                            
+                            {products.map((product) => (
+                                <ProductCard 
+                                key={product.id}
+                                productId={product.id}
+                                grid={grid}
+                                productImage={product.image}
+                                brand={product.brand}
+                                productName={product.name}
+                                productDescription={product.description}
+                                productPrice={product.price}
+                                productStock={product.stock || 'Not available'}
+                                // editOnClick={() => handleEditOnClick(product)}
+                                // onClick={() => handleProductCardClick(product.id)}
+                                
+                                />
+                            ))}    
                         </div>
                     </div>
                 </div>

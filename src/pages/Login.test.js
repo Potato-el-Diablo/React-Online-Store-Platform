@@ -3,6 +3,10 @@ import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Login from './Login';
 import '@testing-library/jest-dom/extend-expect';
+import { isValidPassword, onLogin, signInWithGoogle } from "./Login";
+
+
+import { isValidEmail } from '../functions/SignupValidation';
 
 const renderLogin = () => {
     render(
@@ -11,6 +15,26 @@ const renderLogin = () => {
         </BrowserRouter>
     );
 };
+
+describe("isValidEmail", () => {
+    test("valid email", () => {
+        expect(isValidEmail("test@example.com")).toBe(true);
+    });
+
+    test("invalid email", () => {
+        expect(isValidEmail("invalidemail.com")).toBe(false);
+    });
+});
+
+describe("isValidPassword", () => {
+    test("valid password", () => {
+        expect(isValidPassword("password123")).toBe(true);
+    });
+
+    test("invalid password", () => {
+        expect(isValidPassword("pwd1")).toBe(false);
+    });
+});
 
 describe('Login', () => {
     test('renders the Login component', () => {

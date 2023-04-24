@@ -286,9 +286,13 @@ footer .input-group-text{
 
 /*product card*/
 .product-card{
-  padding: 15px;
+  padding: 5px;
   background-color: white;
   border-radius: 10px;
+  width: 300px;
+  height: 330px;
+  
+  
 }
 .product-details{
   color: var(--color-bf4800);
@@ -387,15 +391,7 @@ inputcheckbox {
   box-sizing: border-box;
 }
 
-.search-container {
-  display: flex;
-  align-items: center;
-}
 
-.search-input {
-  height: 100%;
-  margin-top: 4px; /* Adjust this value as needed */
-}
 
 
 /*Dropdown menu starts here*/
@@ -486,7 +482,7 @@ inputcheckbox {
 .filter-card{
   background-color: white;
   border-radius: 10px;
-  padding: 10px 15px 25px;
+  padding: 10px 15px 15px;
 }
 .filter-title{
   font-size: 16px;
@@ -715,7 +711,7 @@ inputcheckbox {
 }
 .form-control {
   padding: 10px;
-  margin-top: 20px;
+  margin-top: 0px;
 
 }
 .review-inner-wrapper{

@@ -73,6 +73,31 @@ export default function AddProductModal({
             });
         
         }
+
+        const ImageInput = () => {
+            const [imageLink, setImageLink] = useState('');
+
+    const handleInputChange = (event) => {
+        setImageLink(event.target.value);
+    };
+
+    return (
+        <div>
+            <div className="product-image">
+                {imageLink && <img src={imageLink} className="img-fluid" alt="product image" />}
+            </div>
+            <div className="image-link-input">
+                <input
+                    type="text"
+                    value={imageLink}
+                    onChange={handleInputChange}
+                    placeholder="Enter image link"
+                />
+            </div>
+        </div>
+    );
+        };
+        
     if(!open) return null;
 
   return (
@@ -83,10 +108,8 @@ export default function AddProductModal({
                 <header>Add Product</header>
             </div>
 
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <div className="product-image">
-                    <img src={productImage} className="img-fluid" alt="product image"/>
-                </div>
+            <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+                <ImageInput />
 
                 <div className="product-details">
                     <div className="mb-3">

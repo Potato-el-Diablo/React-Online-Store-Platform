@@ -1,43 +1,60 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
 import ProductCard from "../components/ProductCard";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
-
+import { collection, getDocs } from "firebase/firestore";
 import ReactStars from "react-rating-stars-component";
+import { db } from "./firebase";
 import ReactImageZoom from "react-image-zoom";
 import { AiOutlineHeart} from "react-icons/ai";
 
-const SingleProduct = () =>{
- 
-  
+import { Link, useLocation,  } from "react-router-dom";
+ const grid = 12;
+const SingleProduct = () => {
+
+  const [products, setProducts] = useState([]);
   const [orderedProduct, setorderedProduct] = useState(true);
 
+  let location = useLocation();
+  const { productImage, brand, productName, productDescription, productPrice, productStock } = location.state;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getDocs(collection(db, 'Products'));
+      setProducts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    };
+    fetchData();
+  }, []);
+
+  console.log(products);
+  // const history = useHistory();
   return (
     <>
       <Meta title={"Product Name"}/>
-      <BreadCrumb title="Product Name"/>
+      <BreadCrumb title={productName}/>
       <div className = "main-product-wrapper py-5 home-wrapper-2">
         <div className = "container-xxl">
           <div className="row">
             <div className="col-6">
               <div className="main-product-image">
                 <div >
-                  <img src="/images/watch.jpg" alt="watch"/>
+                  <img src={productImage} alt={productName}/>
                 </div>
               </div>
-              <div className="other-product-images d-flex flex-wrap gap-15">
-                <div><img src="/images/watch.jpg" alt="watch"/></div>
-                <div><img src="/images/watch.jpg" alt="watch"/></div> 
-              </div>
+               {/* removed additional images to avoid issues for now  */}
+                {/* <div className="other-product-images d-flex flex-wrap gap-15"> */}
+                  {/* <div><img src="/images/watch.jpg" alt="watch"/></div> */}
+                  {/* <div><img src="/images/watch.jpg" alt="watch"/></div>  */}
+                {/* </div>  */}
              </div>
               
             <div className="col-6"> 
               <div className="main-product-details">
                <div className="border-bottom">
-               <h3 className="title">Havel Watch</h3>
+               <h3 className="title">{productName}</h3>
                </div>
                <div className="border-bottom py-3">
-                  <p className="price">R 1700</p>
+                  <p className="price">R {productPrice}</p>
                   <div className="d-flex align-items-center gap-10">
                   <ReactStars
                     count={5}
@@ -51,15 +68,16 @@ const SingleProduct = () =>{
                   <a className="review-btn" href="#review" >Write a Review</a>
                </div>
                 <div className="border-bottom py-3">
+                  {/* removed for convenience */}
+                  {/* <div className="d-flex gap-10 align-items-center my-2"> */}
+                    {/* <h3 className="product-heading">Type :</h3><p className="product-data">Watch</p> */}
+                  {/* </div> */}
                   <div className="d-flex gap-10 align-items-center my-2">
-                    <h3 className="product-heading">Type :</h3><p className="product-data">Watch</p>
-                  </div>
-                  <div className="d-flex gap-10 align-items-center my-2">
-                    <h3 className="product-heading">Brand :</h3><p className="product-data">Havels</p>
+                    <h3 className="product-heading">Brand :</h3><p className="product-data">{brand}</p>
                   </div>
                   
                   <div className="d-flex gap-10 align-items-center my-2">
-                    <h3 className="product-heading">Availability :</h3><p className="product-data">In Stock</p>
+                    <h3 className="product-heading">Availability :</h3><p className="product-data">{productStock}</p>
                   </div>
                   <div className="d-flex gap-10 flex-column mt-2 mb-3">
                     <h3 className="product-heading">Size :</h3>
@@ -80,7 +98,7 @@ const SingleProduct = () =>{
                     </div>
                     <div className="d-flex align-items-center gap-30">
                     <button className="button border-0" style={{blockSize:"45px", width:"200px", backgroundColor:"#232f3e",}} type="submit"> Add to Cart </button>
-                    <button className="button border-0" style={{blockSize:"45px", width:"200px", backgroundColor:"gold",}} type="submit"> Buy Now </button>
+                    <button className="button border-0" style={{blockSize:"45px", width:"200px", backgroundColor:"#febd69",}} type="submit"> Buy Now </button>
 
                     </div>
                     <div className="d-flex align-items-center gap-15">
@@ -103,7 +121,7 @@ const SingleProduct = () =>{
               <div className="bg-white p-3">
                 
                 <p >
-                  Random description of product appears here! Testing Layout.
+                  {productDescription}
                 </p>
 
               </div>
@@ -197,11 +215,22 @@ const SingleProduct = () =>{
             </div>
           </div>
           <div className="row"> 
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-
+          {products.slice(0,4).map((product) => (
+                                <ProductCard 
+                                key={product.id}
+                                productId={product.id}
+                                grid={grid}
+                                productImage={product.image}
+                                brand={product.brand}
+                                productName={product.name}
+                                productDescription={product.description}
+                                productPrice={product.price}
+                                productStock={product.stock || 'Not available'}
+                                // editOnClick={() => handleEditOnClick(product)}
+                                // onClick={() => handleProductCardClick(product.id)}
+                                
+                                />
+                            ))}    
           </div>
         </div>
       </section>

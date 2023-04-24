@@ -35,11 +35,15 @@ function App() {
                     <Route path="forgot-password" element={<ForgotPassword/>} />
                     <Route path="myproducts" element={<MyProducts/>}/>
                     <Route path="cart" element={<Cart/>} />
+                    
+                    
+                    
                     <Route path ="product/:id" element = {<SingleProduct/>}/>
-
+                    
                 </Route>
             </Routes>
         </BrowserRouter>
+        
       </>
   );
 }

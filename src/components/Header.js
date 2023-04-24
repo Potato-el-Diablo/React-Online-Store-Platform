@@ -33,13 +33,13 @@ const Header = () => {
                     </div>
                     <div className="col-5">
                         {/* search bar here*/}
-                        <div className="input-group align-items-center">
+                        <div className="input-group align-items-center d-flex">
                             <input type="text"
-                                   className="form-control search-input py-2"
+                                   className="form-control search-input "
                                    placeholder="Search Product Here"
                                    aria-label="Search Product Here"
                                    aria-describedby="basic-addon2"/>
-                            <span className="input-group-text search-button p-3" id="basic-addon2">
+                            <span className="input-group-text search-button py-3" id="basic-addon2">
                                 <BsSearch className="fs-6"/>
                             </span>
                         </div>
