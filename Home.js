@@ -1,6 +1,6 @@
 import React from "react";
-import {Link} from "react-router-dom"
-import { auth } from './firebase';
+import {Link,NavLink} from "react-router-dom"
+//import { auth } from './firebase';
 /*lastest commit*/
 const Home = () => {
     return <>
@@ -126,21 +126,24 @@ const Home = () => {
                         <div className="d-flex gap-30 align-items-center">
                             <div>
                                 <h6>Home and Appliances</h6>
-                                <p>10 items</p>
+                                
+                                <Link className="button" to="/product">Explore</Link>
                             </div>
                             <img src="/images/camera.jpg" alt="camera"/>
                         </div>
                         <div className="d-flex gap-30 align-items-center">
                             <div>
                                 <h6>TV, Audio, and Media</h6>
-                                <p>10 items</p>
+                                
+                                <Link className="button" to="/product">Explore</Link>
                             </div>
                             <img src="/images/tv.jpg" alt="camera"/>
                         </div>
                         <div className="d-flex gap-30 align-items-center">
                             <div>
-                                <h6>Headphones</h6>
-                                <p>10 items</p>
+                                <h6>Gaming</h6>
+                                
+                                <Link className="button" to="/product">Explore</Link>
                             </div>
                             <img src="/images/headphone.jpg" alt="headphone"/>
                         </div>
@@ -154,21 +157,24 @@ const Home = () => {
                         <div className="d-flex gap-30 align-items-center">
                             <div>
                                 <h6>Books and Courses</h6>
-                                <p>10 items</p>
+                              
+                                <Link className="button" to="/product">Explore</Link>
                             </div>
                             <img src="/images/camera.jpg" alt="camera"/>
                         </div>
                         <div className="d-flex gap-30 align-items-center">
                             <div>
                                 <h6>Cellphones and Smartwatches</h6>
-                                <p>10 items</p>
+                                
+                                <Link className="button" to="/product">Explore</Link>
                             </div>
                             <img src="/images/tv.jpg" alt="camera"/>
                         </div>
                         <div className="d-flex gap-30 align-items-center">
                             <div>
                                 <h6>Computers and Electronics</h6>
-                                <p>10 items</p>
+                                
+                                <Link className="button" to="/product">Explore</Link>
                             </div>
                             <img src="/images/headphone.jpg" alt="headphone"/>
                         </div>
