@@ -41,7 +41,7 @@ jobs:
        - run:
           name: Deploy to Firebase
           command: |
-            echo $FIREBASE_TOKEN | firebase deploy --only hosting --token $FIREBASE_TOKEN --non-interactive --project <your_project_id>
+            echo $FIREBASE_TOKEN | firebase deploy --only hosting --token $FIREBASE_TOKEN --non-interactive --project testing-e6ee0
 
 
 
