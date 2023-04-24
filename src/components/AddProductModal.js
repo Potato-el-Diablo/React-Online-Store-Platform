@@ -1,30 +1,7 @@
-import React, {useState} from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import TagsForm from '../components/TagsForm'
 
-const ImageInput = () => {
-    const [imageLink, setImageLink] = useState('');
-
-    const handleInputChange = (event) => {
-        setImageLink(event.target.value);
-    };
-
-    return (
-        <div>
-            <div className="product-image">
-                {imageLink && <img src={imageLink} className="img-fluid" alt="product image" />}
-            </div>
-            <div className="image-link-input">
-                <input
-                    type="text"
-                    value={imageLink}
-                    onChange={handleInputChange}
-                    placeholder="Enter image link"
-                />
-            </div>
-        </div>
-    );
-};
 export default function AddProductModal({open,onClose}){
     if(!open) return null
 
@@ -36,8 +13,10 @@ export default function AddProductModal({open,onClose}){
                 <header>Add Product</header>
             </div>
 
-            <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-                <ImageInput />
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <div className="product-image">
+                    <img src="images/watch.jpg" className="img-fluid" alt="product image"/>
+                </div>
 
                 <div className="product-details">
                     <div className="mb-3">
@@ -63,7 +42,7 @@ export default function AddProductModal({open,onClose}){
             </div>
 
             <div className="modal-footer">
-                <Link className="button">Add Product</Link>
+                <Link className="button">Add Proudct</Link>
                 <Link className="button" onClick={onClose} >Cancel</Link>
             </div>
               
