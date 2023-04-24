@@ -90,6 +90,7 @@ export default function AddProductModal({
 
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
             <div className="image-link-input">
+                {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
                 {imageLink && <img src={imageLink} alt="Uploud Image" />}
                     <input
                         type="text"
