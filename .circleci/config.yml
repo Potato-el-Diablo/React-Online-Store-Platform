@@ -19,6 +19,7 @@ jobs:
     steps:
       - checkout
       - run: npm install
+      - run: npm run build
 
       # run tests!
       #- run: npm run build
