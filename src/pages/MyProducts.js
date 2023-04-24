@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs, where } from "firebase/firestore";
+import {collection, getDocs, query, where} from "firebase/firestore";
+import { auth } from "./firebase";
 import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
 import SellerProductCard from '../components/SellerProductCard';
@@ -18,7 +19,11 @@ const MyProducts = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = await getDocs(collection(db, 'Products'));
+            const email = auth.currentUser.email;
+            const productsRef = collection(db, 'Products');
+            const productsQuery = where('sellerEmail', '==', email);
+            const data = await getDocs(query(productsRef, productsQuery));
+
             setProducts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
         };
         fetchData();

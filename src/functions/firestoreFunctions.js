@@ -37,7 +37,7 @@ export const saveSellerToFirestore = async (user, firstName, lastName, mobileNum
     }
 };
 
-export const saveProductToFirestore = async (productbrand, productName, productDescription, productPrice, productStock, imageLink) => {
+export const saveProductToFirestore = async (productbrand, productName, productDescription, productPrice, productStock, imageLink, sellerEmail) => {
     try {
         const product = {
             brand: productbrand,
@@ -45,7 +45,8 @@ export const saveProductToFirestore = async (productbrand, productName, productD
             description: productDescription,
             price: productPrice,
             stock: productStock,
-            image: imageLink
+            image: imageLink,
+            sellerEmail // Include the sellerEmail field
         };
 
         const docRef = await addDoc(collection(db, "Products"), product);
@@ -54,6 +55,7 @@ export const saveProductToFirestore = async (productbrand, productName, productD
         console.error("Error adding product document: ", error);
     }
 };
+
 
 export const doesEmailExistInSellerCollection = async (email, emailType) => {
     const sellersRef = collection(db, 'sellers');

@@ -2,7 +2,7 @@ import React, { useState, useEffect} from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import TagsForm from '../components/TagsForm'
 import { doc, updateDoc } from 'firebase/firestore';
-import { db } from "../pages/firebase";
+import {auth, db} from "../pages/firebase";
 
 export default function UpdateProductModal({
                                                open,
@@ -40,6 +40,7 @@ export default function UpdateProductModal({
 
     const handleUpdateProduct = async () => {
         const productRef = doc(db, 'Products', productId);
+        const email = auth.currentUser.email;
 
         await updateDoc(productRef, {
             brand: state.brand,
@@ -47,7 +48,9 @@ export default function UpdateProductModal({
             description: state.productDescription,
             price: state.productPrice,
             stock: state.productStock,
+            sellerEmail: email, // Include sellerEmail field
         });
+
 
         onClose();
         onProductUpdate();

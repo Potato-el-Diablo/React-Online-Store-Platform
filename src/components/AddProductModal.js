@@ -6,6 +6,8 @@ import { db } from "../pages/firebase";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { saveProductToFirestore } from '../functions/firestoreFunctions';
+import { auth } from "../pages/firebase";
+
 
 export default function AddProductModal({
     open,
@@ -47,7 +49,8 @@ export default function AddProductModal({
 
     const handleAddProduct = async () => {
         try {
-            await saveProductToFirestore(state.brand, state.productName, state.productDescription, state.productPrice, state.productStock, state.imageLink);
+            const email = auth.currentUser.email;
+            await saveProductToFirestore(state.brand, state.productName, state.productDescription, state.productPrice, state.productStock, state.imageLink, email);
             toast.success('Product created successfully!');
         } catch {
             toast.success('Product invalid');
