@@ -7,6 +7,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { saveBuyerToFirestore } from '../functions/firestoreFunctions';
 import { toast } from 'react-toastify';
 import { getAuth } from 'firebase/auth';
+import {Router} from "react-router-dom";
 //
 // // Mock the Firebase functions and toast
 // jest.mock('firebase/auth', () => ({
@@ -26,6 +27,10 @@ import { getAuth } from 'firebase/auth';
 
 describe('SignupBuyer component', () => {
     beforeEach(() => {
+        // eslint-disable-next-line testing-library/no-render-in-setup
+        render( <Router>
+            <SignupBuyer />
+         </Router>);
     });
 
     test('renders SignupBuyer component', () => {
