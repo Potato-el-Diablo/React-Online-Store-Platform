@@ -19,8 +19,6 @@ export default function AddProductModal({
     productStock,
     onProductAdd}){
 
-        const productImage = "images/watch.jpg";
-
 
         const [state, setState] = useState({
             brand,
@@ -28,6 +26,7 @@ export default function AddProductModal({
             productDescription,
             productPrice,
             productStock,
+            imageLink:'',
         });
 
         useEffect(() => {
@@ -45,17 +44,17 @@ export default function AddProductModal({
             console.log(name,value)
             setState((prevState) => ({ ...prevState, [name]: value }));
         };
-    
-        const handleAddProduct = async () => {
-            try{
-                await saveProductToFirestore(state.brand,state.productName,state.productDescription,state.productPrice,state.productStock);
-                toast.success('Product created successfully!');
-            }catch{
-                toast.success('Product invalid');
-            }
-            onProductAdd();
-            onClose();     
-        };
+
+    const handleAddProduct = async () => {
+        try {
+            await saveProductToFirestore(state.brand, state.productName, state.productDescription, state.productPrice, state.productStock, state.imageLink);
+            toast.success('Product created successfully!');
+        } catch {
+            toast.success('Product invalid');
+        }
+        onProductAdd();
+        onClose();
+    };
 
         const handleAddTag = (event) => {
             const { tags } = this.state;
@@ -74,22 +73,21 @@ export default function AddProductModal({
         
         }
 
-        const ImageInput = () => {
-            const [imageLink, setImageLink] = useState('');
+    const ImageInput = ({ value, onChange }) => {
+        const handleInputChange = (event) => {
+            onChange(event.target.value);
+        };
 
-    const handleInputChange = (event) => {
-        setImageLink(event.target.value);
-    };
 
     return (
         <div>
             <div className="product-image">
-                {imageLink && <img src={imageLink} className="img-fluid" alt="product image" />}
+                {value && <img src={value} className="img-fluid" alt="product image" />}
             </div>
             <div className="image-link-input">
                 <input
                     type="text"
-                    value={imageLink}
+                    value={value}
                     onChange={handleInputChange}
                     placeholder="Enter image link"
                 />
@@ -109,9 +107,11 @@ export default function AddProductModal({
             </div>
 
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <div className="product-image">
-                    <img src="images/watch.jpg" className="img-fluid" alt="product image"/>
-                </div>
+                <ImageInput
+                    value={state.imageLink}
+                    onChange={(value) => setState({ ...state, imageLink: value })}
+                />
+
 
                 <div className="product-details">
                     <div className="mb-3">
@@ -136,7 +136,7 @@ export default function AddProductModal({
             </div>
 
             <div className="modal-footer">
-                <Link className="button" onClick={handleAddProduct}>Add Proudct</Link>
+                <Link className="button" onClick={handleAddProduct}>Add Product</Link>
                 <Link className="button" onClick={onClose} >Cancel</Link>
             </div>
               

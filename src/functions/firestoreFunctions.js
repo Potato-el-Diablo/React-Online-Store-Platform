@@ -37,14 +37,15 @@ export const saveSellerToFirestore = async (user, firstName, lastName, mobileNum
     }
 };
 
-export const saveProductToFirestore = async (productbrand, productName, productDescription, productPrice, productStock) => {
+export const saveProductToFirestore = async (productbrand, productName, productDescription, productPrice, productStock, imageLink) => {
     try {
         const product = {
             brand: productbrand,
             name: productName,
             description: productDescription,
             price: productPrice,
-            stock: productStock
+            stock: productStock,
+            image: imageLink
         };
 
         const docRef = await addDoc(collection(db, "Products"), product);
