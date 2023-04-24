@@ -9,7 +9,7 @@ import AddProductModal from '../components/AddProductModal';
 import UpdateProductModal from '../components/UpdateProductModal';
 
 const MyProducts = () => {
-    const [isAddOpen, setIsAddOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
     const [isUpdateOpen, setIsUpdateOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null); // New state variable
     const grid = 12;
@@ -63,7 +63,7 @@ const MyProducts = () => {
                                     </select>
                                 </div>
                                 <div className="d-flex align-items-center gap-5">
-                                    <Link className="button" onClick={() => setIsAddOpen(true)}>Add Product</Link>
+                                    <Link className="button" onClick={() =>setIsOpen(true)}>Add Product</Link>
                                 </div>
                                 <div className="d-flex align-items-center gap-10">
                                     <p className="totalproducts">21 products</p>
@@ -91,7 +91,7 @@ const MyProducts = () => {
                     </div>
                 </div>
             </div>
-            <AddProductModal open={isAddOpen} onClose={() => setIsAddOpen(false)} />
+            <AddProductModal open={isOpen} onClose={() => setIsOpen(false)} onProductAdd={() =>refreshProducts} />
             {selectedProduct && (
                 <UpdateProductModal
                     open={isUpdateOpen}

@@ -4,31 +4,35 @@ class TagsForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        labels: props.initialLabels || []
+        tags: props.initialLabels || [],
     };
   }
 
-  handleAddLabel = (event) => {
-    const { labels } = this.state;
+  handleAddTag = (event) => {
+    const { tags, onAddTag} = this.state;
 
-    if (labels.includes(event.target.text)) {
-        return; // don't add duplicate labels
+    if (tags.includes(event.target.text)) {
+        return; // don't add duplicate tags
       }
 
     this.setState({
-        labels: [...labels, event.target.text]
+        tags: [...tags, event.target.text]
     });
+
+    this.props.onAddTag();
   }
 
-  handleRemoveLabel = (index) => {
-    const { labels } = this.state;
+  handleRemoveTag = (index) => {
+    const { tags,onRemoveTag } = this.state;
     this.setState({
-      labels: labels.filter((label, i) => i !== index)
+      tags: tags.filter((tag, i) => i !== index)
     });
+
+    this.props.onRemoveTag();
   }
 
   render() {
-    const { labels, newLabel } = this.state;
+    const { tags } = this.state;
 
     return (
       <div class="d-grid gap-2 d-md-flex justify-content-md-begin">
@@ -36,17 +40,17 @@ class TagsForm extends Component {
         <div class="btn-group">
             <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Select Categories</button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#" onClick={this.handleAddLabel}>Action</a></li>
-                <li><a class="dropdown-item" href="#" onClick={this.handleAddLabel}>Another action</a></li>
-                <li><a class="dropdown-item" href="#" onClick={this.handleAddLabel}>Something else here</a></li>
+                <li><a class="dropdown-item" href="#" onClick={this.handleAddTag}>Action</a></li>
+                <li><a class="dropdown-item" href="#" onClick={this.handleAddTag}>Another action</a></li>
+                <li><a class="dropdown-item" href="#" onClick={this.handleAddTag}>Something else here</a></li>
             </ul>
         </div>
         <ul style={{ listStyle: 'none', padding: 5 }}>
             <div class="d-grid gap-2 d-md-flex justify-content-md-begin">
-                {labels.map((label, index) => (
+                {tags.map((tag, index) => (
                     <li key={index}>
-                    {label}
-                    <button type="button" style={{ border: 'none', padding: 1 ,borderRadius: 10}} onClick={() => this.handleRemoveLabel(index)}>&times;</button>
+                    {tag}
+                    <button type="button" style={{ border: 'none', padding: 1 ,borderRadius: 10}} onClick={() => this.handleRemoveTag(index)}>&times;</button>
                     </li>
                 ))}
             </div>    
