@@ -12,7 +12,9 @@ const ProductCard = ({
                          productDescription,
                          productPrice,
                          productStock,
-
+                         editOnClick,
+                         removeOnClick,
+                         viewOnClick,
                      }) => {
 
     let location = useLocation();
@@ -49,7 +51,7 @@ const ProductCard = ({
                         )}
                         <ReactStars
                             count={5}
-                            value={3}
+                            value="3"
                             edit = {false}
                             size={24}
                             activeColor="#ffd700"
@@ -58,7 +60,7 @@ const ProductCard = ({
                         <div className="add-to-cart">
                             <Link><img src="/images/add-cart.svg" alt="addcart"/>
                             </Link>
-                            <label htmlFor=""> Add to Cart </label>
+                            <label htmlfor=""> Add to Cart </label>
                         </div>
 
                     </div>
