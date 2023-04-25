@@ -1,6 +1,9 @@
-import React, { useState } from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
+import { auth, db } from "../pages/firebase";
+import React, { useState, useEffect } from "react";
+import {collection,doc, getDoc} from "firebase/firestore";
+
 const Header = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const navigate = useNavigate();
@@ -9,6 +12,36 @@ const Header = () => {
         e.preventDefault();
         navigate(`/search?q=${searchQuery}`);
     };
+
+    const [loggedIn, setLoggedIn] = useState(false);
+    // eslint-disable-next-line no-unused-vars
+    const [isSeller, setIsSeller] = useState(false);
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                setLoggedIn(true);
+                console.log("User UID:", user.uid);
+                // Check if the user is a seller
+                const sellerRef = collection(db, "sellers");
+                const sellerDocRef = doc(sellerRef, user.uid);
+                const sellerData = await getDoc(sellerDocRef);
+                console.log("Seller data:", sellerData);
+                if (sellerData.exists()) {
+                    setIsSeller(true);
+                } else {
+                    setIsSeller(false);
+                }
+            } else {
+                setLoggedIn(false);
+                setIsSeller(false);
+            }
+        });
+
+        return () => {
+            unsubscribe();
+        };
+    }, []);
 
     return (
         <>
@@ -82,7 +115,13 @@ const Header = () => {
                                     <Link className="d-flex align-items-center gap text-white">
                                         <img src="images/user.svg" alt="user"/>
                                         <p className="mb-0">
-                                            <NavLink className="text-white" to = "login">Login <br/> My Account</NavLink>
+                                            <NavLink className="text-white" to="login">
+                                           <span
+                                               dangerouslySetInnerHTML={{
+                                                   __html: loggedIn ? "Logged In. <br /> Welcome" : "Login <br /> My Account",
+                                               }}
+                                           />
+                                            </NavLink>
                                         </p>
                                     </Link>
                                 </div>
