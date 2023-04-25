@@ -243,7 +243,7 @@ const SellerRegistration = () => {
                                 </div>
 
                                 {/*checkbox*/}
-                                <form>
+
                                     <div className= "mt-3">
                                         <label style={{fontSize:11,}}>
                                             <input type="checkbox"
@@ -252,7 +252,7 @@ const SellerRegistration = () => {
                                             /> I accept the Terms and Conditions and consent to the privacy policy of Potato El Diablo
                                         </label>
                                     </div>
-                                </form>
+
 
                                 <div>
                                     <div className="mt-0 d-flex justify-content-center gap-15 align-items-center">
