@@ -834,3 +834,9 @@ z-index: 1000;
 }
 
 /* Product Modal Ends*/
+
+
+.productCard {
+  min-height: 400px; /* Adjust this value according to your needs */
+  overflow: auto;
+}

@@ -158,23 +158,24 @@ const OurStore = () => {
                     </div>
                     <div className="products-list ">
                         <div className="d-flex flex-wrap gap-20">
-                            
+
                             {products.map((product) => (
-                                <ProductCard 
-                                key={product.id}
-                                productId={product.id}
-                                grid={grid}
-                                productImage={product.image}
-                                brand={product.brand}
-                                productName={product.name}
-                                productDescription={product.description}
-                                productPrice={product.price}
-                                productStock={product.stock || 'Not available'}
-                                // editOnClick={() => handleEditOnClick(product)}
-                                // onClick={() => handleProductCardClick(product.id)}
-                                
+                                <ProductCard
+                                    key={product.id}
+                                    productId={product.id}
+                                    grid={grid}
+                                    productImage={product.image}
+                                    brand={product.brand}
+                                    productName={product.name}
+                                    productDescription={product.description}
+                                    productPrice={product.price}
+                                    productStock={product.stock || 'Not available'}
+                                    // editOnClick={() => handleEditOnClick(product)}
+                                    // onClick={() => handleProductCardClick(product.id)}
+                                    className="productCard" // Add this line
                                 />
-                            ))}    
+                            ))}
+
                         </div>
                     </div>
                 </div>
