@@ -1,5 +1,2 @@
-#codecov.yml
-codecov:
-  ignore:
-    - "src/App.js"
-    - "src/components/Header.js"
+ignore:
+  - "src/components/TagsForm.js"
