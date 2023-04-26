@@ -1,9 +1,17 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import {fireEvent, render, screen} from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import SellerRegistration from './SellerRegistration';
 import '@testing-library/jest-dom/extend-expect';
 import { isValidName, isValidEmail, isValidPassword, doPasswordsMatch, isValidPhoneNumber } from '../functions/SignupValidation';
+
+// Mock the toast library
+jest.mock('react-toastify', () => ({
+    toast: {
+        error: jest.fn(),
+        success: jest.fn(),
+    },
+}));
 
 const renderSellerRegistration = () => {
     render(
@@ -12,6 +20,45 @@ const renderSellerRegistration = () => {
         </BrowserRouter>
     );
 };
+test('input fields for personal and business details', () => {
+    renderSellerRegistration()
+    fireEvent.change(screen.getByPlaceholderText(/first name/i), {
+        target: {value: 'John'},
+    });
+    fireEvent.change(screen.getByPlaceholderText(/last name/i), {
+        target: { value: 'Doe' },
+    });
+    fireEvent.change(screen.getByTestId('personal-email'), {
+        target: { value: 'john@example.com' },
+    });
+    fireEvent.change(screen.getByPlaceholderText(/phone number/i), {
+        target: { value: '1234567890' },
+    });
+    fireEvent.change(screen.getByPlaceholderText(/password \(at least 6 characters\)/i), {
+        target: { value: 'password123' },
+    });
+    fireEvent.change(screen.getByPlaceholderText(/re-enter password/i), {
+        target: { value: 'password123' },
+    });
+    fireEvent.change(screen.getByPlaceholderText(/company name/i), {
+        target: { value: 'John Doe Ltd.' },
+    });
+    fireEvent.change(screen.getByTestId('company-email'), {
+        target: { value: 'info@johndoeltd.com' },
+    });
+    fireEvent.change(screen.getByPlaceholderText(/company phone/i), {
+        target: { value: '0987654321' },
+    });
+    expect(screen.getByPlaceholderText(/first name/i)).toHaveValue('John');
+    expect(screen.getByPlaceholderText(/last name/i)).toHaveValue('Doe');
+    expect(screen.getByTestId('personal-email')).toHaveValue('john@example.com');
+    expect(screen.getByPlaceholderText(/phone number/i)).toHaveValue('1234567890');
+    expect(screen.getByPlaceholderText(/password \(at least 6 characters\)/i)).toHaveValue('password123');
+    expect(screen.getByPlaceholderText(/re-enter password/i)).toHaveValue('password123');
+    expect(screen.getByPlaceholderText(/company name/i)).toHaveValue('John Doe Ltd.');
+    expect(screen.getByTestId('company-email')).toHaveValue('info@johndoeltd.com');
+    expect(screen.getByPlaceholderText(/company phone/i)).toHaveValue('0987654321');
+});
 
 describe("isValidName", () => {
     test("valid name", () => {
