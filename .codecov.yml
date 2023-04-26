@@ -2,4 +2,4 @@
 codecov:
   ignore:
     - "src/App.js"
-    - "Header.js"
+    - "src/components/Header.js"
