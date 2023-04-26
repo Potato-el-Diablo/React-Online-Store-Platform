@@ -177,7 +177,6 @@ const SellerRegistration = () => {
                                            onChange={(e) => setEmail(e.target.value)}
                                            placeholder="Email"
                                            className="form-control"
-                                           data-testid="personal-email"
                                     />
                                 </div>
                                 <div className= "mt-1">
@@ -231,7 +230,6 @@ const SellerRegistration = () => {
                                            onChange={(e) => setCompanyEmail(e.target.value)}
                                            placeholder="Company Email"
                                            className="form-control"
-                                           data-testid="company-email"
                                     />
                                 </div>
                                 <div className= "mt-1">
