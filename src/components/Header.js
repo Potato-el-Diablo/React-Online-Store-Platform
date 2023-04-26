@@ -163,9 +163,12 @@ const Header = () => {
                                         </button>
                                         <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                             {/*Items under dropdown list*/}
-                                            <li><Link className="dropdown-item text-white" to="">Action</Link></li>
-                                            <li><Link className="dropdown-item text-white" to="">Another action</Link></li>
-                                            <li><Link className="dropdown-item text-white" to="">Something else here</Link></li>
+                                            <li><Link className="dropdown-item text-white" to="/product">Books and Courses</Link></li>
+                                        	<li><Link className="dropdown-item text-white" to="/product">Cellphones and Smartwatches</Link></li>
+                                        	<li><Link className="dropdown-item text-white" to="/product">Computers and Electronins</Link></li>
+                                        	<li><Link className="dropdown-item text-white" to="/product">Gaming</Link></li>
+                                        	<li><Link className="dropdown-item text-white" to="/product">Home and Appliances</Link></li>
+                                        	<li><Link className="dropdown-item text-white" to="/product">TV, Audio and Media</Link></li>
                                         </ul>
                                     </div>
                                     {/*End of Dropdown button*/}
