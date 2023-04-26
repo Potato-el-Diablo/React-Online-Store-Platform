@@ -47,7 +47,7 @@ export const saveProductToFirestore = async (productbrand, productName, productD
             price: productPrice,
             stock: productStock,
             image: imageLink,
-            sellerEmail // Include the sellerEmail field
+            sellerEmail
         };
 
         const docRef = await addDoc(collection(db, "Products"), product);
