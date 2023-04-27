@@ -5,15 +5,39 @@ import SellerRegistration from './SellerRegistration';
 import '@testing-library/jest-dom/extend-expect';
 import { isValidName, isValidEmail, isValidPassword, doPasswordsMatch, isValidPhoneNumber } from '../functions/SignupValidation';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { saveSellerToFirestore } from '../functions/firestoreFunctions';
+import { saveSellerToFirestore,doesEmailExistInSellerCollection } from '../functions/firestoreFunctions';
 import userEvent from '@testing-library/user-event';
 import { waitFor } from '@testing-library/react';
-import { ToastContainer } from 'react-toastify';
+import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { auth } from './firebase';
+
+jest.mock('./firebase', () => ({
+    auth: {},
+    createUserWithEmailAndPassword: jest.fn(),
+    signInWithPopup: jest.fn(),
+    GoogleAuthProvider: jest.fn(),
+}));
+
+auth.createUserWithEmailAndPassword = jest.fn();
+
+jest.mock('../functions/firestoreFunctions', () => ({
+    doesEmailExistInSellerCollection: jest.fn(),
+    saveSellerToFirestore: jest.fn(),
+}));
+jest.mock('react-toastify', () => ({
+    toast: {
+        error: jest.fn(),
+        success: jest.fn(),
+    },
+    ToastContainer: () => <div>Toast Container</div>,
+}));
 
 jest.mock('firebase/auth');
 jest.mock('../functions/firestoreFunctions');
+
+
 
 const renderSellerRegistration = () => {
     render(
@@ -74,6 +98,27 @@ describe("doPasswordsMatch", () => {
 });
 
 describe('SellerRegistration', () => {
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+    it('should call toast.error if first name or last name is invalid', () => {
+        renderSellerRegistration();
+
+        fireEvent.click(screen.getByText('Register'));
+
+        expect(toast.error).toHaveBeenCalledWith('Invalid first name or last name. Please provide valid names.');
+    });
+
+    it('should call createUserWithEmailAndPassword and toast.success when the form is submitted successfully', async () => {
+        doesEmailExistInSellerCollection.mockResolvedValue(false);
+
+        createUserWithEmailAndPassword.mockResolvedValue({
+            user: {
+                uid: '123',
+                email: 'user@test.com',
+            },
+        });
+    });
     test('renders the SellerRegistration component', () => {
         renderSellerRegistration();
         const registrationTitle = screen.getByRole('heading', {name: /Create Business Account/i});
@@ -134,11 +179,6 @@ describe('SellerRegistration', () => {
         expect(companyPhoneInput).toBeInTheDocument();
     });
 
-    test('renders Terms and Conditions checkbox', () => {
-        renderSellerRegistration();
-
-    });
-
     test('renders existing Terms and Conditions checkbox', () => {
         renderSellerRegistration();
         const termsCheckbox = screen.getByLabelText(/I accept the Terms and Conditions/i);
@@ -183,8 +223,9 @@ describe('SellerRegistration', () => {
         fireEvent.click(registerButton);
 
         await waitFor(() => {
-            const successMessage = screen.getByText(/Seller account created successfully!/i);
-            expect(successMessage).toBeInTheDocument();
+            //const successMessage = screen.getByText(/Seller account created successfully!/i);
+            //expect(successMessage).toBeInTheDocument();
+            expect(toast.success).toHaveBeenCalledWith('Seller account created successfully!');
         });
-    });
+        });
 });
