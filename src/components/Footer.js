@@ -5,7 +5,7 @@ const Footer = () => {
     return (
 
     <>
-        <footer className="py-4">{/*one hr 14 minutes*/}
+        <footer className="py-4" data-testid="footer">{/*one hr 14 minutes*/}
             <div className="container-xxl">
                 <div className="row align-items-center">
                     <div className="col-5">
