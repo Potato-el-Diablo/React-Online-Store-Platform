@@ -121,7 +121,7 @@ const Login = () => {
                                         <Link to ="/forgot-password"> Forgot Password?</Link>
 
                                         <div className="d-flex justify-content-center gap- align-items-center">
-                                            <button className="button" type="submit">Login</button>
+                                            <button className="button" type="submit" data-testid="login-button">Login</button>
 
                                             <div className="dropdown">
                                                 <button className="button dropdown-toggle" type="button"

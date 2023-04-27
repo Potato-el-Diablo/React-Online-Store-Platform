@@ -1,13 +1,67 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Login from './Login';
 import '@testing-library/jest-dom/extend-expect';
-import { isValidPassword, onLogin, signInWithGoogle } from "./Login";
+import { isValidEmail, isValidPassword } from '../functions/SignupValidation';
+import {toast} from "react-toastify";
 
 
-import { isValidEmail } from '../functions/SignupValidation';
 
+jest.mock('react-toastify', () => ({
+    toast: {
+        error: jest.fn(),
+    },
+}));
+
+describe('Login Component', () => {
+    it('should call toast.error if email is invalid', () => {
+        render(
+            <BrowserRouter>
+                <Login/>
+            </BrowserRouter>
+        );
+
+        fireEvent.change(screen.getByPlaceholderText('Email address'), {
+            target: {value: 'invalid-email'},
+        });
+
+        fireEvent.change(screen.getByPlaceholderText('Password'), {
+            target: {value: 'password123'},
+        });
+
+        fireEvent.click(screen.getByTestId('login-button'));
+
+        expect(isValidEmail('invalid-email')).toBe(false);
+        expect(isValidPassword('password123')).toBe(true);
+        expect(toast.error).toHaveBeenCalledWith(
+            'Invalid email address. Please provide a valid email address.'
+        );
+    });
+    it('should call toast.error if password is invalid', () => {
+        render(
+            <BrowserRouter>
+                <Login />
+            </BrowserRouter>
+        );
+
+        fireEvent.change(screen.getByPlaceholderText('Email address'), {
+            target: { value: 'valid@email.com' },
+        });
+
+        fireEvent.change(screen.getByPlaceholderText('Password'), {
+            target: { value: '123' },
+        });
+
+        fireEvent.click(screen.getByTestId('login-button'));
+
+        expect(isValidEmail('valid@email.com')).toBe(true);
+        expect(isValidPassword('123')).toBe(false);
+        expect(toast.error).toHaveBeenCalledWith(
+            'Invalid password. Password must be at least 6 characters long.'
+        );
+    });
+});
 const renderLogin = () => {
     render(
         <BrowserRouter>
@@ -15,6 +69,8 @@ const renderLogin = () => {
         </BrowserRouter>
     );
 };
+
+
 
 describe("isValidEmail", () => {
     test("valid email", () => {
