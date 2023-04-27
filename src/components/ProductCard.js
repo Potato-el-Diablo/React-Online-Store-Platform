@@ -65,7 +65,7 @@ const ProductCard = ({
                         <div className="add-to-cart">
                             <Link><img src="/images/add-cart.svg" alt="addcart"/>
                             </Link>
-                            <label htmlfor=""> Add to Cart </label>
+                            <label> Add to Cart </label>
                         </div>
 
                     </div>
