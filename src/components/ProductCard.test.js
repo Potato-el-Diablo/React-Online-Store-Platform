@@ -48,4 +48,35 @@ describe("ProductCard Component", () => {
         const truncatedProductName = screen.getByText(longProductName.substring(0, 25) + "...");
         expect(truncatedProductName).toBeInTheDocument();
     });
+    it("renders the add to cart label", () => {
+        render(
+            <MemoryRouter>
+                <ProductCard {...defaultProps} />
+            </MemoryRouter>
+        );
+
+        expect(screen.getByText("Add to Cart")).toBeInTheDocument();
+    });
+
+    it("renders the wishlist icon", () => {
+        render(
+            <MemoryRouter>
+                <ProductCard {...defaultProps} />
+            </MemoryRouter>
+        );
+
+        const wishlistIcon = screen.getByAltText("wishlist");
+        expect(wishlistIcon).toBeInTheDocument();
+    });
+
+    it("renders the product card with the correct grid class", () => {
+        render(
+            <MemoryRouter>
+                <ProductCard {...defaultProps} />
+            </MemoryRouter>
+        );
+
+        const productCard = screen.getByTestId("product-card");
+        expect(productCard).toHaveClass(`${defaultProps.grid}`);
+    });
 });

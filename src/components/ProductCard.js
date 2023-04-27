@@ -25,16 +25,21 @@ const ProductCard = ({
 
     return (
         <>
-            <div className={` ${location.pathname === "/store" ? `gr-${grid}`: "col-3"} productCard`}>
-                <Link to={`/product/${productName}`} className="product-card position-relative" state={{
+            <div
+                className={` ${location.pathname === "/store" ? `gr-${grid}` : "col-3"} productCard`}
+                data-testid="product-card"
+                >
+            <Link
+                to={`/product/${productName}`}
+                className="product-card position-relative"
+                state={{
                     productImage,
                     brand,
                     productName,
                     productDescription,
                     productPrice,
-                    productStock
+                    productStock,
                 }}>
-
                     <div className="product-image">
                         <img src={productImage} alt={productName} width="150" height="150"/>
                     </div>
