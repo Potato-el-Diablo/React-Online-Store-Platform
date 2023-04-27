@@ -8,6 +8,23 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { saveBuyerToFirestore } from '../functions/firestoreFunctions';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+
+jest.mock('react-toastify', () => ({
+    toast: {
+        error: jest.fn(),
+        success: jest.fn(),
+    },
+    ToastContainer: () => <div>Toast Container</div>,
+}));
+
+jest.mock('firebase/auth', () => ({
+    createUserWithEmailAndPassword: jest.fn(),
+}));
+
+jest.mock('../functions/firestoreFunctions', () => ({
+    saveBuyerToFirestore: jest.fn(),
+}));
 
 jest.mock('firebase/auth');
 jest.mock('../functions/firestoreFunctions');
@@ -73,6 +90,10 @@ describe("isValidPhoneNumber", () => {
 });
 
 describe('SignupBuyer', () => {
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+
     test('renders the SignupBuyer component', () => {
         renderSignupBuyer();
         const signupTitle = screen.getByRole('heading', { name: /Sign up as a Buyer/i });
@@ -139,10 +160,33 @@ describe('SignupBuyer', () => {
         fireEvent.click(signupButton);
 
         await waitFor(() => {
-            expect(screen.getByText(/User created successfully!/i)).toBeInTheDocument();
+            expect(toast.success).toHaveBeenCalledWith('User created successfully!');
         });
 
         expect(createUserWithEmailAndPassword).toHaveBeenCalledWith(expect.any(Object), 'test@example.com', 'password123');
         expect(saveBuyerToFirestore).toHaveBeenCalledWith(expect.any(Object), 'John Doe', '1234567890');
     });
+
+    it('should display an error message if the name is invalid', () => {
+        renderSignupBuyer();
+
+        const nameInput = screen.getByPlaceholderText(/Name/i);
+        const emailInput = screen.getByPlaceholderText(/Email address/i);
+        const phoneNumberInput = screen.getByPlaceholderText(/Phone Number/i);
+        const passwordInput = screen.getByPlaceholderText(/Password \(at least 6 characters\)/i);
+        const confirmPasswordInput = screen.getByPlaceholderText(/Re-enter password/i);
+        const signupButton = screen.getByRole('button', { name: /Sign up/i });
+
+        fireEvent.change(nameInput, { target: { value: '' } });
+        fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+        fireEvent.change(passwordInput, { target: { value: 'password123' } });
+        fireEvent.change(confirmPasswordInput, { target: { value: 'password123' } });
+        fireEvent.change(phoneNumberInput, { target: { value: '1234567890' } });
+
+        fireEvent.click(signupButton);
+
+        expect(toast.error).toHaveBeenCalledWith('Invalid name. Please provide a valid name.');
+    });
+    // Add similar tests for email, password, phone number, and password confirmation
+
 });
