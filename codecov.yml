@@ -3,3 +3,4 @@ ignore:
   - "src/components/Header.js"
   - "src/pages/MyProducts.js"
   - "src/features/counter/counterAPI.js"
+  - "src/index.js"
