@@ -187,6 +187,88 @@ describe('SignupBuyer', () => {
 
         expect(toast.error).toHaveBeenCalledWith('Invalid name. Please provide a valid name.');
     });
+    it('should display an error message if the email is invalid', () => {
+        renderSignupBuyer();
+
+        const nameInput = screen.getByPlaceholderText(/Name/i);
+        const emailInput = screen.getByPlaceholderText(/Email address/i);
+        const phoneNumberInput = screen.getByPlaceholderText(/Phone Number/i);
+        const passwordInput = screen.getByPlaceholderText(/Password \(at least 6 characters\)/i);
+        const confirmPasswordInput = screen.getByPlaceholderText(/Re-enter password/i);
+        const signupButton = screen.getByRole('button', { name: /Sign up/i });
+
+        fireEvent.change(nameInput, { target: { value: 'Joshua' } });
+        fireEvent.change(emailInput, { target: { value: 'testexample.com' } });
+        fireEvent.change(passwordInput, { target: { value: 'password123' } });
+        fireEvent.change(confirmPasswordInput, { target: { value: 'password123' } });
+        fireEvent.change(phoneNumberInput, { target: { value: '1234567890' } });
+
+        fireEvent.click(signupButton);
+
+        expect(toast.error).toHaveBeenCalledWith('Invalid email address. Please provide a valid email address.');
+    });
+
+    it('should display an error message if the password is invalid', () => {
+        renderSignupBuyer();
+
+        const nameInput = screen.getByPlaceholderText(/Name/i);
+        const emailInput = screen.getByPlaceholderText(/Email address/i);
+        const phoneNumberInput = screen.getByPlaceholderText(/Phone Number/i);
+        const passwordInput = screen.getByPlaceholderText(/Password \(at least 6 characters\)/i);
+        const confirmPasswordInput = screen.getByPlaceholderText(/Re-enter password/i);
+        const signupButton = screen.getByRole('button', { name: /Sign up/i });
+
+        fireEvent.change(nameInput, { target: { value: 'Joshua' } });
+        fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+        fireEvent.change(passwordInput, { target: { value: 'p21' } });
+        fireEvent.change(confirmPasswordInput, { target: { value: 'p21' } });
+        fireEvent.change(phoneNumberInput, { target: { value: '1234567890' } });
+
+        fireEvent.click(signupButton);
+
+        expect(toast.error).toHaveBeenCalledWith('Invalid password. Password must be at least 6 characters long.');
+    });
+    it('should display an error message if the mobile number is invalid', () => {
+        renderSignupBuyer();
+
+        const nameInput = screen.getByPlaceholderText(/Name/i);
+        const emailInput = screen.getByPlaceholderText(/Email address/i);
+        const phoneNumberInput = screen.getByPlaceholderText(/Phone Number/i);
+        const passwordInput = screen.getByPlaceholderText(/Password \(at least 6 characters\)/i);
+        const confirmPasswordInput = screen.getByPlaceholderText(/Re-enter password/i);
+        const signupButton = screen.getByRole('button', { name: /Sign up/i });
+
+        fireEvent.change(nameInput, { target: { value: 'Joshua' } });
+        fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+        fireEvent.change(passwordInput, { target: { value: 'password123' } });
+        fireEvent.change(confirmPasswordInput, { target: { value: 'password123' } });
+        fireEvent.change(phoneNumberInput, { target: { value: '12390' } });
+
+        fireEvent.click(signupButton);
+
+        expect(toast.error).toHaveBeenCalledWith('Invalid phone number. Please provide a valid phone number.');
+    });
+    it('should display an error message if the passwords do not match', () => {
+        renderSignupBuyer();
+
+        const nameInput = screen.getByPlaceholderText(/Name/i);
+        const emailInput = screen.getByPlaceholderText(/Email address/i);
+        const phoneNumberInput = screen.getByPlaceholderText(/Phone Number/i);
+        const passwordInput = screen.getByPlaceholderText(/Password \(at least 6 characters\)/i);
+        const confirmPasswordInput = screen.getByPlaceholderText(/Re-enter password/i);
+        const signupButton = screen.getByRole('button', { name: /Sign up/i });
+
+        fireEvent.change(nameInput, { target: { value: 'Joshua' } });
+        fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+        fireEvent.change(passwordInput, { target: { value: 'WorldHello' } });
+        fireEvent.change(confirmPasswordInput, { target: { value: 'HelloWorld' } });
+        fireEvent.change(phoneNumberInput, { target: { value: '1234567890' } });
+
+        fireEvent.click(signupButton);
+
+        expect(toast.error).toHaveBeenCalledWith('Passwords do not match. Please make sure you have entered the same password twice.');
+    });
     // Add similar tests for email, password, phone number, and password confirmation
+
 
 });
