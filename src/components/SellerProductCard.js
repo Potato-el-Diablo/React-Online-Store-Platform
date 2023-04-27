@@ -64,7 +64,7 @@ const SellerProductCard = ({
                                 <img src="images/view.svg" alt="view" />
                             </Link>
                             <Link>
-                                <img src="images/add-cart.svg" alt="addcart" />
+                                <img src="public/images/add-cart.svg" alt="addcart" />
                             </Link>
                         </div>
                     </div>

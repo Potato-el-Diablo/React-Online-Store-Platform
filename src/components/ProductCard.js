@@ -1,6 +1,5 @@
 // ProductCard.js
 // eslint-disable-next-line no-unused-vars
-import React, { useState, useEffect } from 'react';
 import ReactStars from "react-rating-stars-component";
 import { Link, useLocation } from "react-router-dom";
 

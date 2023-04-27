@@ -173,6 +173,7 @@ const SellerRegistration = () => {
                                 <div className="mt-1">
                                     <input type="text"
                                            name ="email"
+                                           data-testid="user-email"
                                            value={email}
                                            onChange={(e) => setEmail(e.target.value)}
                                            placeholder="Email"
@@ -226,6 +227,7 @@ const SellerRegistration = () => {
                                 <div className="mt-1">
                                     <input type="text"
                                            name="company email"
+                                           data-testid="company-email"
                                            value={companyEmail}
                                            onChange={(e) => setCompanyEmail(e.target.value)}
                                            placeholder="Company Email"
