@@ -1,14 +1,23 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import {fireEvent, render, screen, waitFor} from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import SignupBuyer from './SignupBuyer';
 import '@testing-library/jest-dom/extend-expect';
 import { isValidName, isValidEmail, isValidPassword, doPasswordsMatch, isValidPhoneNumber } from '../functions/SignupValidation';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { saveBuyerToFirestore } from '../functions/firestoreFunctions';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+jest.mock('firebase/auth');
+jest.mock('../functions/firestoreFunctions');
+jest.mock('./firebase', () => ({ auth: {} }));
 
 const renderSignupBuyer = () => {
     render(
         <BrowserRouter>
             <SignupBuyer />
+            <ToastContainer />
         </BrowserRouter>
     );
 };
@@ -104,5 +113,36 @@ describe('SignupBuyer', () => {
         renderSignupBuyer();
         const signUpButton = screen.getByRole('button', { name: /Sign up/i });
         expect(signUpButton).toBeInTheDocument();
+    });
+    test('successfully submit form', async () => {
+        renderSignupBuyer();
+        const nameInput = screen.getByPlaceholderText(/Name/i);
+        const emailInput = screen.getByPlaceholderText(/Email address/i);
+        const phoneNumberInput = screen.getByPlaceholderText(/Phone Number/i);
+        const passwordInput = screen.getByPlaceholderText(/Password \(at least 6 characters\)/i);
+        const confirmPasswordInput = screen.getByPlaceholderText(/Re-enter password/i);
+        const signupButton = screen.getByRole('button', { name: /Sign up/i });
+
+        fireEvent.change(nameInput, { target: { value: 'John Doe' } });
+        fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+        fireEvent.change(phoneNumberInput, { target: { value: '1234567890' } });
+        fireEvent.change(passwordInput, { target: { value: 'password123' } });
+        fireEvent.change(confirmPasswordInput, { target: { value: 'password123' } });
+
+        createUserWithEmailAndPassword.mockResolvedValueOnce({
+            user: {
+                uid: '12345',
+            },
+        });
+        saveBuyerToFirestore.mockResolvedValueOnce();
+
+        fireEvent.click(signupButton);
+
+        await waitFor(() => {
+            expect(screen.getByText(/User created successfully!/i)).toBeInTheDocument();
+        });
+
+        expect(createUserWithEmailAndPassword).toHaveBeenCalledWith(expect.any(Object), 'test@example.com', 'password123');
+        expect(saveBuyerToFirestore).toHaveBeenCalledWith(expect.any(Object), 'John Doe', '1234567890');
     });
 });
