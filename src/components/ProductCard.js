@@ -11,7 +11,6 @@ const ProductCard = ({
                          productDescription,
                          productPrice,
                          productStock,
-                         productId,
                          editOnClick,
                          removeOnClick,
                          viewOnClick,
@@ -39,7 +38,6 @@ const ProductCard = ({
                     productDescription,
                     productPrice,
                     productStock,
-                    productId,
                 }}>
                     <div className="product-image">
                         <img src={productImage} alt={productName} width="150" height="150"/>
