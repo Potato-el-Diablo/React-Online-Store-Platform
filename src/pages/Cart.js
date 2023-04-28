@@ -14,7 +14,21 @@ const Cart = () => {
     const [subtotal, setSubtotal] = useState(0);
     const [cartItems, setCartItems] = useState([]);
 
-    const handleUpdateSubtotal = (amount, action) => {/* existing code */};
+    const [itemSubtotals, setItemSubtotals] = useState({});
+
+    const handleUpdateSubtotal = (itemId, amount) => {
+        setItemSubtotals((prevState) => ({
+            ...prevState,
+            [itemId]: amount,
+        }));
+    };
+    useEffect(() => {
+        const newSubtotal = Object.values(itemSubtotals).reduce(
+            (accumulator, currentValue) => accumulator + currentValue,
+            0
+        );
+        setSubtotal(newSubtotal);
+    }, [itemSubtotals]);
 
     const fetchUserCartItems = async () => {
         if (!auth.currentUser) return;
