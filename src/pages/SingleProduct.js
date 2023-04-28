@@ -20,6 +20,7 @@ const SingleProduct = () => {
 
   const [userId, setUserId] = useState('');
 
+
   useEffect(() => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -38,6 +39,8 @@ const SingleProduct = () => {
   const [products, setProducts] = useState([]);
   // eslint-disable-next-line no-unused-vars
   const [orderedProduct, setorderedProduct] = useState(true);
+  const [reviewRating, setReviewRating] = useState(0);
+  const [reviewComment, setReviewComment] = useState('');
 
   let location = useLocation();
   const { productImage, brand, productName, productDescription, productPrice, productStock, productId } = location.state;
@@ -91,6 +94,27 @@ const SingleProduct = () => {
       console.error('Error adding product to cart:', error);
     }
   };
+  const addReview = async (e) => {
+    e.preventDefault();
+
+    if (!userId) {
+      alert('Please sign in to submit a review.');
+      return;
+    }
+
+    try {
+      await addDoc(collection(db, 'reviews'), {
+        userId,
+        productId: location.state.productId,
+        rating: reviewRating,
+        comment: reviewComment,
+        createdAt: new Date(),
+      });
+      alert('Review submitted successfully.');
+    } catch (error) {
+      console.error('Error adding review: ', error);
+    }
+  };
 
 
   return (
@@ -122,13 +146,14 @@ const SingleProduct = () => {
                <div className="border-bottom py-3">
                   <p className="price">R {productPrice}</p>
                   <div className="d-flex align-items-center gap-10">
-                  <ReactStars
-                    count={5}
-                    value="3"
-                    edit = {false}
-                    size={24}
-                    activeColor="#ffd700"
-                />
+                    <ReactStars
+                        count={5}
+                        value={reviewRating}
+                        edit={true}
+                        size={24}
+                        activeColor="#ffd700"
+                        onChange={(newRating) => setReviewRating(newRating)}
+                    />
                 <p className="mb-0 t-review">2 reviews</p>
                   </div>
                   <a className="review-btn" href="#review" >Write a Review</a>
@@ -233,7 +258,7 @@ const SingleProduct = () => {
 
               <div  className="review-form py-4">
                 <h4>Write a Review</h4>
-                <form action="">
+                <form onSubmit={addReview}>
                   <div>
                   <ReactStars
                     count={5}
@@ -245,14 +270,15 @@ const SingleProduct = () => {
                   </div>
                   <div>
                     <textarea
-                    name=""
-                    id=""
-                    className="w-100 form-control"
-                    cols="30"
-                    rows="4"
-                    placeholder="Comments"
-                    >
-                    </textarea>
+                        name=""
+                        id=""
+                        className="w-100 form-control"
+                        cols="30"
+                        rows="4"
+                        placeholder="Comments"
+                        value={reviewComment}
+                        onChange={(event) => setReviewComment(event.target.value)}
+                    ></textarea>
                   </div>
                   <div className="d-flex justify-content-end">
                     <button className="button border-0">Submit Review</button>
