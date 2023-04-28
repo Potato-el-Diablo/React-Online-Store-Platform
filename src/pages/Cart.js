@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import CartItem from '../components/CartItem';
 
 import { db, auth } from './firebase';
-import {collection, doc, getDoc, getDocs, query, updateDoc, where, arrayRemove} from 'firebase/firestore';
+import {collection, doc, getDoc, getDocs, query, where} from 'firebase/firestore';
 
 
 const Cart = () => {
@@ -15,6 +15,7 @@ const Cart = () => {
     const [cartItems, setCartItems] = useState([]);
 
     const handleUpdateSubtotal = (amount, action) => {/* existing code */};
+    const handleRemoveCartItem = (itemId) => {/* existing code */};
 
     const fetchUserCartItems = async () => {
         if (!auth.currentUser) return;
@@ -51,17 +52,6 @@ const Cart = () => {
         fetchUserCartItems();
     }, []);
 
-    const handleRemoveItem = async (itemId) => {
-        const userCartRef = doc(db, 'Carts', auth.currentUser.uid);
-
-        await updateDoc(userCartRef, {
-            products: arrayRemove(itemId),
-        });
-
-        // Remove the item from the cartItems state
-        setCartItems((prevCartItems) => prevCartItems.filter((item) => item.id !== itemId));
-    };
-
     return (
         <>
             <Meta title={'Cart'} />
@@ -81,7 +71,7 @@ const Cart = () => {
                                     key={item.id}
                                     item={item}
                                     onUpdateSubtotal={handleUpdateSubtotal}
-                                    onRemove={handleRemoveItem} // Add this prop
+                                    onRemove={handleRemoveCartItem}
                                 />
                             ))}
                         </div>
