@@ -27,7 +27,7 @@ const CartItem = ({ item, onUpdateSubtotal, onRemove }) => {
                     <img src={item.image} className="img-fluid" alt="product-image" />
                 </div>
                 <div className="w-75 text-black">
-                    <p>{item.title}</p>
+                    <p>{item.name}</p>
                     <p className="color">{item.color}</p>
                     <p className="size">{item.size}</p>
                 </div>
