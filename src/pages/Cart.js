@@ -6,42 +6,34 @@ import Meta from '../components/Meta';
 import { Link } from 'react-router-dom';
 import CartItem from '../components/CartItem';
 
+import { db, auth } from './firebase';
+import { collection, doc, getDocs, query, where } from 'firebase/firestore';
+
+
 const Cart = () => {
     const [subtotal, setSubtotal] = useState(0);
+    const [cartItems, setCartItems] = useState([]);
 
-    //array of items in the cart
-    //this array should be used for the
-    const [cartItems, setCartItems] = useState([
-        {
-            id: 1,
-            image: '/images/watch.jpg',
-            title: 'title',
-            color: 'color',
-            size: 'size',
-            price: 100,
-        },
-        {
-            id: 2,
-            image: '/images/watch.jpg',
-            title: 'title',
-            color: 'color',
-            size: 'size',
-            price: 120,
-        }
-        // Add more cart items here
-    ]);
+    const handleUpdateSubtotal = (amount, action) => {/* existing code */};
+    const handleRemoveCartItem = (itemId) => {/* existing code */};
 
-    const handleUpdateSubtotal = (amount, action) => {
-        if (action === 'add') {
-            setSubtotal((prevSubtotal) => prevSubtotal + amount);
-        } else if (action === 'subtract') {
-            setSubtotal((prevSubtotal) => prevSubtotal - amount);
-        }
+    const fetchUserCartItems = async () => {
+        if (!auth.currentUser) return;
+
+        const userCartRef = collection(db, 'Cart', auth.currentUser.uid, 'Items');
+        const userCartSnapshot = await getDocs(userCartRef);
+
+        const fetchedItems = [];
+        userCartSnapshot.forEach((doc) => {
+            fetchedItems.push({ id: doc.id, ...doc.data() });
+        });
+        console.log(fetchedItems);
+        setCartItems(fetchedItems);
     };
 
-    const handleRemoveCartItem = (itemId) => {
-        setCartItems((prevCartItems) => prevCartItems.filter((item) => item.id !== itemId));
-    };
+    useEffect(() => {
+        fetchUserCartItems();
+    }, []);
 
     return (
         <>
