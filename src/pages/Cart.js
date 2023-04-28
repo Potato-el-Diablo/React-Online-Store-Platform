@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import CartItem from '../components/CartItem';
 
 import { db, auth } from './firebase';
-import {collection, doc, getDoc, getDocs, query, where} from 'firebase/firestore';
+import { collection, doc, getDocs, query, where } from 'firebase/firestore';
 
 
 const Cart = () => {
@@ -20,32 +20,15 @@ const Cart = () => {
     const fetchUserCartItems = async () => {
         if (!auth.currentUser) return;
 
-        const userCartRef = doc(db, 'Carts', auth.currentUser.uid);
-        const userCartSnapshot = await getDoc(userCartRef);
+        const userCartRef = collection(db, 'Cart', auth.currentUser.uid, 'Items');
+        const userCartSnapshot = await getDocs(userCartRef);
 
-        if (!userCartSnapshot.exists()) {
-            console.log('No cart data found for the user');
-            return;
-        }
-
-        const productIds = userCartSnapshot.data().products;
-
-        const fetchedItemsPromises = productIds.map(async (productId) => {
-            const productRef = doc(db, 'Products', productId);
-            const productSnapshot = await getDoc(productRef);
-
-            if (productSnapshot.exists()) {
-                return { id: productSnapshot.id, ...productSnapshot.data() };
-            } else {
-                console.error(`Product not found for ID: ${productId}`);
-                return null;
-            }
+        const fetchedItems = [];
+        userCartSnapshot.forEach((doc) => {
+            fetchedItems.push({ id: doc.id, ...doc.data() });
         });
-
-        const fetchedItems = await Promise.all(fetchedItemsPromises);
-        const validItems = fetchedItems.filter((item) => item !== null);
-        console.log(validItems);
-        setCartItems(validItems);
+        console.log(fetchedItems);
+        setCartItems(fetchedItems);
     };
 
     useEffect(() => {
