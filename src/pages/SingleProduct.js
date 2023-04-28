@@ -2,22 +2,44 @@ import React, { useState, useEffect } from 'react';
 import ProductCard from "../components/ProductCard";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, addDoc, doc, setDoc } from "firebase/firestore";
 import ReactStars from "react-rating-stars-component";
 import { db } from "./firebase";
 //import ReactImageZoom from "react-image-zoom";
 import { AiOutlineHeart} from "react-icons/ai";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {onAuthStateChanged, getAuth} from "firebase/auth";
+
+
 
 import { useLocation,  } from "react-router-dom";
  const grid = 12;
 const SingleProduct = () => {
+
+  const [userId, setUserId] = useState('');
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserId(user.uid);
+      } else {
+        setUserId('');
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   const [products, setProducts] = useState([]);
   // eslint-disable-next-line no-unused-vars
   const [orderedProduct, setorderedProduct] = useState(true);
 
   let location = useLocation();
-  const { productImage, brand, productName, productDescription, productPrice, productStock } = location.state;
+  const { productImage, brand, productName, productDescription, productPrice, productStock, productId } = location.state;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,8 +51,40 @@ const SingleProduct = () => {
 
   console.log(products);
   // const history = useHistory();
+
+  const handleAddToCart = async (productId) => {
+    try {
+      // Show toast messages
+      toast.success(`User ID: ${userId}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      toast.success(`The product you are adding is: ${productId}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+
+      // Add the product to the user's cart
+      const cartRef = doc(collection(db, 'Cart', userId, 'Items'));
+      const productRef = doc(db, 'Products', productId);
+      await setDoc(cartRef, {
+        [productId]: productRef
+      }, { merge: true });
+
+      // Show success message
+      toast.success('Product added to cart successfully', {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+    } catch (error) {
+      // Show error message
+      toast.error('Failed to add product to cart', {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      console.error('Error adding product to cart:', error);
+    }
+  };
+
   return (
     <>
+      <ToastContainer/>
       <Meta title={"Product Name"}/>
       <BreadCrumb title={productName}/>
       <div className = "main-product-wrapper py-5 home-wrapper-2">
@@ -98,7 +152,14 @@ const SingleProduct = () => {
                       id=""/>
                     </div>
                     <div className="d-flex align-items-center gap-30">
-                    <button className="button border-0" style={{blockSize:"45px", width:"200px", backgroundColor:"#232f3e",}} type="submit"> Add to Cart </button>
+                      <button
+                          className="button border-0"
+                          style={{ blockSize: "45px", width: "200px", backgroundColor: "#232f3e" }}
+                          type="submit"
+                          onClick={() => handleAddToCart(location.state.productId)}
+                      >
+                        Add to Cart
+                      </button>
                     <button className="button border-0" style={{blockSize:"45px", width:"200px", backgroundColor:"#febd69",}} type="submit"> Buy Now </button>
 
                     </div>
@@ -221,7 +282,6 @@ const SingleProduct = () => {
           {products.slice(0,4).map((product) => (
                                 <ProductCard 
                                 key={product.id}
-                                productId={product.id}
                                 grid={grid}
                                 productImage={product.image}
                                 brand={product.brand}
@@ -229,6 +289,7 @@ const SingleProduct = () => {
                                 productDescription={product.description}
                                 productPrice={product.price}
                                 productStock={product.stock || 'Not available'}
+                                productId={product.id}
                                 // editOnClick={() => handleEditOnClick(product)}
                                 // onClick={() => handleProductCardClick(product.id)}
                                 

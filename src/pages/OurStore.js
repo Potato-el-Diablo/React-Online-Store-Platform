@@ -170,6 +170,7 @@ const OurStore = () => {
                                     productDescription={product.description}
                                     productPrice={product.price}
                                     productStock={product.stock || 'Not available'}
+                                    productId={product.id}
                                     // editOnClick={() => handleEditOnClick(product)}
                                     // onClick={() => handleProductCardClick(product.id)}
                                     className="productCard" // Add this line
