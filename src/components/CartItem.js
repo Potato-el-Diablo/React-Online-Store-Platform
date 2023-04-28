@@ -4,7 +4,8 @@ const CartItem = ({ item, onUpdateSubtotal, onRemove }) => {
     const [quantity, setQuantity] = useState(1);
 
     useEffect(() => {
-        onUpdateSubtotal(item.id, item.price * quantity);
+        onUpdateSubtotal(item.price * quantity, 'add');
+        return () => onUpdateSubtotal(item.price * quantity, 'subtract');
     }, [item, quantity, onUpdateSubtotal]);
 
     const handleQuantityChange = (event) => {
