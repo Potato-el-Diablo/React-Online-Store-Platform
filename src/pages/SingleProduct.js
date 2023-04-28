@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ProductCard from "../components/ProductCard";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
-import { collection, getDocs, addDoc, doc, setDoc } from "firebase/firestore";
+import {collection, getDocs, addDoc, doc, setDoc, updateDoc, getDoc} from "firebase/firestore";
 import ReactStars from "react-rating-stars-component";
 import { db } from "./firebase";
 //import ReactImageZoom from "react-image-zoom";
@@ -10,6 +10,7 @@ import { AiOutlineHeart} from "react-icons/ai";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {onAuthStateChanged, getAuth} from "firebase/auth";
+import { arrayUnion } from '@firebase/firestore';
 
 
 
@@ -63,11 +64,20 @@ const SingleProduct = () => {
       });
 
       // Add the product to the user's cart
-      const cartRef = doc(collection(db, 'Cart', userId, 'Items'));
-      const productRef = doc(db, 'Products', productId);
-      await setDoc(cartRef, {
-        [productId]: productRef
-      }, { merge: true });
+      const userCartRef = doc(db, 'Carts', userId);
+      const cartSnapshot = await getDoc(userCartRef);
+
+      if (cartSnapshot.exists()) {
+        // Update the existing cart with the new product ID
+        await updateDoc(userCartRef, {
+          products: arrayUnion(productId),
+        });
+      } else {
+        // Create a new cart with the product ID
+        await setDoc(userCartRef, {
+          products: [productId],
+        });
+      }
 
       // Show success message
       toast.success('Product added to cart successfully', {
@@ -81,6 +91,7 @@ const SingleProduct = () => {
       console.error('Error adding product to cart:', error);
     }
   };
+
 
   return (
     <>
