@@ -62,7 +62,19 @@ const Cart = () => {
     };
 
     useEffect(() => {
-        fetchUserCartItems();
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            if (user) {
+                fetchUserCartItems();
+            } else {
+                setCartItems([]);
+            }
+        });
+
+        return () => {
+            if (unsubscribe) {
+                unsubscribe();
+            }
+        };
     }, []);
 
     const handleRemoveItem = async (itemId) => {
@@ -74,6 +86,16 @@ const Cart = () => {
 
         // Remove the item from the cartItems state
         setCartItems((prevCartItems) => prevCartItems.filter((item) => item.id !== itemId));
+
+        // Update the subtotal
+        setSubtotal((prevSubtotal) => prevSubtotal - (itemSubtotals[itemId] || 0));
+
+        // Remove the item from the itemSubtotals state
+        setItemSubtotals((prevState) => {
+            const updatedSubtotals = { ...prevState };
+            delete updatedSubtotals[itemId];
+            return updatedSubtotals;
+        });
     };
 
     return (

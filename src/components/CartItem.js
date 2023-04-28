@@ -5,7 +5,7 @@ const CartItem = ({ item, onUpdateSubtotal, onRemove }) => {
 
     useEffect(() => {
         onUpdateSubtotal(item.id, item.price * quantity);
-    }, [item, quantity, onUpdateSubtotal]);
+    }, [item, quantity, onUpdateSubtotal, onRemove]);
 
     const handleQuantityChange = (event) => {
         const newQuantity = parseInt(event.target.value);
