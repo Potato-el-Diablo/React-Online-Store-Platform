@@ -180,6 +180,7 @@ const Header = () => {
                                         <NavLink className="text-white" to = "/product">Our Store</NavLink>
                                         <NavLink className="text-white" to = "/contact">Contact</NavLink>
                                         <NavLink className="text-white" to = "/MyProducts">My Products</NavLink>
+                                        <NavLink className="text-white" to="/MyAccount">My Account</NavLink>
                                     </div>
                                 </div>
 

@@ -128,6 +128,7 @@ const SingleProduct = () => {
       await addDoc(collection(db, 'reviews'), {
         userId,
         productId: location.state.productId,
+        productName: location.state.productName,
         rating: reviewRating,
         comment: reviewComment,
         createdAt: new Date(),

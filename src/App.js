@@ -17,6 +17,7 @@ import { ToastContainer } from 'react-toastify';
 //import {  signInWithEmailAndPassword   } from 'firebase/auth';
 //import { auth } from './pages/firebase';
 import Searched from './pages/Searched';
+import MyAccount from "./pages/MyAccount";
 
 
 function App() {
@@ -38,7 +39,7 @@ function App() {
                     <Route path="cart" element={<Cart/>} />
                     <Route path = "search" element={<Searched/>} />
                     <Route path ="product/:id" element = {<SingleProduct/>}/>
-                    
+                    <Route path="MyAccount" element ={<MyAccount/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>
