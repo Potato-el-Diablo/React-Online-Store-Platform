@@ -104,6 +104,7 @@ const SellerRegistration = () => {
                 }, 1000);
             })
             .catch((error) => {
+                // eslint-disable-next-line no-unused-vars
                 const errorCode = error.code;
                 const errorMessage = error.message;
                 //console.log(errorCode, errorMessage);
@@ -117,6 +118,7 @@ const SellerRegistration = () => {
         const provider = new GoogleAuthProvider();
         try {
             const result = await signInWithPopup(auth, provider);
+            // eslint-disable-next-line no-unused-vars
             const user = result.user;
             //console.log(user);
 
