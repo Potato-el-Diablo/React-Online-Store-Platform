@@ -84,9 +84,18 @@ const Cart = () => {
 
     const handleRemoveItem = async (itemId) => {
         const userCartRef = doc(db, 'Carts', auth.currentUser.uid);
+        const userCartSnapshot = await getDoc(userCartRef);
+        const cartProducts = userCartSnapshot.data().products;
+
+        const updatedProducts = cartProducts.filter((cartProduct) => {
+            if (typeof cartProduct === 'object' && cartProduct !== null) {
+                return cartProduct.productId !== itemId;
+            }
+            return true;
+        });
 
         await updateDoc(userCartRef, {
-            products: arrayRemove(itemId),
+            products: updatedProducts,
         });
 
         // Remove the item from the cartItems state
