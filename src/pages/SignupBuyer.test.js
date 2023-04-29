@@ -39,6 +39,35 @@ const renderSignupBuyer = () => {
     );
 };
 
+let nameInput,emailInput,phoneNumberInput,passwordInput,confirmPasswordInput,signupButton;
+
+const setup = () => {
+    renderSignupBuyer();
+    createUserWithEmailAndPassword.mockResolvedValue({
+        user: {
+            uid: '12345',
+            email: 'test@example.com',
+        },
+    });
+
+    nameInput = screen.getByPlaceholderText(/Name/i);
+    emailInput = screen.getByPlaceholderText(/Email address/i);
+    phoneNumberInput= screen.getByPlaceholderText(/Phone Number/i);
+    passwordInput= screen.getByPlaceholderText(/Password \(at least 6 characters\)/i);
+    confirmPasswordInput= screen.getByPlaceholderText(/Re-enter password/i);
+    signupButton= screen.getByRole('button', { name: /Sign up/i });
+
+    fireEvent.change(nameInput, { target: { value: 'John Doe' } });
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(phoneNumberInput, { target: { value: '1234567890' } });
+    fireEvent.change(passwordInput, { target: { value: 'password123' } });
+    fireEvent.change(confirmPasswordInput, { target: { value: 'password123' } });
+    fireEvent.click(signupButton);
+    return {
+        nameInput,emailInput,phoneNumberInput,passwordInput,confirmPasswordInput,signupButton
+    };
+};
+
 describe("isValidName", () => {
     test("valid name", () => {
         expect(isValidName("John Doe")).toBe(true);
@@ -136,26 +165,9 @@ describe('SignupBuyer', () => {
         expect(signUpButton).toBeInTheDocument();
     });
     test('successfully submit form', async () => {
-        renderSignupBuyer();
-        const nameInput = screen.getByPlaceholderText(/Name/i);
-        const emailInput = screen.getByPlaceholderText(/Email address/i);
-        const phoneNumberInput = screen.getByPlaceholderText(/Phone Number/i);
-        const passwordInput = screen.getByPlaceholderText(/Password \(at least 6 characters\)/i);
-        const confirmPasswordInput = screen.getByPlaceholderText(/Re-enter password/i);
-        const signupButton = screen.getByRole('button', { name: /Sign up/i });
 
-        fireEvent.change(nameInput, { target: { value: 'John Doe' } });
-        fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
-        fireEvent.change(phoneNumberInput, { target: { value: '1234567890' } });
-        fireEvent.change(passwordInput, { target: { value: 'password123' } });
-        fireEvent.change(confirmPasswordInput, { target: { value: 'password123' } });
-
-        createUserWithEmailAndPassword.mockResolvedValueOnce({
-            user: {
-                uid: '12345',
-            },
-        });
         saveBuyerToFirestore.mockResolvedValueOnce();
+        const { signupButton } = setup();
 
         fireEvent.click(signupButton);
 
@@ -168,40 +180,18 @@ describe('SignupBuyer', () => {
     });
 
     it('should display an error message if the name is invalid', () => {
-        renderSignupBuyer();
-
-        const nameInput = screen.getByPlaceholderText(/Name/i);
-        const emailInput = screen.getByPlaceholderText(/Email address/i);
-        const phoneNumberInput = screen.getByPlaceholderText(/Phone Number/i);
-        const passwordInput = screen.getByPlaceholderText(/Password \(at least 6 characters\)/i);
-        const confirmPasswordInput = screen.getByPlaceholderText(/Re-enter password/i);
-        const signupButton = screen.getByRole('button', { name: /Sign up/i });
+        const { nameInput, signupButton } = setup();
 
         fireEvent.change(nameInput, { target: { value: '' } });
-        fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
-        fireEvent.change(passwordInput, { target: { value: 'password123' } });
-        fireEvent.change(confirmPasswordInput, { target: { value: 'password123' } });
-        fireEvent.change(phoneNumberInput, { target: { value: '1234567890' } });
 
         fireEvent.click(signupButton);
 
         expect(toast.error).toHaveBeenCalledWith('Invalid name. Please provide a valid name.');
     });
     it('should display an error message if the email is invalid', () => {
-        renderSignupBuyer();
+        const {  emailInput, signupButton } = setup();
 
-        const nameInput = screen.getByPlaceholderText(/Name/i);
-        const emailInput = screen.getByPlaceholderText(/Email address/i);
-        const phoneNumberInput = screen.getByPlaceholderText(/Phone Number/i);
-        const passwordInput = screen.getByPlaceholderText(/Password \(at least 6 characters\)/i);
-        const confirmPasswordInput = screen.getByPlaceholderText(/Re-enter password/i);
-        const signupButton = screen.getByRole('button', { name: /Sign up/i });
-
-        fireEvent.change(nameInput, { target: { value: 'Joshua' } });
         fireEvent.change(emailInput, { target: { value: 'testexample.com' } });
-        fireEvent.change(passwordInput, { target: { value: 'password123' } });
-        fireEvent.change(confirmPasswordInput, { target: { value: 'password123' } });
-        fireEvent.change(phoneNumberInput, { target: { value: '1234567890' } });
 
         fireEvent.click(signupButton);
 
@@ -209,39 +199,18 @@ describe('SignupBuyer', () => {
     });
 
     it('should display an error message if the password is invalid', () => {
-        renderSignupBuyer();
+        const { passwordInput, confirmPasswordInput, signupButton } = setup();
 
-        const nameInput = screen.getByPlaceholderText(/Name/i);
-        const emailInput = screen.getByPlaceholderText(/Email address/i);
-        const phoneNumberInput = screen.getByPlaceholderText(/Phone Number/i);
-        const passwordInput = screen.getByPlaceholderText(/Password \(at least 6 characters\)/i);
-        const confirmPasswordInput = screen.getByPlaceholderText(/Re-enter password/i);
-        const signupButton = screen.getByRole('button', { name: /Sign up/i });
-
-        fireEvent.change(nameInput, { target: { value: 'Joshua' } });
-        fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'p21' } });
         fireEvent.change(confirmPasswordInput, { target: { value: 'p21' } });
-        fireEvent.change(phoneNumberInput, { target: { value: '1234567890' } });
 
         fireEvent.click(signupButton);
 
         expect(toast.error).toHaveBeenCalledWith('Invalid password. Password must be at least 6 characters long.');
     });
     it('should display an error message if the mobile number is invalid', () => {
-        renderSignupBuyer();
+        const { phoneNumberInput, signupButton } = setup();
 
-        const nameInput = screen.getByPlaceholderText(/Name/i);
-        const emailInput = screen.getByPlaceholderText(/Email address/i);
-        const phoneNumberInput = screen.getByPlaceholderText(/Phone Number/i);
-        const passwordInput = screen.getByPlaceholderText(/Password \(at least 6 characters\)/i);
-        const confirmPasswordInput = screen.getByPlaceholderText(/Re-enter password/i);
-        const signupButton = screen.getByRole('button', { name: /Sign up/i });
-
-        fireEvent.change(nameInput, { target: { value: 'Joshua' } });
-        fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
-        fireEvent.change(passwordInput, { target: { value: 'password123' } });
-        fireEvent.change(confirmPasswordInput, { target: { value: 'password123' } });
         fireEvent.change(phoneNumberInput, { target: { value: '12390' } });
 
         fireEvent.click(signupButton);
@@ -249,20 +218,10 @@ describe('SignupBuyer', () => {
         expect(toast.error).toHaveBeenCalledWith('Invalid phone number. Please provide a valid phone number.');
     });
     it('should display an error message if the passwords do not match', () => {
-        renderSignupBuyer();
+        const { passwordInput, confirmPasswordInput, signupButton } = setup();
 
-        const nameInput = screen.getByPlaceholderText(/Name/i);
-        const emailInput = screen.getByPlaceholderText(/Email address/i);
-        const phoneNumberInput = screen.getByPlaceholderText(/Phone Number/i);
-        const passwordInput = screen.getByPlaceholderText(/Password \(at least 6 characters\)/i);
-        const confirmPasswordInput = screen.getByPlaceholderText(/Re-enter password/i);
-        const signupButton = screen.getByRole('button', { name: /Sign up/i });
-
-        fireEvent.change(nameInput, { target: { value: 'Joshua' } });
-        fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
         fireEvent.change(passwordInput, { target: { value: 'WorldHello' } });
         fireEvent.change(confirmPasswordInput, { target: { value: 'HelloWorld' } });
-        fireEvent.change(phoneNumberInput, { target: { value: '1234567890' } });
 
         fireEvent.click(signupButton);
 
