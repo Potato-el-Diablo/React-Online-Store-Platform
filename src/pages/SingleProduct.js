@@ -254,12 +254,12 @@ const SingleProduct = () => {
                   <div className="d-flex align-items-center gap-10">
                   <ReactStars
                     count={5}
-                    value="3"
+                    value={3.5}
                     edit = {false}
                     size={24}
                     activeColor="#ffd700"
                 />
-                <p className="mb-0">Based on 2 reviews</p>
+                    <p className="mb-0">Based on {reviews.length} reviews</p>
                   </div>
                 </div>
                 {
