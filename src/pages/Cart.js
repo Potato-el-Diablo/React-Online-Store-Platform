@@ -41,19 +41,24 @@ const Cart = () => {
             return;
         }
 
-        const productIds = userCartSnapshot.data().products;
+        const cartProducts = userCartSnapshot.data().products;
+        console.log('Fetched cart data:', cartProducts);
 
-        const fetchedItemsPromises = productIds.map(async (productId) => {
-            const productRef = doc(db, 'Products', productId);
+        // Filter out invalid cart items before mapping
+        const validCartProducts = cartProducts.filter((cartProduct) => typeof cartProduct === 'object' && cartProduct !== null);
+
+        const fetchedItemsPromises = validCartProducts.map(async (cartProduct) => {
+            const productRef = doc(db, 'Products', cartProduct.productId);
             const productSnapshot = await getDoc(productRef);
 
             if (productSnapshot.exists()) {
-                return { id: productSnapshot.id, ...productSnapshot.data() };
+                return { id: productSnapshot.id, quantity: cartProduct.quantity, ...productSnapshot.data() };
             } else {
-                console.error(`Product not found for ID: ${productId}`);
+                console.error(`Product not found for ID: ${cartProduct.productId}`);
                 return null;
             }
         });
+
 
         const fetchedItems = await Promise.all(fetchedItemsPromises);
         const validItems = fetchedItems.filter((item) => item !== null);
@@ -116,8 +121,9 @@ const Cart = () => {
                                 <CartItem
                                     key={item.id}
                                     item={item}
+                                    quantity={item.quantity} // Pass the quantity as a prop
                                     onUpdateSubtotal={handleUpdateSubtotal}
-                                    onRemove={handleRemoveItem} // Add this prop
+                                    onRemove={handleRemoveItem}
                                 />
                             ))}
                         </div>

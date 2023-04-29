@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-const CartItem = ({ item, onUpdateSubtotal, onRemove }) => {
-    const [quantity, setQuantity] = useState(1);
+const CartItem = ({ item, quantity: initialQuantity, onUpdateSubtotal, onRemove }) => {
+    const [quantity, setQuantity] = useState(initialQuantity);
+
 
     useEffect(() => {
         onUpdateSubtotal(item.id, item.price * quantity);
@@ -40,7 +41,7 @@ const CartItem = ({ item, onUpdateSubtotal, onRemove }) => {
                         className="form-control"
                         type="number"
                         name=""
-                        defaultValue={1}
+                        defaultValue={initialQuantity}
                         min={1}
                         max={99}
                         id=""

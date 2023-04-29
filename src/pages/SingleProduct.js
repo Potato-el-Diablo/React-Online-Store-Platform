@@ -36,6 +36,8 @@ const SingleProduct = () => {
   }, []);
 
   const [products, setProducts] = useState([]);
+  const [quantity, setQuantity] = useState(1);
+
   // eslint-disable-next-line no-unused-vars
   const [orderedProduct, setorderedProduct] = useState(true);
 
@@ -53,7 +55,7 @@ const SingleProduct = () => {
   console.log(products);
   // const history = useHistory();
 
-  const handleAddToCart = async (productId) => {
+  const handleAddToCart = async (productId, quantity) => {
     try {
       // Show toast messages
       toast.success(`User ID: ${userId}`, {
@@ -68,16 +70,28 @@ const SingleProduct = () => {
       const cartSnapshot = await getDoc(userCartRef);
 
       if (cartSnapshot.exists()) {
-        // Update the existing cart with the new product ID
-        await updateDoc(userCartRef, {
-          products: arrayUnion(productId),
-        });
+        // Update the existing cart with the new product ID and quantity
+        const existingProducts = cartSnapshot.data().products;
+        const productIndex = existingProducts.findIndex(
+            (product) => product.productId === productId
+        );
+
+        if (productIndex !== -1) {
+          // The product already exists in the cart, update the quantity
+          existingProducts[productIndex].quantity += quantity;
+        } else {
+          // Add a new product to the cart with the specified quantity
+          existingProducts.push({ productId, quantity });
+        }
+
+        await updateDoc(userCartRef, { products: existingProducts });
       } else {
-        // Create a new cart with the product ID
+        // Create a new cart with the product ID and quantity
         await setDoc(userCartRef, {
-          products: [productId],
+          products: [{ productId, quantity }],
         });
       }
+
 
       // Show success message
       toast.success('Product added to cart successfully', {
@@ -157,17 +171,24 @@ const SingleProduct = () => {
                   <div className="d-flex gap-10 flex-row mt-2 mb-3">
                     <h3 className="product-heading">Quantity :</h3>
                     <div className="">
-                      <input type="number" name="" min={1} max={10}
-                      className="form-control"
-                      style={{width:"70px"}} 
-                      id=""/>
+                      <input
+                          type="number"
+                          name=""
+                          min={1}
+                          max={10}
+                          className="form-control"
+                          style={{ width: "70px" }}
+                          value={quantity}
+                          onChange={(e) => setQuantity(parseInt(e.target.value))}
+                      />
+
                     </div>
                     <div className="d-flex align-items-center gap-30">
                       <button
                           className="button border-0"
                           style={{ blockSize: "45px", width: "200px", backgroundColor: "#232f3e" }}
                           type="submit"
-                          onClick={() => handleAddToCart(location.state.productId)}
+                          onClick={() => handleAddToCart(location.state.productId, quantity)}
                       >
                         Add to Cart
                       </button>
