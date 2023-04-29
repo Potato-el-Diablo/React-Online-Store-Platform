@@ -6,7 +6,6 @@ import '@testing-library/jest-dom/extend-expect';
 import { isValidName, isValidEmail, isValidPassword, doPasswordsMatch, isValidPhoneNumber } from '../functions/SignupValidation';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { saveSellerToFirestore,doesEmailExistInSellerCollection } from '../functions/firestoreFunctions';
-import userEvent from '@testing-library/user-event';
 import { waitFor } from '@testing-library/react';
 import {toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
