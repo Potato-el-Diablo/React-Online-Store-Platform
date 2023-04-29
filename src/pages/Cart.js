@@ -1,14 +1,10 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
 import BreadCrumb from '../components/BreadCrumb';
 import Meta from '../components/Meta';
-//import { AiFillDelete } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import CartItem from '../components/CartItem';
-
 import { db, auth } from './firebase';
-import {collection, doc, getDoc, getDocs, query, updateDoc, where, arrayRemove} from 'firebase/firestore';
-
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 
 const Cart = () => {
     const [subtotal, setSubtotal] = useState(0);
@@ -22,6 +18,23 @@ const Cart = () => {
             [itemId]: amount,
         }));
     };
+    const handleUpdateQuantity = async (itemId, newQuantity) => {
+        const userCartRef = doc(db, 'Carts', auth.currentUser.uid);
+        const userCartSnapshot = await getDoc(userCartRef);
+        const cartProducts = userCartSnapshot.data().products;
+
+        const updatedProducts = cartProducts.map((cartProduct) => {
+            if (typeof cartProduct === 'object' && cartProduct !== null && cartProduct.productId === itemId) {
+                return { ...cartProduct, quantity: newQuantity };
+            }
+            return cartProduct;
+        });
+
+        await updateDoc(userCartRef, {
+            products: updatedProducts,
+        });
+    };
+
     useEffect(() => {
         const newSubtotal = Object.values(itemSubtotals).reduce(
             (accumulator, currentValue) => accumulator + currentValue,
@@ -29,6 +42,15 @@ const Cart = () => {
         );
         setSubtotal(newSubtotal);
     }, [itemSubtotals]);
+
+    useEffect(() => {
+        const newItemSubtotals = cartItems.reduce((accumulator, item) => {
+            accumulator[item.id] = item.price * item.quantity;
+            return accumulator;
+        }, {});
+        setItemSubtotals(newItemSubtotals);
+    }, [cartItems]);
+
 
     const fetchUserCartItems = async () => {
         if (!auth.currentUser) return;
@@ -44,8 +66,9 @@ const Cart = () => {
         const cartProducts = userCartSnapshot.data().products;
         console.log('Fetched cart data:', cartProducts);
 
-        // Filter out invalid cart items before mapping
-        const validCartProducts = cartProducts.filter((cartProduct) => typeof cartProduct === 'object' && cartProduct !== null);
+        const validCartProducts = cartProducts.filter(
+            (cartProduct) => typeof cartProduct === 'object' && cartProduct !== null
+        );
 
         const fetchedItemsPromises = validCartProducts.map(async (cartProduct) => {
             const productRef = doc(db, 'Products', cartProduct.productId);
@@ -59,16 +82,24 @@ const Cart = () => {
             }
         });
 
-
         const fetchedItems = await Promise.all(fetchedItemsPromises);
         const validItems = fetchedItems.filter((item) => item !== null);
         console.log(validItems);
         setCartItems(validItems);
+
+        // Update the itemSubtotals state with initial values for fetched items
+        const initialItemSubtotals = validItems.reduce((accumulator, item) => {
+            accumulator[item.id] = item.price * item.quantity;
+            return accumulator;
+        }, {});
+        setItemSubtotals(initialItemSubtotals);
     };
 
     useEffect(() => {
+        let isMounted = true;
+
         const unsubscribe = auth.onAuthStateChanged((user) => {
-            if (user) {
+            if (user && isMounted) {
                 fetchUserCartItems();
             } else {
                 setCartItems([]);
@@ -76,6 +107,7 @@ const Cart = () => {
         });
 
         return () => {
+            isMounted = false;
             if (unsubscribe) {
                 unsubscribe();
             }
@@ -102,12 +134,17 @@ const Cart = () => {
         setCartItems((prevCartItems) => prevCartItems.filter((item) => item.id !== itemId));
 
         // Update the subtotal
-        setSubtotal((prevSubtotal) => prevSubtotal - (itemSubtotals[itemId] || 0));
+        setSubtotal((prevSubtotal) => {
+            const newSubtotal = prevSubtotal - (itemSubtotals[itemId] || 0);
+            console.log("Updated subtotal:", newSubtotal); // Debugging line
+            return newSubtotal;
+        });
 
         // Remove the item from the itemSubtotals state
         setItemSubtotals((prevState) => {
             const updatedSubtotals = { ...prevState };
             delete updatedSubtotals[itemId];
+            console.log("Updated itemSubtotals:", updatedSubtotals); // Debugging line
             return updatedSubtotals;
         });
     };
@@ -132,6 +169,7 @@ const Cart = () => {
                                     item={item}
                                     quantity={item.quantity} // Pass the quantity as a prop
                                     onUpdateSubtotal={handleUpdateSubtotal}
+                                    onUpdateQuantity={handleUpdateQuantity} // Pass the handleUpdateQuantity function as a prop
                                     onRemove={handleRemoveItem}
                                 />
                             ))}

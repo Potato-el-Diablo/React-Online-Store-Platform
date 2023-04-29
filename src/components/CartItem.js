@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from 'react';
 
-const CartItem = ({ item, quantity: initialQuantity, onUpdateSubtotal, onRemove }) => {
+const CartItem = ({ item, quantity: initialQuantity, onUpdateSubtotal, onRemove, onUpdateQuantity }) => {
     const [quantity, setQuantity] = useState(initialQuantity);
-
 
     useEffect(() => {
         onUpdateSubtotal(item.id, item.price * quantity);
-    }, [item, quantity, onUpdateSubtotal, onRemove]);
+    }, [item, quantity, onUpdateSubtotal]);
 
-    const handleQuantityChange = (event) => {
+    const handleChange = (event) => {
         const newQuantity = parseInt(event.target.value);
+
+        if (newQuantity < 1) {
+            return;
+        }
+
         setQuantity(newQuantity);
+        const newSubtotal = newQuantity * item.price;
+        onUpdateSubtotal(item.id, newSubtotal);
+        onUpdateQuantity(item.id, newQuantity); // Add this line here
     };
 
     const handleRemoveClick = () => {
@@ -45,7 +52,7 @@ const CartItem = ({ item, quantity: initialQuantity, onUpdateSubtotal, onRemove 
                         min={1}
                         max={99}
                         id=""
-                        onChange={handleQuantityChange}
+                        onChange={handleChange} // Update this line
                     />
                 </div>
                 <div className="cart-col-5">
@@ -55,11 +62,8 @@ const CartItem = ({ item, quantity: initialQuantity, onUpdateSubtotal, onRemove 
             <div className="cart-col-4">
                 <h5 className="price">R{totalPrice.toFixed(2)}</h5>
             </div>
-
         </div>
     );
 };
 
 export default CartItem;
-
-
