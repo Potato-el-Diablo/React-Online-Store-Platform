@@ -48,6 +48,57 @@ const renderSellerRegistration = () => {
     );
 };
 
+let firstNameInput, lastNameInput, emailInput, phoneNumberInput, passwordInput, confirmPasswordInput, companyNameInput, companyEmailInput, companyPhoneInput, termsCheckbox, registerButton;
+
+const setup = () => {
+    renderSellerRegistration();
+    createUserWithEmailAndPassword.mockResolvedValue({
+        user: {
+            uid: '12345',
+            email: 'test@example.com',
+        },
+    });
+
+    firstNameInput = screen.getByPlaceholderText(/First Name/i);
+    lastNameInput = screen.getByPlaceholderText(/Last Name/i);
+    emailInput = screen.getByTestId('user-email');
+    phoneNumberInput = screen.getByPlaceholderText(/Phone Number/i);
+    passwordInput = screen.getByPlaceholderText(/Password \(at least 6 characters\)/i);
+    confirmPasswordInput = screen.getByPlaceholderText(/Re-enter password/i);
+    companyNameInput = screen.getByPlaceholderText(/Company Name/i);
+    companyEmailInput = screen.getByTestId('company-email');
+    companyPhoneInput = screen.getByPlaceholderText(/Company Phone/i);
+    termsCheckbox = screen.getByLabelText(/I accept the Terms and Conditions/i);
+    registerButton = screen.getByRole('button', { name: /Register/i });
+
+    fireEvent.change(firstNameInput, { target: { value: 'John' } });
+    fireEvent.change(lastNameInput, { target: { value: 'Doe' } });
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(phoneNumberInput, { target: { value: '1234567890' } });
+    fireEvent.change(passwordInput, { target: { value: 'password123' } });
+    fireEvent.change(confirmPasswordInput, { target: { value: 'password123' } });
+    fireEvent.change(companyNameInput, { target: { value: 'Test Company' } });
+    fireEvent.change(companyEmailInput, { target: { value: 'testcompany@example.com' } });
+    fireEvent.change(companyPhoneInput, { target: { value: '0987654321' } });
+    fireEvent.click(termsCheckbox);
+
+    fireEvent.click(registerButton);
+
+    return {
+        firstNameInput,
+        lastNameInput,
+        emailInput,
+        phoneNumberInput,
+        passwordInput,
+        confirmPasswordInput,
+        companyNameInput,
+        companyEmailInput,
+        companyPhoneInput,
+        termsCheckbox,
+        registerButton,
+    };
+};
+
 describe("isValidName", () => {
     test("valid name", () => {
         expect(isValidName("John")).toBe(true);
@@ -101,6 +152,7 @@ describe('SellerRegistration', () => {
     afterEach(() => {
         jest.clearAllMocks();
     });
+
     it('should call toast.error if first name or last name is invalid', () => {
         renderSellerRegistration();
 
@@ -185,47 +237,116 @@ describe('SellerRegistration', () => {
         expect(termsCheckbox).toBeInTheDocument();
     });
 
+    //The functionality tests start here
+
+
     test('successful registration', async () => {
-        createUserWithEmailAndPassword.mockResolvedValue({
-            user: {
-                uid: '12345',
-                email: 'test@example.com',
-            },
-        });
+
 
         saveSellerToFirestore.mockResolvedValue({});
 
-        renderSellerRegistration();
-
-        const firstNameInput = screen.getByPlaceholderText(/First Name/i);
-        const lastNameInput = screen.getByPlaceholderText(/Last Name/i);
-        const emailInput = screen.getByTestId('user-email');
-        const phoneNumberInput = screen.getByPlaceholderText(/Phone Number/i);
-        const passwordInput = screen.getByPlaceholderText(/Password \(at least 6 characters\)/i);
-        const confirmPasswordInput = screen.getByPlaceholderText(/Re-enter password/i);
-        const companyNameInput = screen.getByPlaceholderText(/Company Name/i);
-        const companyEmailInput = screen.getByTestId('company-email');
-        const companyPhoneInput = screen.getByPlaceholderText(/Company Phone/i);
-        const termsCheckbox = screen.getByLabelText(/I accept the Terms and Conditions/i);
-        const registerButton = screen.getByRole('button', { name: /Register/i });
-
-        fireEvent.change(firstNameInput, { target: { value: 'John' } });
-        fireEvent.change(lastNameInput, { target: { value: 'Doe' } });
-        fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
-        fireEvent.change(phoneNumberInput, { target: { value: '1234567890' } });
-        fireEvent.change(passwordInput, { target: { value: 'password123' } });
-        fireEvent.change(confirmPasswordInput, { target: { value: 'password123' } });
-        fireEvent.change(companyNameInput, { target: { value: 'Test Company' } });
-        fireEvent.change(companyEmailInput, { target: { value: 'testcompany@example.com' } });
-        fireEvent.change(companyPhoneInput, { target: { value: '0987654321' } });
-        fireEvent.click(termsCheckbox);
+        const {
+            registerButton,
+        } = setup();
 
         fireEvent.click(registerButton);
 
         await waitFor(() => {
-            //const successMessage = screen.getByText(/Seller account created successfully!/i);
-            //expect(successMessage).toBeInTheDocument();
             expect(toast.success).toHaveBeenCalledWith('Seller account created successfully!');
         });
+    });
+    test('should show error for invalid first name', async () => {
+        const {
+            firstNameInput,
+            registerButton,
+        } = setup();
+
+        fireEvent.change(firstNameInput, { target: { value: '' } }); // Invalid first name
+
+        fireEvent.click(registerButton);
+
+        await waitFor(() => {
+            expect(toast.error).toHaveBeenCalledWith('Invalid first name or last name. Please provide valid names.');
         });
+    });
+
+    test('should show error for invalid last name', async () => {
+        const {
+            lastNameInput,
+            registerButton,
+        } = setup();
+
+        fireEvent.change(lastNameInput, { target: { value: '' } }); // Invalid last name
+
+        fireEvent.click(registerButton);
+
+        await waitFor(() => {
+            expect(toast.error).toHaveBeenCalledWith('Invalid first name or last name. Please provide valid names.');
+        });
+    });
+    test('should show error for invalid personal email address', () => {
+        const { emailInput, registerButton } = setup();
+
+        fireEvent.change(emailInput, { target: { value: 'invalidemail' } });
+        fireEvent.click(registerButton);
+
+        expect(toast.error).toHaveBeenCalledWith('Invalid personal email address. Please provide a valid email address.');
+    });
+
+    test('should show error for invalid personal phone number', () => {
+        const { phoneNumberInput, registerButton } = setup();
+
+        fireEvent.change(phoneNumberInput, { target: { value: 'invalidphone' } });
+        fireEvent.click(registerButton);
+
+        expect(toast.error).toHaveBeenCalledWith('Invalid personal phone number. Please provide a valid phone number.');
+    });
+
+    test('should show error for invalid password', () => {
+        const { passwordInput, registerButton } = setup();
+
+        fireEvent.change(passwordInput, { target: { value: 'short' } });
+        fireEvent.click(registerButton);
+
+        expect(toast.error).toHaveBeenCalledWith('Invalid password. Password must be at least 6 characters long.');
+    });
+
+    test('should show error for non-matching passwords', () => {
+        const { confirmPasswordInput, registerButton } = setup();
+
+        fireEvent.change(confirmPasswordInput, { target: { value: 'different123' } });
+        fireEvent.click(registerButton);
+
+        expect(toast.error).toHaveBeenCalledWith('Passwords do not match. Please make sure you have entered the same password twice.');
+    });
+
+    test('should show error for invalid company name', () => {
+        const { companyNameInput, registerButton } = setup();
+
+        fireEvent.change(companyNameInput, { target: { value: '' } });
+        fireEvent.click(registerButton);
+
+        expect(toast.error).toHaveBeenCalledWith('Invalid company name. Please provide a valid company name.');
+    });
+
+    test('should show error for invalid company email address', () => {
+        const { companyEmailInput, registerButton } = setup();
+
+        fireEvent.change(companyEmailInput, { target: { value: 'invalidemail' } });
+        fireEvent.click(registerButton);
+
+        expect(toast.error).toHaveBeenCalledWith('Invalid company email address. Please provide a valid email address.');
+    });
+
+    test('should show error for invalid company phone number', () => {
+        const { companyPhoneInput, registerButton } = setup();
+
+        fireEvent.change(companyPhoneInput, { target: { value: 'invalidphone' } });
+        fireEvent.click(registerButton);
+
+        expect(toast.error).toHaveBeenCalledWith('Invalid company phone number. Please provide a valid phone number.');
+    });
+
+
+
 });

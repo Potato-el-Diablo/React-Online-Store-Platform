@@ -95,7 +95,7 @@ const SellerRegistration = () => {
             .then(async (userCredential) => {
                 // Signed in
                 const user = userCredential.user;
-                console.log(user);
+                //console.log(user);
 
                 await saveSellerToFirestore(user, firstName, lastName, mobilenumber, companyName, companyPhone, companyEmail);
                 toast.success('Seller account created successfully!'); // Show the success message
@@ -106,7 +106,7 @@ const SellerRegistration = () => {
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                console.log(errorCode, errorMessage);
+                //console.log(errorCode, errorMessage);
                 // Display the error message as a toast
                 toast.error(errorMessage);
             });
@@ -118,7 +118,7 @@ const SellerRegistration = () => {
         try {
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
-            console.log(user);
+            //console.log(user);
 
             // Here, you can add code to handle successful sign-in with Google.
             // For example, you might create a new seller account in your database
@@ -129,7 +129,7 @@ const SellerRegistration = () => {
                 navigate("/");
             }, 1000);
         } catch (error) {
-            console.log(error.code, error.message);
+            //console.log(error.code, error.message);
             toast.error(error.message);
         }
     };
