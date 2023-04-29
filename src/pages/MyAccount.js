@@ -25,8 +25,7 @@ const MyAccount = () => {
     }, []);
 
     const handleClick = async () => {
-        setShowReviews(true);
-        if (userId) {
+        if (!showReviews && userId) {
             const userReviewsQuery = query(
                 collection(db, 'reviews'),
                 where('userId', '==', userId)
@@ -38,12 +37,13 @@ const MyAccount = () => {
             }));
             setUserReviews(fetchedReviews);
         }
+        setShowReviews(!showReviews);
     };
 
     return (
         <div>
             <h2>My Account</h2>
-            <button onClick={handleClick}>Show your reviews</button>
+            <button onClick={handleClick}>{showReviews ? 'Hide reviews' : 'Show your reviews'}</button>
             {showReviews && (
                 <>
                     {userReviews.length === 0 ? (
