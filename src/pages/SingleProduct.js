@@ -42,6 +42,7 @@ const SingleProduct = () => {
   const [orderedProduct, setorderedProduct] = useState(true);
   const [reviewRating, setReviewRating] = useState(0);
   const [reviewComment, setReviewComment] = useState(''); //used to make a new review
+  const [averageRating, setAverageRating] = useState(null);
 
   let location = useLocation();
   const { productImage, brand, productName, productDescription, productPrice, productStock, productId } = location.state;
@@ -59,17 +60,24 @@ const SingleProduct = () => {
   //This useEffect fetches all the reviews of the specific product
   useEffect(() => {
     const fetchReviews = async () => {
-      const data = await getDocs(collection(db, 'reviews'));
-      const productReviews = data.docs
+      const querySnapshot = await getDocs(collection(db, 'reviews'));
+      const productReviews = querySnapshot.docs
           .map((doc) => ({ ...doc.data(), id: doc.id }))
-          .filter((review) => review.productId === location.state.productId);
+          .filter((review) => review.productId === productId);
 
       setReviews(productReviews);
     };
 
     fetchReviews();
-  }, [location.state.productId])
+  }, [productId]);
 
+  useEffect(() => {
+    if (reviews.length > 0) {
+      const newAverageRating =
+          reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length;
+      setAverageRating(newAverageRating);
+    }
+  }, [reviews]);
   const handleAddToCart = async (productId) => {
     try {
       // Show toast messages
@@ -129,6 +137,7 @@ const SingleProduct = () => {
       console.error('Error adding review: ', error);
     }
   };
+  console.log("the average rating:", averageRating)
 
 
   return (
@@ -160,15 +169,16 @@ const SingleProduct = () => {
                <div className="border-bottom py-3">
                   <p className="price">R {productPrice}</p>
                   <div className="d-flex align-items-center gap-10">
-                    <ReactStars
-                        count={5}
-                        value={reviewRating}
-                        edit={true}
-                        size={24}
-                        activeColor="#ffd700"
-                        onChange={(newRating) => setReviewRating(newRating)}
-                    />
-                <p className="mb-0 t-review">2 reviews</p>
+                    {averageRating !== null && (
+                        <ReactStars
+                            count={5}
+                            value={averageRating}
+                            edit={false}
+                            size={24}
+                            activeColor="#ffd700"
+                        />
+                    )}
+                <p className="mb-0 t-review">{reviews.length} reviews</p>
                   </div>
                   <a className="review-btn" href="#review" >Write a Review</a>
                </div>
@@ -252,13 +262,15 @@ const SingleProduct = () => {
                 <div> 
                   <h4 className="mb-2">Customer Reviews</h4>
                   <div className="d-flex align-items-center gap-10">
-                  <ReactStars
-                    count={5}
-                    value={3.5}
-                    edit = {false}
-                    size={24}
-                    activeColor="#ffd700"
-                />
+                    {averageRating !== null && (
+                        <ReactStars
+                            count={5}
+                            value={averageRating}
+                            edit={false}
+                            size={24}
+                            activeColor="#ffd700"
+                        />
+                    )}
                     <p className="mb-0">Based on {reviews.length} reviews</p>
                   </div>
                 </div>
@@ -280,6 +292,7 @@ const SingleProduct = () => {
                     edit = {true}
                     size={24}
                     activeColor="#ffd700"
+                    onChange={(newRating) => setReviewRating(newRating)}
                   />
                   </div>
                   <div>
