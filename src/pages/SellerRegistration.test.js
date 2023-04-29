@@ -345,7 +345,41 @@ describe('SellerRegistration', () => {
 
         expect(toast.error).toHaveBeenCalledWith('Invalid company phone number. Please provide a valid phone number.');
     });
+    test('should display an error message if the user does not accept Terms and Conditions', () => {
+        const {termsCheckbox, registerButton} = setup();
 
+        fireEvent.click(termsCheckbox);
+        fireEvent.click(registerButton);
+
+        expect(toast.error).toHaveBeenCalledWith('Please accept the Terms and Conditions to proceed.');
+
+    });
+
+    test('should display an error message if the user email already exists in the seller collection', async () => {
+        const { emailInput, registerButton } = setup();
+
+        doesEmailExistInSellerCollection.mockResolvedValueOnce(true);
+
+        fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+        fireEvent.click(registerButton);
+
+        await waitFor(() => {
+            expect(toast.error).toHaveBeenCalledWith('An account already exists with this email. Please use a different email.');
+        });
+    });
+
+    test('should display an error message if the company email already exists in the seller collection', async () => {
+        const { companyEmailInput, registerButton } = setup();
+
+        doesEmailExistInSellerCollection.mockResolvedValueOnce(false).mockResolvedValueOnce(true);
+
+        fireEvent.change(companyEmailInput, { target: { value: 'testcompany@example.com' } });
+        fireEvent.click(registerButton);
+
+        await waitFor(() => {
+            expect(toast.error).toHaveBeenCalledWith('An account already exists with this company email. Please use a different email.');
+        });
+    });
 
 
 });
