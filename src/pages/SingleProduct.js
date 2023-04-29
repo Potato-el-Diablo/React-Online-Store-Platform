@@ -19,6 +19,7 @@ import { useLocation,  } from "react-router-dom";
 const SingleProduct = () => {
 
   const [userId, setUserId] = useState('');
+  const [reviews, setReviews] = useState([]); //used to fetch old reviews
 
 
   useEffect(() => {
@@ -40,7 +41,7 @@ const SingleProduct = () => {
   // eslint-disable-next-line no-unused-vars
   const [orderedProduct, setorderedProduct] = useState(true);
   const [reviewRating, setReviewRating] = useState(0);
-  const [reviewComment, setReviewComment] = useState('');
+  const [reviewComment, setReviewComment] = useState(''); //used to make a new review
 
   let location = useLocation();
   const { productImage, brand, productName, productDescription, productPrice, productStock, productId } = location.state;
@@ -54,7 +55,20 @@ const SingleProduct = () => {
   }, []);
 
   console.log(products);
-  // const history = useHistory();
+
+  //This useEffect fetches all the reviews of the specific product
+  useEffect(() => {
+    const fetchReviews = async () => {
+      const data = await getDocs(collection(db, 'reviews'));
+      const productReviews = data.docs
+          .map((doc) => ({ ...doc.data(), id: doc.id }))
+          .filter((review) => review.productId === location.state.productId);
+
+      setReviews(productReviews);
+    };
+
+    fetchReviews();
+  }, [location.state.productId])
 
   const handleAddToCart = async (productId) => {
     try {
@@ -285,22 +299,31 @@ const SingleProduct = () => {
                   </div>
                 </form>
               </div>
-              <div className="reviews mt-4">
-                <div className="review">
-                <div className="d-flex gap-10 align-items-center">
-                  <h6 className="mb-0">Customer 1</h6>
-                  <ReactStars
-                    count={5}
-                    value="3"
-                    edit = {false}
-                    size={24}
-                    activeColor="#ffd700"
-                />
+                {/*filters to the most recently created review of a product*/}
+                <div className="reviews mt-4">
+                  {reviews.length > 0 ? (
+                      reviews
+                          .sort((a, b) => b.createdAt.toMillis() - a.createdAt.toMillis())
+                          .slice(0, 1)
+                          .map((review, index) => (
+                              <div key={index} className="review">
+                                <div className="d-flex gap-10 align-items-center">
+                                  <h6 className="mb-0">Customer {index + 1}</h6>
+                                  <ReactStars
+                                      count={5}
+                                      value={review.rating}
+                                      edit={false}
+                                      size={24}
+                                      activeColor="#ffd700"
+                                  />
+                                </div>
+                                <p className="mt-3">{review.comment}</p>
+                              </div>
+                          ))
+                  ) : (
+                      <p>No reviews yet. Be the first to review!</p>
+                  )}
                 </div>
-                <p className="mt-3">Review 1 meaningful review about a product purchased</p>
-                  
-                </div>
-              </div>
               </div>
             </div>
           </div>
