@@ -7,8 +7,6 @@ import { auth } from './firebase';
 import { isValidName, isValidEmail, isValidPassword, doPasswordsMatch, isValidPhoneNumber } from '../functions/SignupValidation';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-//import { collection, addDoc } from 'firebase/firestore';
-//import { db } from './firebase';
 import {saveBuyerToFirestore} from "../functions/firestoreFunctions";
 
 
@@ -59,6 +57,7 @@ const SignupBuyer = () => {
                 const user = userCredential.user;
                 console.log(user);
 
+                // save the user's details to a Firestore database using the saveBuyerToFirestore function
                 await saveBuyerToFirestore(user, name, mobilenumber)
                 toast.success('User created successfully!'); // Show the success message
                 setTimeout(() => {
@@ -73,6 +72,8 @@ const SignupBuyer = () => {
                 toast.error(errorMessage);
             });
     }
+
+    //rendering begins here
     return (
         <>
 

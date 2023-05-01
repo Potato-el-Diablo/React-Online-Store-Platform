@@ -10,6 +10,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 
+// Mock required components and functions
 jest.mock('react-toastify', () => ({
     toast: {
         error: jest.fn(),
@@ -30,6 +31,7 @@ jest.mock('firebase/auth');
 jest.mock('../functions/firestoreFunctions');
 jest.mock('./firebase', () => ({ auth: {} }));
 
+// Utility function to render SignupBuyer component
 const renderSignupBuyer = () => {
     render(
         <BrowserRouter>
@@ -38,7 +40,7 @@ const renderSignupBuyer = () => {
         </BrowserRouter>
     );
 };
-
+// Set up initial state for testing
 let nameInput,emailInput,phoneNumberInput,passwordInput,confirmPasswordInput,signupButton;
 
 const setup = () => {
@@ -50,6 +52,7 @@ const setup = () => {
         },
     });
 
+    // Get input fields and button for testing
     nameInput = screen.getByPlaceholderText(/Name/i);
     emailInput = screen.getByPlaceholderText(/Email address/i);
     phoneNumberInput= screen.getByPlaceholderText(/Phone Number/i);
@@ -57,6 +60,7 @@ const setup = () => {
     confirmPasswordInput= screen.getByPlaceholderText(/Re-enter password/i);
     signupButton= screen.getByRole('button', { name: /Sign up/i });
 
+    // Set initial values for input fields
     fireEvent.change(nameInput, { target: { value: 'John Doe' } });
     fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
     fireEvent.change(phoneNumberInput, { target: { value: '1234567890' } });
@@ -68,6 +72,7 @@ const setup = () => {
     };
 };
 
+// Test cases for validation functions
 describe("isValidName", () => {
     test("valid name", () => {
         expect(isValidName("John Doe")).toBe(true);
@@ -118,6 +123,7 @@ describe("isValidPhoneNumber", () => {
     });
 });
 
+// Test cases for rendering and interacting with SignupBuyer component
 describe('SignupBuyer', () => {
     afterEach(() => {
         jest.clearAllMocks();
@@ -164,6 +170,9 @@ describe('SignupBuyer', () => {
         const signUpButton = screen.getByRole('button', { name: /Sign up/i });
         expect(signUpButton).toBeInTheDocument();
     });
+    //rendering ends here
+
+    //tests that a user is successfully added to the database
     test('successfully submit form', async () => {
 
         saveBuyerToFirestore.mockResolvedValueOnce();
@@ -179,6 +188,8 @@ describe('SignupBuyer', () => {
         expect(saveBuyerToFirestore).toHaveBeenCalledWith(expect.any(Object), 'John Doe', '1234567890');
     });
 
+
+    // Test cases for displaying the correct error message depending on the invalid input
     it('should display an error message if the name is invalid', () => {
         const { nameInput, signupButton } = setup();
 
@@ -227,7 +238,5 @@ describe('SignupBuyer', () => {
 
         expect(toast.error).toHaveBeenCalledWith('Passwords do not match. Please make sure you have entered the same password twice.');
     });
-    // Add similar tests for email, password, phone number, and password confirmation
-
 
 });

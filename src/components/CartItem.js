@@ -1,24 +1,30 @@
 import React, { useState, useEffect } from 'react';
 
+// Define the CartItem functional component that takes item, onUpdateSubtotal, and onRemove as props
 const CartItem = ({ item, onUpdateSubtotal, onRemove }) => {
+
+    // Declare the quantity state with a default value of 1
     const [quantity, setQuantity] = useState(1);
 
+    // Define an effect that updates the subtotal whenever the item, quantity, or onUpdateSubtotal changes
     useEffect(() => {
         onUpdateSubtotal(item.price * quantity, 'add');
         return () => onUpdateSubtotal(item.price * quantity, 'subtract');
     }, [item, quantity, onUpdateSubtotal]);
 
+    // Define a function to handle changes in the quantity input field
     const handleQuantityChange = (event) => {
         const newQuantity = parseInt(event.target.value);
         setQuantity(newQuantity);
     };
-
+    // Define a function to handle clicks on the remove button
     const handleRemoveClick = () => {
         onRemove(item.id);
     };
-
+    // Calculate the total price for the item
     const totalPrice = item.price * quantity;
 
+    // Render the CartItem component
     return (
         <div className="card-data py-3 mb-2 d-flex justify-content-between align-items-center">
             <div className="cart-col-1 gap-15 d-flex align-items-center">

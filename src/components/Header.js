@@ -2,39 +2,64 @@ import { NavLink, Link, useNavigate } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
 import { auth, db } from "../pages/firebase";
 import React, { useState, useEffect } from "react";
-import {collection,doc, getDoc} from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
+
 
 const Header = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const navigate = useNavigate();
 
+    // Function to handle search form submission
     const handleSearch = (e) => {
         e.preventDefault();
         navigate(`/search?q=${searchQuery}`);
     };
 
+    // State to track if the user is logged in
     const [loggedIn, setLoggedIn] = useState(false);
+
+    // State to track if the user is a seller
     // eslint-disable-next-line no-unused-vars
     const [isSeller, setIsSeller] = useState(false);
 
+    // State to store the user's first name
+    // eslint-disable-next-line no-unused-vars
+    const [userName, setUserName] = useState('');
+
+    // UseEffect hook to user authentication state changes such as logging in
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(async (user) => {
             if (user) {
                 setLoggedIn(true);
-                console.log("User UID:", user.uid);
                 // Check if the user is a seller
                 const sellerRef = collection(db, "sellers");
-                const sellerDocRef = doc(sellerRef, user.uid);
-                const sellerData = await getDoc(sellerDocRef);
-                console.log("Seller data:", sellerData);
-                if (sellerData.exists()) {
+                const q = query(sellerRef, where("uid", "==", user.uid));
+                const querySnapshot = await getDocs(q);
+
+                // If the user is a seller, set isSeller to true and store their first name
+                if (!querySnapshot.empty) {
+                    const sellerData = querySnapshot.docs[0];
                     setIsSeller(true);
+                    setUserName(sellerData.data().firstName);
                 } else {
                     setIsSeller(false);
+                    // If the user is not a seller, check if they are a buyer
+                    const buyerRef = collection(db, "buyers");
+                    const q = query(buyerRef, where("uid", "==", user.uid));
+                    const querySnapshot = await getDocs(q);
+                    // If the user is a buyer, store their first name
+                    if (!querySnapshot.empty) {
+                        const buyerData = querySnapshot.docs[0];
+                        const fullName = buyerData.data().name;
+                        const firstName = fullName.split(" ")[0];
+                        setUserName(firstName);
+                    }
                 }
             } else {
+                // If the user is not logged in, reset states
                 setLoggedIn(false);
                 setIsSeller(false);
+                setUserName("");
             }
         });
 
@@ -42,6 +67,11 @@ const Header = () => {
             unsubscribe();
         };
     }, []);
+    // UseEffect to log isSeller and userName states for debugging purposes
+    useEffect(() => {
+        console.log("Are you a seller? ", isSeller);
+        console.log("What is your name?", userName);
+    }, [isSeller, userName]);
 
     return (
         <>
@@ -116,11 +146,13 @@ const Header = () => {
                                         <img src="images/user.svg" alt="user"/>
                                         <p className="mb-0">
                                             <NavLink className="text-white" to="login">
-                                           <span
-                                               dangerouslySetInnerHTML={{
-                                                   __html: loggedIn ? "Logged In. <br /> Welcome" : "Login <br /> My Account",
-                                               }}
-                                           />
+                                            <span
+                                                dangerouslySetInnerHTML={{
+                                                    __html: loggedIn
+                                                        ? `Logged In. <br /> Welcome ${userName}`
+                                                        : "Login <br /> My Account",
+                                                }}
+                                            />
                                             </NavLink>
                                         </p>
                                     </Link>
@@ -179,7 +211,8 @@ const Header = () => {
                                         <NavLink className="text-white" to = "/">Orders</NavLink>
                                         <NavLink className="text-white" to = "/product">Our Store</NavLink>
                                         <NavLink className="text-white" to = "/contact">Contact</NavLink>
-                                        <NavLink className="text-white" to = "/MyProducts">My Products</NavLink>
+                                        {/* Conditionally renders the MyProducts button if you are a seller */}
+                                        {isSeller && <NavLink className="text-white" to="/MyProducts">My Products</NavLink>}
                                     </div>
                                 </div>
 
