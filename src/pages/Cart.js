@@ -10,7 +10,7 @@ const Cart = () => {
     const [subtotal, setSubtotal] = useState(0);
 
     //array of items in the cart
-    //this array should be used for the
+    //this array should be used for the dynamically displaying the cart items
     const [cartItems, setCartItems] = useState([
         {
             id: 1,
@@ -31,6 +31,7 @@ const Cart = () => {
         // Add more cart items here
     ]);
 
+    //updates the amount of a specific item
     const handleUpdateSubtotal = (amount, action) => {
         if (action === 'add') {
             setSubtotal((prevSubtotal) => prevSubtotal + amount);
@@ -39,6 +40,7 @@ const Cart = () => {
         }
     };
 
+    //Removes the specific item
     const handleRemoveCartItem = (itemId) => {
         setCartItems((prevCartItems) => prevCartItems.filter((item) => item.id !== itemId));
     };

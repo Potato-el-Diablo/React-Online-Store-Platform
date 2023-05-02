@@ -15,6 +15,7 @@ const Searched = () => {
 // history.push('/product/{product.id}')
 // };
 
+    //fetches all products from the database
     useEffect(() => {
         const fetchData = async () => {
             const data = await getDocs(collection(db, 'Products'));
@@ -38,7 +39,7 @@ const Searched = () => {
 
     console.log(filteredProducts)
 
-
+    //renders the searched products
     return (
         <div>
             <h1>Searched: {searchQuery}</h1>

@@ -4,7 +4,6 @@ import CartItem from "../components/CartItem";
 import { MemoryRouter } from "react-router-dom";
 
 jest.mock("../components/CartItem", () => {
-    /*#__PURE__*/
     function MockedCartItem(props) {
         return (
             <div data-testid="cart-item" onClick={() => props.onRemove(props.item.id)}>

@@ -19,6 +19,7 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    //Does validation for correct details
     const onLogin = (e) => {
         e.preventDefault();
 
@@ -48,7 +49,7 @@ const Login = () => {
                 console.log(errorCode, errorMessage);
             });
     };
-
+    //Allows for signing in with Google
     const signInWithGoogle = async () => {
         const provider = new GoogleAuthProvider();
         try {
@@ -56,9 +57,7 @@ const Login = () => {
             const user = result.user;
             console.log(user);
 
-            // Here, you can add code to handle successful sign-in with Google.
-            // For example, you might create a new seller account in your database
-            // using the user's Google account information.
+            //Add more tests for sign in with Google
 
             toast.success("Account created successfully with Google!");
             setTimeout(() => {

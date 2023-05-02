@@ -26,6 +26,7 @@ describe("SellerProductCard Component", () => {
         );
     });
 
+    //Tests for rendering all the correct items
     it("displays the correct content", () => {
         render(
             <MemoryRouter>
@@ -56,6 +57,8 @@ describe("SellerProductCard Component", () => {
         const removeProductButton = screen.getByText("Remove Product");
         expect(removeProductButton).toBeInTheDocument();
     });
+
+    //the product's image is correctly adjusted
     it("renders the product image with correct src and alt attributes", () => {
         render(
             <MemoryRouter>

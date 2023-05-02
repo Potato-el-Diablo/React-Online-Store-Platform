@@ -38,11 +38,13 @@ const MyProducts = () => {
 
     console.log(products);
 
+    //Manages making updates to products
     const handleEditOnClick = (product) => {
         setSelectedProduct(product);
         setIsUpdateOpen(true);
     };
 
+    //Refreshes the page when any changes are made
     const refreshProducts = async () => {
         const email = auth.currentUser.email;
         const productsRef = collection(db, 'Products');
