@@ -213,6 +213,7 @@ const Header = () => {
                                         <NavLink className="text-white" to = "/contact">Contact</NavLink>
                                         {/* Conditionally renders the MyProducts button if you are a seller */}
                                         {isSeller && <NavLink className="text-white" to="/MyProducts">My Products</NavLink>}
+                                        <NavLink className="text-white" to="/MyAccount">My Account</NavLink>
                                     </div>
                                 </div>
 

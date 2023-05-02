@@ -19,6 +19,7 @@ import { useLocation  } from "react-router-dom";
 const SingleProduct = () => {
 
   const [userId, setUserId] = useState('');
+  const [reviews, setReviews] = useState([]); //used to fetch old reviews
 
   useEffect(() => {
     const auth = getAuth();
@@ -40,6 +41,9 @@ const SingleProduct = () => {
 
   // eslint-disable-next-line no-unused-vars
   const [orderedProduct, setorderedProduct] = useState(true);
+  const [reviewRating, setReviewRating] = useState(0);
+  const [reviewComment, setReviewComment] = useState(''); //used to make a new review
+  const [averageRating, setAverageRating] = useState(null);
 
   let location = useLocation();
   const { productImage, brand, productName, productDescription, productPrice, productStock, productId } = location.state;
@@ -54,6 +58,28 @@ const SingleProduct = () => {
 
   console.log(products);
   // const history = useHistory();
+
+  //This useEffect fetches all the reviews of the specific product
+  useEffect(() => {
+    const fetchReviews = async () => {
+      const querySnapshot = await getDocs(collection(db, 'reviews'));
+      const productReviews = querySnapshot.docs
+          .map((doc) => ({ ...doc.data(), id: doc.id }))
+          .filter((review) => review.productId === productId);
+
+      setReviews(productReviews);
+    };
+
+    fetchReviews();
+  }, [productId])
+
+  useEffect(() => {
+    if (reviews.length > 0) {
+      const newAverageRating =
+          reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length;
+      setAverageRating(newAverageRating);
+    }
+  }, [reviews]);
 
   const handleAddToCart = async (productId, quantity) => {
     try {
@@ -105,6 +131,29 @@ const SingleProduct = () => {
       console.error('Error adding product to cart:', error);
     }
   };
+  const addReview = async (e) => {
+    e.preventDefault();
+
+    if (!userId) {
+      alert('Please sign in to submit a review.');
+      return;
+    }
+
+    try {
+      await addDoc(collection(db, 'reviews'), {
+        userId,
+        productId: location.state.productId,
+        productName: location.state.productName,
+        rating: reviewRating,
+        comment: reviewComment,
+        createdAt: new Date(),
+      });
+      alert('Review submitted successfully.');
+    } catch (error) {
+      console.error('Error adding review: ', error);
+    }
+  };
+  console.log("the average rating:", averageRating)
 
 
   return (
@@ -136,14 +185,16 @@ const SingleProduct = () => {
                <div className="border-bottom py-3">
                   <p className="price">R {productPrice}</p>
                   <div className="d-flex align-items-center gap-10">
-                  <ReactStars
-                    count={5}
-                    value="3"
-                    edit = {false}
-                    size={24}
-                    activeColor="#ffd700"
-                />
-                <p className="mb-0 t-review">2 reviews</p>
+                    {averageRating !== null && (
+                        <ReactStars
+                            count={5}
+                            value={averageRating}
+                            edit={false}
+                            size={24}
+                            activeColor="#ffd700"
+                        />
+                    )}
+                    <p className="mb-0 t-review">{reviews.length} reviews</p>
                   </div>
                   <a className="review-btn" href="#review" >Write a Review</a>
                </div>
@@ -234,14 +285,16 @@ const SingleProduct = () => {
                 <div> 
                   <h4 className="mb-2">Customer Reviews</h4>
                   <div className="d-flex align-items-center gap-10">
-                  <ReactStars
-                    count={5}
-                    value="3"
-                    edit = {false}
-                    size={24}
-                    activeColor="#ffd700"
-                />
-                <p className="mb-0">Based on 2 reviews</p>
+                    {averageRating !== null && (
+                        <ReactStars
+                            count={5}
+                            value={averageRating}
+                            edit={false}
+                            size={24}
+                            activeColor="#ffd700"
+                        />
+                    )}
+                <p className="mb-0">Based on {reviews.length} reviews</p>
                   </div>
                 </div>
                 {
@@ -254,7 +307,7 @@ const SingleProduct = () => {
 
               <div  className="review-form py-4">
                 <h4>Write a Review</h4>
-                <form action="">
+                <form onSubmit={addReview}>
                   <div>
                   <ReactStars
                     count={5}
@@ -262,40 +315,51 @@ const SingleProduct = () => {
                     edit = {true}
                     size={24}
                     activeColor="#ffd700"
+                    onChange={(newRating) => setReviewRating(newRating)}
                   />
                   </div>
                   <div>
                     <textarea
-                    name=""
-                    id=""
-                    className="w-100 form-control"
-                    cols="30"
-                    rows="4"
-                    placeholder="Comments"
-                    >
-                    </textarea>
+                        name=""
+                        id=""
+                        className="w-100 form-control"
+                        cols="30"
+                        rows="4"
+                        placeholder="Comments"
+                        value={reviewComment}
+                        onChange={(event) => setReviewComment(event.target.value)}
+                    ></textarea>
                   </div>
                   <div className="d-flex justify-content-end">
                     <button className="button border-0">Submit Review</button>
                   </div>
                 </form>
               </div>
-              <div className="reviews mt-4">
-                <div className="review">
-                <div className="d-flex gap-10 align-items-center">
-                  <h6 className="mb-0">Customer 1</h6>
-                  <ReactStars
-                    count={5}
-                    value="3"
-                    edit = {false}
-                    size={24}
-                    activeColor="#ffd700"
-                />
+                {/*filters to the most recently created review of a product*/}
+                <div className="reviews mt-4">
+                  {reviews.length > 0 ? (
+                      reviews
+                          .sort((a, b) => b.createdAt.toMillis() - a.createdAt.toMillis())
+                          .slice(0, 1)
+                          .map((review, index) => (
+                              <div key={index} className="review">
+                                <div className="d-flex gap-10 align-items-center">
+                                  <h6 className="mb-0">Customer {index + 1}</h6>
+                                  <ReactStars
+                                      count={5}
+                                      value={review.rating}
+                                      edit={false}
+                                      size={24}
+                                      activeColor="#ffd700"
+                                  />
+                                </div>
+                                <p className="mt-3">{review.comment}</p>
+                              </div>
+                          ))
+                  ) : (
+                      <p>No reviews yet. Be the first to review!</p>
+                  )}
                 </div>
-                <p className="mt-3">Review 1 meaningful review about a product purchased</p>
-                  
-                </div>
-              </div>
               </div>
             </div>
           </div>
