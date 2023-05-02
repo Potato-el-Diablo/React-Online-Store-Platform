@@ -119,6 +119,7 @@ const MyProducts = () => {
                     brand={selectedProduct.brand}
                     productName={selectedProduct.name}
                     productDescription={selectedProduct.description}
+                    productTags={selectedProduct.tags || []}
                     productPrice={selectedProduct.price}
                     productStock={selectedProduct.stock || 'Not available'}
                     onProductUpdate={refreshProducts}

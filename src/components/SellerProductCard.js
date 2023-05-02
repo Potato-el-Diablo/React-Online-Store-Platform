@@ -24,11 +24,6 @@ const SellerProductCard = ({
         <>
             <div className={` ${location.pathname === "/MyProducts" ? `gr-${grid}` : "col3"} `}>
                 <Link className="seller-product-card position-relative">
-                    <div className="wishlist-icon position-absolute">
-                        <Link>
-                            <img src="images/wish.svg" alt="wishlist" />
-                        </Link>
-                    </div>
                     <div className="product-image">
                         {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
                         <img src={productImage} className="img-fluid" alt="product image" />
@@ -39,7 +34,7 @@ const SellerProductCard = ({
                         <ReactStars count={5} size={24} value={4} edit={false} activeColor="#ffd700" />
                         <p className="description">{productDescription}</p>
                         <div className="d-grip gap-2 d-md-block">
-                            <p className="price">{productPrice}</p>
+                            <p className="price">R{productPrice}</p>
                             <p className="stock">Stock Available: {productStock}</p>
                         </div>
 
@@ -52,19 +47,6 @@ const SellerProductCard = ({
                             </Link>
                             <Link className="button" onClick={removeOnClick}>
                                 Remove Product
-                            </Link>
-                        </div>
-                    </div>
-                    <div className="action-bar position-absolute">
-                        <div className="d-flex flex-column gap-15">
-                            <Link>
-                                <img src="images/prodcompare.svg" alt="compare" />
-                            </Link>
-                            <Link>
-                                <img src="images/view.svg" alt="view" />
-                            </Link>
-                            <Link>
-                                <img src="public/images/add-cart.svg" alt="addcart" />
                             </Link>
                         </div>
                     </div>

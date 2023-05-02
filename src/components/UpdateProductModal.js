@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom'
 //import TagsForm from '../components/TagsForm'
 import { doc, updateDoc } from 'firebase/firestore';
 import {auth, db} from "../pages/firebase";
+import TagsForm from './TagsForm';
 
 export default function UpdateProductModal({
                                                open,
@@ -13,6 +14,7 @@ export default function UpdateProductModal({
                                                brand,
                                                productName,
                                                productDescription,
+                                               productTags,
                                                productPrice,
                                                productStock,
                                                onProductUpdate
@@ -33,7 +35,9 @@ export default function UpdateProductModal({
             productStock,
         });
     }, [brand, productName, productDescription, productPrice, productStock]);
-
+    
+    const [myProductTags, setProductTags] = useState(productTags || []);
+    
     const handleChange = (e) => {
         const { name, value } = e.target;
         setState((prevState) => ({ ...prevState, [name]: value }));
@@ -47,6 +51,7 @@ export default function UpdateProductModal({
             brand: state.brand,
             name: state.productName,
             description: state.productDescription,
+            tags: myProductTags,
             price: state.productPrice,
             stock: state.productStock,
             sellerEmail: email, // Include sellerEmail field
@@ -55,6 +60,26 @@ export default function UpdateProductModal({
 
         onClose();
         onProductUpdate();
+    };
+
+    const myHandleAddTag= (event) =>{
+        setProductTags((prevTags) => {
+            if (prevTags && Array.isArray(prevTags)) { // Check if prevTags is defined and an array
+              return [...prevTags, event.target.text]; // If it is, add the new tag to the array
+            } else {
+              return [event.target.text]; // Otherwise, create a new array with the new tag
+            }
+          });
+    };
+
+    const myHandleRemoveTag = (index) => {
+        setProductTags(prevTags => {
+            if (Array.isArray(prevTags)) { // Check if prevTags is an array
+              return prevTags.filter((_, i) => i !== index);
+            } else {
+              return prevTags;
+            }
+          });  
     };
 
     if (!open) return null
@@ -109,6 +134,9 @@ export default function UpdateProductModal({
                                 value={state.productDescription}
                                 onChange={handleChange}
                             ></textarea>
+                        </div>
+                        <div className='mb-3'>
+                            <TagsForm onAddTag={myHandleAddTag} onRemoveTag={myHandleRemoveTag} initialLabels={myProductTags}></TagsForm>
                         </div>
                         {/* ... */}
                         <div className="d-grid gap-2 d-md-flex justify-content-md-end">
