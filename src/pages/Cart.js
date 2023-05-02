@@ -12,12 +12,14 @@ const Cart = () => {
 
     const [itemSubtotals, setItemSubtotals] = useState({});
 
+    // Updates subtotal in cart page
     const handleUpdateSubtotal = (itemId, amount) => {
         setItemSubtotals((prevState) => ({
             ...prevState,
             [itemId]: amount,
         }));
     };
+    // updates a cart Item's quantity
     const handleUpdateQuantity = async (itemId, newQuantity) => {
         const userCartRef = doc(db, 'Carts', auth.currentUser.uid);
         const userCartSnapshot = await getDoc(userCartRef);
