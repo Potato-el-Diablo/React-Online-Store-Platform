@@ -14,7 +14,7 @@ import { arrayUnion } from '@firebase/firestore';
 
 
 
-import { useLocation,  } from "react-router-dom";
+import { useLocation  } from "react-router-dom";
  const grid = 12;
 const SingleProduct = () => {
 
