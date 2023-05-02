@@ -1,48 +1,154 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useState, useEffect } from 'react';
 import BreadCrumb from '../components/BreadCrumb';
 import Meta from '../components/Meta';
-//import { AiFillDelete } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import CartItem from '../components/CartItem';
+import { db, auth } from './firebase';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 
 const Cart = () => {
     const [subtotal, setSubtotal] = useState(0);
+    const [cartItems, setCartItems] = useState([]);
 
-    //array of items in the cart
-    //this array should be used for the dynamically displaying the cart items
-    const [cartItems, setCartItems] = useState([
-        {
-            id: 1,
-            image: '/images/watch.jpg',
-            title: 'title',
-            color: 'color',
-            size: 'size',
-            price: 100,
-        },
-        {
-            id: 2,
-            image: '/images/watch.jpg',
-            title: 'title',
-            color: 'color',
-            size: 'size',
-            price: 120,
-        }
-        // Add more cart items here
-    ]);
+    const [itemSubtotals, setItemSubtotals] = useState({});
 
-    //updates the amount of a specific item
-    const handleUpdateSubtotal = (amount, action) => {
-        if (action === 'add') {
-            setSubtotal((prevSubtotal) => prevSubtotal + amount);
-        } else if (action === 'subtract') {
-            setSubtotal((prevSubtotal) => prevSubtotal - amount);
-        }
+    // Updates subtotal in cart page
+    const handleUpdateSubtotal = (itemId, amount) => {
+        setItemSubtotals((prevState) => ({
+            ...prevState,
+            [itemId]: amount,
+        }));
+    };
+    // updates a cart Item's quantity
+    const handleUpdateQuantity = async (itemId, newQuantity) => {
+        const userCartRef = doc(db, 'Carts', auth.currentUser.uid);
+        const userCartSnapshot = await getDoc(userCartRef);
+        const cartProducts = userCartSnapshot.data().products;
+
+        const updatedProducts = cartProducts.map((cartProduct) => {
+            if (typeof cartProduct === 'object' && cartProduct !== null && cartProduct.productId === itemId) {
+                return { ...cartProduct, quantity: newQuantity };
+            }
+            return cartProduct;
+        });
+
+        await updateDoc(userCartRef, {
+            products: updatedProducts,
+        });
     };
 
-    //Removes the specific item
-    const handleRemoveCartItem = (itemId) => {
+    useEffect(() => {
+        const newSubtotal = Object.values(itemSubtotals).reduce(
+            (accumulator, currentValue) => accumulator + currentValue,
+            0
+        );
+        setSubtotal(newSubtotal);
+    }, [itemSubtotals]);
+
+    useEffect(() => {
+        const newItemSubtotals = cartItems.reduce((accumulator, item) => {
+            accumulator[item.id] = item.price * item.quantity;
+            return accumulator;
+        }, {});
+        setItemSubtotals(newItemSubtotals);
+    }, [cartItems]);
+
+
+    const fetchUserCartItems = async () => {
+        if (!auth.currentUser) return;
+
+        const userCartRef = doc(db, 'Carts', auth.currentUser.uid);
+        const userCartSnapshot = await getDoc(userCartRef);
+
+        if (!userCartSnapshot.exists()) {
+            console.log('No cart data found for the user');
+            return;
+        }
+
+        const cartProducts = userCartSnapshot.data().products;
+        console.log('Fetched cart data:', cartProducts);
+
+        const validCartProducts = cartProducts.filter(
+            (cartProduct) => typeof cartProduct === 'object' && cartProduct !== null
+        );
+
+        const fetchedItemsPromises = validCartProducts.map(async (cartProduct) => {
+            const productRef = doc(db, 'Products', cartProduct.productId);
+            const productSnapshot = await getDoc(productRef);
+
+            if (productSnapshot.exists()) {
+                return { id: productSnapshot.id, quantity: cartProduct.quantity, ...productSnapshot.data() };
+            } else {
+                console.error(`Product not found for ID: ${cartProduct.productId}`);
+                return null;
+            }
+        });
+
+        const fetchedItems = await Promise.all(fetchedItemsPromises);
+        const validItems = fetchedItems.filter((item) => item !== null);
+        console.log(validItems);
+        setCartItems(validItems);
+
+        // Update the itemSubtotals state with initial values for fetched items
+        const initialItemSubtotals = validItems.reduce((accumulator, item) => {
+            accumulator[item.id] = item.price * item.quantity;
+            return accumulator;
+        }, {});
+        setItemSubtotals(initialItemSubtotals);
+    };
+
+    useEffect(() => {
+        let isMounted = true;
+
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            if (user && isMounted) {
+                fetchUserCartItems();
+            } else {
+                setCartItems([]);
+            }
+        });
+
+        return () => {
+            isMounted = false;
+            if (unsubscribe) {
+                unsubscribe();
+            }
+        };
+    }, []);
+
+    const handleRemoveItem = async (itemId) => {
+        const userCartRef = doc(db, 'Carts', auth.currentUser.uid);
+        const userCartSnapshot = await getDoc(userCartRef);
+        const cartProducts = userCartSnapshot.data().products;
+
+        const updatedProducts = cartProducts.filter((cartProduct) => {
+            if (typeof cartProduct === 'object' && cartProduct !== null) {
+                return cartProduct.productId !== itemId;
+            }
+            return true;
+        });
+
+        await updateDoc(userCartRef, {
+            products: updatedProducts,
+        });
+
+        // Remove the item from the cartItems state
         setCartItems((prevCartItems) => prevCartItems.filter((item) => item.id !== itemId));
+
+        // Update the subtotal
+        setSubtotal((prevSubtotal) => {
+            const newSubtotal = prevSubtotal - (itemSubtotals[itemId] || 0);
+            console.log("Updated subtotal:", newSubtotal); // Debugging line
+            return newSubtotal;
+        });
+
+        // Remove the item from the itemSubtotals state
+        setItemSubtotals((prevState) => {
+            const updatedSubtotals = { ...prevState };
+            delete updatedSubtotals[itemId];
+            console.log("Updated itemSubtotals:", updatedSubtotals); // Debugging line
+            return updatedSubtotals;
+        });
     };
 
     return (
@@ -63,8 +169,10 @@ const Cart = () => {
                                 <CartItem
                                     key={item.id}
                                     item={item}
+                                    quantity={item.quantity} // Pass the quantity as a prop
                                     onUpdateSubtotal={handleUpdateSubtotal}
-                                    onRemove={handleRemoveCartItem}
+                                    onUpdateQuantity={handleUpdateQuantity} // Pass the handleUpdateQuantity function as a prop
+                                    onRemove={handleRemoveItem}
                                 />
                             ))}
                         </div>

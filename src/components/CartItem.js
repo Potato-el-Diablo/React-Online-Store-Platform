@@ -1,30 +1,31 @@
 import React, { useState, useEffect } from 'react';
 
-// Define the CartItem functional component that takes item, onUpdateSubtotal, and onRemove as props
-const CartItem = ({ item, onUpdateSubtotal, onRemove }) => {
+const CartItem = ({ item, quantity: initialQuantity, onUpdateSubtotal, onRemove, onUpdateQuantity }) => {
+    const [quantity, setQuantity] = useState(initialQuantity);
 
-    // Declare the quantity state with a default value of 1
-    const [quantity, setQuantity] = useState(1);
-
-    // Define an effect that updates the subtotal whenever the item, quantity, or onUpdateSubtotal changes
     useEffect(() => {
-        onUpdateSubtotal(item.price * quantity, 'add');
-        return () => onUpdateSubtotal(item.price * quantity, 'subtract');
+        onUpdateSubtotal(item.id, item.price * quantity);
     }, [item, quantity, onUpdateSubtotal]);
 
-    // Define a function to handle changes in the quantity input field
-    const handleQuantityChange = (event) => {
+    const handleChange = (event) => {
         const newQuantity = parseInt(event.target.value);
+
+        if (newQuantity < 1) {
+            return;
+        }
+
         setQuantity(newQuantity);
+        const newSubtotal = newQuantity * item.price;
+        onUpdateSubtotal(item.id, newSubtotal);
+        onUpdateQuantity(item.id, newQuantity); // Add this line here
     };
-    // Define a function to handle clicks on the remove button
+
     const handleRemoveClick = () => {
         onRemove(item.id);
     };
-    // Calculate the total price for the item
+
     const totalPrice = item.price * quantity;
 
-    // Render the CartItem component
     return (
         <div className="card-data py-3 mb-2 d-flex justify-content-between align-items-center">
             <div className="cart-col-1 gap-15 d-flex align-items-center">
@@ -33,7 +34,7 @@ const CartItem = ({ item, onUpdateSubtotal, onRemove }) => {
                     <img src={item.image} className="img-fluid" alt="product-image" />
                 </div>
                 <div className="w-75 text-black">
-                    <p>{item.title}</p>
+                    <p>{item.name}</p>
                     <p className="color">{item.color}</p>
                     <p className="size">{item.size}</p>
                 </div>
@@ -47,32 +48,15 @@ const CartItem = ({ item, onUpdateSubtotal, onRemove }) => {
                         className="form-control"
                         type="number"
                         name=""
-                        defaultValue={1}
+                        defaultValue={initialQuantity}
                         min={1}
                         max={99}
                         id=""
-                        onChange={handleQuantityChange}
+                        onChange={handleChange} // Update this line
                     />
                 </div>
-                <div onClick={handleRemoveClick}>
-                    <svg
-                        role="img"
-                        aria-label="remove"
-                        className="text-danger"
-                        fill="currentColor"
-                        height="1em"
-                        stroke="currentColor"
-                        strokeWidth="0"
-                        viewBox="0 0 1024 1024"
-                        width="1em"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-
-
-                    <path
-                            d="M864 256H736v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zm-200 0H360v-72h304v72z"
-                        />
-                    </svg>
+                <div className="cart-col-5">
+                    <button onClick={handleRemoveClick} className="btn btn-danger">Delete</button>
                 </div>
             </div>
             <div className="cart-col-4">
@@ -83,5 +67,3 @@ const CartItem = ({ item, onUpdateSubtotal, onRemove }) => {
 };
 
 export default CartItem;
-
-
