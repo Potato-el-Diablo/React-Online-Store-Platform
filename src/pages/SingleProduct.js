@@ -10,7 +10,6 @@ import { AiOutlineHeart} from "react-icons/ai";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {onAuthStateChanged, getAuth} from "firebase/auth";
-import { arrayUnion } from '@firebase/firestore';
 
 
 
