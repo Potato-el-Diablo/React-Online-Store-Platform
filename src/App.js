@@ -18,7 +18,10 @@ import { ToastContainer } from 'react-toastify';
 //import { auth } from './pages/firebase';
 import Searched from './pages/Searched';
 import MyAccount from "./pages/MyAccount";
-
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import Checkout from "./components/Checkout";
+const stripePromise = loadStripe('pk_test_51N4dpfECtnw33ZKc2BL6hUXmq8UzHP8oGpP71gWeNOHrLsuDfQWATvS64pJVrke4JIPvqAgZjps0IuxOqfFsE5VJ00HarVDp2R');
 
 function App() {
   return (
@@ -40,7 +43,11 @@ function App() {
                     <Route path = "search" element={<Searched/>} />
                     <Route path ="product/:id" element = {<SingleProduct/>}/>
                     <Route path="MyAccount" element ={<MyAccount/>}/>
-                    
+                    <Route path="/Checkout" element={
+                        <Elements stripe={stripePromise}>
+                            <Checkout />
+                        </Elements>
+                    } />
                 </Route>
             </Routes>
         </BrowserRouter>

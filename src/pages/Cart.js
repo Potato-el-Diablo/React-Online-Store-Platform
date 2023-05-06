@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import BreadCrumb from '../components/BreadCrumb';
 import Meta from '../components/Meta';
 import { Link } from 'react-router-dom';
+import Checkout from '../components/Checkout'; // Import the Checkout component at the top
 import CartItem from '../components/CartItem';
 import { db, auth } from './firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
@@ -184,7 +185,7 @@ const Cart = () => {
                             <div className="d-flex flex-column align-items-end">
                                 <h4>Subtotal: R {subtotal}</h4>
                                 <p>Taxes and Shipping Calculated at checkout</p>
-                                <Link to="/Checkout" className="button">
+                                <Link to={{ pathname: '/Checkout', state: { subtotal } }} className="button">
                                     Checkout
                                 </Link>
                             </div>
