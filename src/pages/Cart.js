@@ -6,8 +6,44 @@ import Checkout from '../components/Checkout'; // Import the Checkout component 
 import CartItem from '../components/CartItem';
 import { db, auth } from './firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { loadStripe } from '@stripe/stripe-js';
+import { useHistory } from 'react-router-dom';
+const stripePromise = loadStripe('pk_test_51N4dpfECtnw33ZKc2BL6hUXmq8UzHP8oGpP71gWeNOHrLsuDfQWATvS64pJVrke4JIPvqAgZjps0IuxOqfFsE5VJ00HarVDp2R');
+
 
 const Cart = () => {
+
+    const handleButtonClick = () => {
+        fetch("http://localhost:5001/create-checkout-session", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            // Send along all the information about the items
+            body: JSON.stringify({
+                items: cartItems.map((item) => ({
+                    id: item.id,
+                    priceInCents: item.price * 100,
+                    name: item.name,
+                    quantity: item.quantity,
+                })),
+            }),
+        })
+            .then((res) => {
+                if (res.ok) return res.json();
+                // If there is an error then make sure we catch that
+                return res.json().then((e) => Promise.reject(e));
+            })
+            .then(({ url }) => {
+                // On success redirect the customer to the returned URL
+                window.location = url;
+            })
+            .catch((e) => {
+                console.error(e.error);
+            });
+    };
+
+
     const [subtotal, setSubtotal] = useState(0);
     const [cartItems, setCartItems] = useState([]);
 
@@ -152,6 +188,10 @@ const Cart = () => {
         });
     };
 
+    // This example sets up an endpoint using the Express framework.
+// Watch this video to get started: https://youtu.be/rPR2aJ6XnAc.
+
+
     return (
         <>
             <Meta title={'Cart'} />
@@ -185,9 +225,9 @@ const Cart = () => {
                             <div className="d-flex flex-column align-items-end">
                                 <h4>Subtotal: R {subtotal}</h4>
                                 <p>Taxes and Shipping Calculated at checkout</p>
-                                <Link to={{ pathname: '/Checkout', state: { subtotal } }} className="button">
+                                <button onClick={handleButtonClick} className="button">
                                     Checkout
-                                </Link>
+                                </button>
                             </div>
                         </div>
                     </div>
