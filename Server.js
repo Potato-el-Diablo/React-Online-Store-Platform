@@ -14,6 +14,11 @@ app.use(
     })
 );
 
+setTimeout(() => {
+    console.log("Server stopped automatically after 1 hour.");
+    process.exit(0);
+}, 3600000);
+
 
 // Setup Stripe
 const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY)
