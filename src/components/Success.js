@@ -11,17 +11,16 @@ const Success = () => {
             <h2>Order Details</h2>
             <p>Order Number: 12345</p>
             <p>Order Date: {new Date().toLocaleDateString()}</p>
-            <p>Items Purchased:</p>
-            <ul>
-                <li>Item 1 - Quantity: 2</li>
-                <li>Item 2 - Quantity: 1</li>
-            </ul>
+            {/*<p>Items Purchased:</p>*/}
+            {/*<ul>*/}
+            {/*    <li>Item 1 - Quantity: 2</li>*/}
+            {/*    <li>Item 2 - Quantity: 1</li>*/}
+            {/*</ul>*/}
 
             {/* Thank you message */}
             <h2>Thank You!</h2>
             <p>We appreciate your business and hope you enjoy your purchase.
-                If you have any questions, please email
-                <a href="DiabloPOTATO@gmail.com">orders@example.com</a>.
+                If you have any questions, please email <a href="DiabloPOTATO@gmail.com"> DiabloPOTATO@gmail.com </a>.
             </p>
 
             {/* Button to go back to the homepage */}
