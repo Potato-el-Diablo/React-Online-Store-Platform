@@ -16,6 +16,7 @@ import SingleProduct from './pages/SingleProduct';
 import { ToastContainer } from 'react-toastify';
 //import {  signInWithEmailAndPassword   } from 'firebase/auth';
 //import { auth } from './pages/firebase';
+import Success from './components/Success';
 import Searched from './pages/Searched';
 import MyAccount from "./pages/MyAccount";
 import { Elements } from '@stripe/react-stripe-js';
@@ -43,6 +44,7 @@ function App() {
                     <Route path = "search" element={<Searched/>} />
                     <Route path ="product/:id" element = {<SingleProduct/>}/>
                     <Route path="MyAccount" element ={<MyAccount/>}/>
+                    <Route path="/success" element={<Success/>} />
                     <Route path="/Checkout" element={
                         <Elements stripe={stripePromise}>
                             <Checkout />
