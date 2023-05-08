@@ -43,3 +43,23 @@ create-react-app --version
 ```
 ### Testing VSCode live integration
 commit?
+
+## NPM INSTALLATIONS FOR PAYMENT GATEWAY
+### Stripe Installations
+```
+npm install @stripe/react-stripe-js @stripe/stripe-js
+npm install @stripe/stripe-js
+npm init -y
+npm install express stripe
+```
+To check if the API payment server port is on the correct port(5001):
+```
+node server.js
+```
+Automatic Running of API Server locally:
+```
+npm install --save-dev nodemon
+nodemon server.js
+npm run dev
+```
+Local API server should successfully deploy and run.
