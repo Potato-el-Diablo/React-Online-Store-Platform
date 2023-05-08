@@ -1,5 +1,5 @@
 // Load environment variables from the .env file into process.env
-require("dotenv").config()
+require("dotenv").config() //allows automatic deployment of server
 
 // Setup express
 const express = require("express")
