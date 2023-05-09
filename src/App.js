@@ -16,7 +16,7 @@ import SingleProduct from './pages/SingleProduct';
 import { ToastContainer } from 'react-toastify';
 //import {  signInWithEmailAndPassword   } from 'firebase/auth';
 //import { auth } from './pages/firebase';
-import Success from './components/Success';
+import Success from './pages/Success';
 import Searched from './pages/Searched';
 import MyAccount from "./pages/MyAccount";
 import { Elements } from '@stripe/react-stripe-js';
