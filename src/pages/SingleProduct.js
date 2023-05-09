@@ -280,29 +280,7 @@ const SingleProduct = () => {
             <div className="col-12"> 
             <h3>Reviews</h3>
               <div className="review-inner-wrapper">
-              <div className="review-head d-flex justify-content-between align-items-end">
-                <div> 
-                  <h4 className="mb-2">Customer Reviews</h4>
-                  <div className="d-flex align-items-center gap-10">
-                    {averageRating !== null && (
-                        <ReactStars
-                            count={5}
-                            value={averageRating}
-                            edit={false}
-                            size={24}
-                            activeColor="#ffd700"
-                        />
-                    )}
-                <p className="mb-0">Based on {reviews.length} reviews</p>
-                  </div>
-                </div>
-                {
-                  orderedProduct && <div>
-                      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                  <a className ="text-dark text-decoration-underline" href=""> Write a Review</a>
-                </div>
-                }
-              </div>
+
 
               <div  className="review-form py-4">
                 <h4>Write a Review</h4>
@@ -334,12 +312,26 @@ const SingleProduct = () => {
                   </div>
                 </form>
               </div>
+                <div>
+                  <h4 className="mb-2">Customer Reviews</h4>
+                  <div className="d-flex align-items-center gap-10">
+                    {averageRating !== null && (
+                        <ReactStars
+                            count={5}
+                            value={averageRating}
+                            edit={false}
+                            size={24}
+                            activeColor="#ffd700"
+                        />
+                    )}
+                    <p className="mb-0">Based on {reviews.length} reviews</p>
+                  </div>
+                </div>
                 {/*filters to the most recently created review of a product*/}
-                <div className="reviews mt-4">
+                <div className="scrollable-reviews">
                   {reviews.length > 0 ? (
                       reviews
                           .sort((a, b) => b.createdAt.toMillis() - a.createdAt.toMillis())
-                          .slice(0, 1)
                           .map((review, index) => (
                               <div key={index} className="review">
                                 <div className="d-flex gap-10 align-items-center">

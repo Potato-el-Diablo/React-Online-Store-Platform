@@ -840,3 +840,11 @@ z-index: 1000;
   min-height: 400px; /* Adjust this value according to your needs */
   overflow: auto;
 }
+
+/* scroll through reviews */
+
+.scrollable-reviews {
+  max-height: 250px; /* or any height you want */
+  overflow-y: auto;
+}
+
