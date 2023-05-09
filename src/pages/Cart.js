@@ -2,17 +2,19 @@ import React, { useState, useEffect } from 'react';
 import BreadCrumb from '../components/BreadCrumb';
 import Meta from '../components/Meta';
 import { Link } from 'react-router-dom';
-import Checkout from '../components/Checkout'; // Import the Checkout component at the top
+import Checkout from '../components/Checkout';
 import CartItem from '../components/CartItem';
 import { db, auth } from './firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { loadStripe } from '@stripe/stripe-js';
 import { useHistory } from 'react-router-dom';
+import { useCart } from './CartContext'; // Import the useCart hook
+
 const stripePromise = loadStripe('pk_test_51N4dpfECtnw33ZKc2BL6hUXmq8UzHP8oGpP71gWeNOHrLsuDfQWATvS64pJVrke4JIPvqAgZjps0IuxOqfFsE5VJ00HarVDp2R');
-// stripePromise ensures the API connects to the public server
 
 const Cart = () => {
-
+    // Use the useCart hook to access cartItems and setCartItems
+    const { cartItems, setCartItems } = useCart();
     const handleButtonClick = () => {
         fetch("http://localhost:5001/create-checkout-session", {
             method: "POST",
@@ -45,7 +47,7 @@ const Cart = () => {
 
 
     const [subtotal, setSubtotal] = useState(0);
-    const [cartItems, setCartItems] = useState([]);
+
 
     const [itemSubtotals, setItemSubtotals] = useState({});
 
@@ -73,6 +75,12 @@ const Cart = () => {
             products: updatedProducts,
         });
     };
+
+    useEffect(() => {
+        // Convert the cartItems array to a JSON string and store it in localStorage
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    }, [cartItems]);
+
 
     useEffect(() => {
         const newSubtotal = Object.values(itemSubtotals).reduce(
