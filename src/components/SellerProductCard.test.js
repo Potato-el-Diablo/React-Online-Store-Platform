@@ -10,7 +10,7 @@ const defaultProps = {
     brand: "Test Brand",
     productName: "Test Product",
     productDescription: "Test Description",
-    productPrice: "$100",
+    productPrice: "R100",
     productStock: "10",
     editOnClick: jest.fn(),
     removeOnClick: jest.fn(),
@@ -42,10 +42,10 @@ describe("SellerProductCard Component", () => {
         const productDescriptionElement = screen.getByText("Test Description");
         expect(productDescriptionElement).toBeInTheDocument();
 
-        const productPriceElement = screen.getByText("$100");
+        const productPriceElement = screen.getByText(`R${defaultProps.productPrice}`);
         expect(productPriceElement).toBeInTheDocument();
 
-        const productStockElement = screen.getByText("Stock Available: 10");
+        const productStockElement = screen.getByText(`Stock Available: ${defaultProps.productStock}`);
         expect(productStockElement).toBeInTheDocument();
 
         const viewAnalyticsButton = screen.getByText("View Analytics");
