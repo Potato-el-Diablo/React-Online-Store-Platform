@@ -13,6 +13,9 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/node:latest
+    
+    environment:
+      CI: false
 
     working_directory: ~/repo
 
