@@ -36,12 +36,13 @@ const Success = () => {
             const orderNumberRef = doc(db, 'OrderNumber', 'lastOrderNumber');
             const orderNumberSnapshot = await getDoc(orderNumberRef);
 
+            let currentOrderNumber;
             if (orderNumberSnapshot.exists()) {
-                setOrderNumber(orderNumberSnapshot.data().lastOrder + 1);
-                await updateDoc(orderNumberRef, { lastOrder: orderNumberSnapshot.data().lastOrder + 1 });
+                currentOrderNumber=orderNumberSnapshot.data().lastOrder + 1;
+                await updateDoc(orderNumberRef, { lastOrder: currentOrderNumber});
             } else {
-                setOrderNumber(1);
-                await setDoc(orderNumberRef, { lastOrder: 1 });
+                currentOrderNumber=1;
+                await setDoc(orderNumberRef, { lastOrder: currentOrderNumber });
             }
 
             const ordersRef = collection(db, 'Orders');
@@ -50,9 +51,11 @@ const Success = () => {
                 items: cartItems,
                 subtotal: subtotal,
                 userId: auth.currentUser.uid,
-                orderNumber: orderNumber,
+                orderNumber: currentOrderNumber,
             });
+            setOrderNumber(currentOrderNumber);
         }
+
 
         // Clear the cart items both in local state and localStorage
         setCartItems([]);
