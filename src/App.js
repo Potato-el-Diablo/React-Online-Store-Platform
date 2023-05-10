@@ -18,6 +18,7 @@ import { ToastContainer } from 'react-toastify';
 //import { auth } from './pages/firebase';
 import Searched from './pages/Searched';
 import MyAccount from "./pages/MyAccount";
+import DeliveryPage from "./pages/DeliveryPage";
 
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
                     <Route path = "search" element={<Searched/>} />
                     <Route path ="product/:id" element = {<SingleProduct/>}/>
                     <Route path="MyAccount" element ={<MyAccount/>}/>
+                    <Route path="delivery" element ={<DeliveryPage/>}/>
                     
                 </Route>
             </Routes>
