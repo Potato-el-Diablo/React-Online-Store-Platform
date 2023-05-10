@@ -76,15 +76,18 @@ const MyAccount = () => {
                         <ul>
                             {userOrders.map((order, index) => (
                                 <li key={index} className="orderBox">
-                                    <h3>Order Number: {order.orderNumber}</h3>
+                                    <div className="orderHeader">
+                                        <h3>Order Number: {order.orderNumber}</h3>
+                                        <button className="orderDetailsButton" className="button">Order Details</button>
+                                    </div>
                                     <p>Order Date: {order.createdAt.toDate().toLocaleDateString()}</p>
-                                    <ul>
+                                    <div className="orderItems">
                                         {order.items.map((item) => (
-                                            <li key={item.id}>
+                                            <div key={item.id} className="orderItem">
                                                 <img src={item.image} alt={item.name} style={{ width: '50px' }} />
-                                            </li>
+                                            </div>
                                         ))}
-                                    </ul>
+                                    </div>
                                 </li>
                             ))}
                         </ul>
