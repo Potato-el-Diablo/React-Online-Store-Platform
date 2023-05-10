@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { db, auth } from './firebase';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, addDoc, collection } from 'firebase/firestore';
 import { useCart } from './CartContext';
 
 const Success = () => {
@@ -11,6 +11,7 @@ const Success = () => {
     const handleSuccessfulCheckout = async () => {
         // Retrieve the cartItems data from localStorage
         const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+        let subtotal = 0;
 
         // For each item in the cart, update the corresponding document in Firestore
         for (const item of cartItems) {
@@ -21,12 +22,23 @@ const Success = () => {
                 const newStock = itemSnapshot.data().stock - item.quantity;
                 await updateDoc(itemRef, { stock: newStock });
             }
+            subtotal += item.price * item.quantity;
         }
 
         // Clear the cart in Firestore
         if (auth.currentUser) {
             const userCartRef = doc(db, 'Carts', auth.currentUser.uid);
             await updateDoc(userCartRef, { products: [] });
+        }
+
+        if (auth.currentUser) {
+            const ordersRef = collection(db, 'Orders');
+            await addDoc(ordersRef, {
+                createdAt: new Date(),
+                items: cartItems,
+                subtotal: subtotal,
+                userId: auth.currentUser.uid,
+            });
         }
 
         // Clear the cart items both in local state and localStorage
