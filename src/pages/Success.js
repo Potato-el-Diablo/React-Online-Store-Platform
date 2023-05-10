@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 import { db, auth } from './firebase';
-import { doc, getDoc, updateDoc, addDoc, collection } from 'firebase/firestore';
+import {doc, getDoc, updateDoc, addDoc, collection, setDoc} from 'firebase/firestore';
 import { useCart } from './CartContext';
 
 const Success = () => {
     // Get cartItems from the context
     const { setCartItems } = useCart();
+    const [orderNumber, setOrderNumber] = useState(1);
 
     const handleSuccessfulCheckout = async () => {
         // Retrieve the cartItems data from localStorage
@@ -32,12 +33,24 @@ const Success = () => {
         }
 
         if (auth.currentUser) {
+            const orderNumberRef = doc(db, 'OrderNumber', 'lastOrderNumber');
+            const orderNumberSnapshot = await getDoc(orderNumberRef);
+
+            if (orderNumberSnapshot.exists()) {
+                setOrderNumber(orderNumberSnapshot.data().lastOrder + 1);
+                await updateDoc(orderNumberRef, { lastOrder: orderNumberSnapshot.data().lastOrder + 1 });
+            } else {
+                setOrderNumber(1);
+                await setDoc(orderNumberRef, { lastOrder: 1 });
+            }
+
             const ordersRef = collection(db, 'Orders');
             await addDoc(ordersRef, {
                 createdAt: new Date(),
                 items: cartItems,
                 subtotal: subtotal,
                 userId: auth.currentUser.uid,
+                orderNumber: orderNumber,
             });
         }
 
@@ -57,7 +70,7 @@ const Success = () => {
 
             {/* Order details */}
             <h2>Order Details</h2>
-            <p>Order Number: 12345</p>
+            <p>Order Number: {orderNumber}</p>
             <p>Order Date: {new Date().toLocaleDateString()}</p>
 
             {/* Thank you message */}
