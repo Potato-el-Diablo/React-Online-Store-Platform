@@ -8,6 +8,8 @@ const MyAccount = () => {
     const [userId, setUserId] = useState('');
     const [userReviews, setUserReviews] = useState([]);
     const [showReviews, setShowReviews] = useState(false);
+    const [userOrders, setUserOrders] = useState([]);
+    const [showOrders, setShowOrders] = useState(false);
 
     useEffect(() => {
         const auth = getAuth();
@@ -38,12 +40,58 @@ const MyAccount = () => {
             setUserReviews(fetchedReviews);
         }
         setShowReviews(!showReviews);
+        setShowOrders(false);
+    };
+    const handleOrderClick = async () => {
+        if (!showOrders && userId) {
+            const userOrdersQuery = query(
+                collection(db, 'Orders'),
+                where('userId', '==', userId)
+            );
+            const querySnapshot = await getDocs(userOrdersQuery);
+            const fetchedOrders = querySnapshot.docs.map((doc) => ({
+                ...doc.data(),
+                id: doc.id,
+            }));
+            setUserOrders(fetchedOrders);
+        }
+        setShowOrders(!showOrders);
+        setShowReviews(false);
     };
 
     return (
         <div>
             <h2>My Account</h2>
-            <button onClick={handleClick}>{showReviews ? 'Hide reviews' : 'Show your reviews'}</button>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', marginRight: '20px' }}>
+                    <button onClick={handleOrderClick}>{showOrders ? 'Hide order history' : 'View order history'}</button>
+                    <button onClick={handleClick}>{showReviews ? 'Hide reviews' : 'Show your reviews'}</button>
+                </div>
+                <div style={{ border: '1px solid #ddd', padding: '10px', borderRadius: '5px', width: '80%' }}>
+            {showOrders && (
+                <>
+                    {userOrders.length === 0 ? (
+                        <p>You have not placed any orders yet.</p>
+                    ) : (
+                        <ul>
+                            {userOrders.map((order, index) => (
+                                <li key={index} className="orderBox">
+                                    <h3>Order Number: {order.orderNumber}</h3>
+                                    <p>Order Date: {order.createdAt.toDate().toLocaleDateString()}</p>
+                                    <ul>
+                                        {order.items.map((item) => (
+                                            <li key={item.id}>
+                                                <img src={item.image} alt={item.name} style={{ width: '50px' }} />
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </>
+            )}
+
             {showReviews && (
                 <>
                     {userReviews.length === 0 ? (
@@ -51,7 +99,7 @@ const MyAccount = () => {
                     ) : (
                         <ul>
                             {userReviews.map((review, index) => (
-                                <li key={index}>
+                                <li key={index} className="reviewBox">
                                     <h3>Review for {review.productName}</h3>
                                     <ReactStars
                                         count={5}
@@ -67,6 +115,8 @@ const MyAccount = () => {
                     )}
                 </>
             )}
+                </div>
+            </div>
         </div>
     );
 };
