@@ -10,6 +10,7 @@ import { AiOutlineHeart} from "react-icons/ai";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {onAuthStateChanged, getAuth} from "firebase/auth";
+import { Timestamp } from "firebase/firestore";
 
 
 
@@ -19,6 +20,7 @@ const SingleProduct = () => {
 
   const [userId, setUserId] = useState('');
   const [reviews, setReviews] = useState([]); //used to fetch old reviews
+  const [userReview, setUserReview] = useState(null); //checks if user has already made a review
 
   useEffect(() => {
     const auth = getAuth();
@@ -58,7 +60,7 @@ const SingleProduct = () => {
   console.log(products);
   // const history = useHistory();
 
-  //This useEffect fetches all the reviews of the specific product
+  // In the fetchReviews useEffect, check for and store the current user's review
   useEffect(() => {
     const fetchReviews = async () => {
       const querySnapshot = await getDocs(collection(db, 'reviews'));
@@ -67,10 +69,14 @@ const SingleProduct = () => {
           .filter((review) => review.productId === productId);
 
       setReviews(productReviews);
+
+      // If the current user has a review, set it to the userReview state
+      const currentUserReview = productReviews.find(review => review.userId === userId);
+      setUserReview(currentUserReview);
     };
 
     fetchReviews();
-  }, [productId])
+  }, [productId, userId]) // Add userId as a dependency
 
   useEffect(() => {
     if (reviews.length > 0) {
@@ -138,17 +144,6 @@ const SingleProduct = () => {
       return;
     }
 
-    // Check if the user has already reviewed this product
-    const existingReview = reviews.find((review) => review.userId === userId && review.productId === productId);
-
-    if (existingReview) {
-      // If a review by this user for this product already exists, show a toast error message
-      toast.error('You have already written a review. You cannot write a new one.', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
-      return;
-    }
-
 
     try {
       // Create new review object
@@ -158,27 +153,38 @@ const SingleProduct = () => {
         productName: location.state.productName,
         rating: reviewRating,
         comment: reviewComment,
-        createdAt: new Date(),
+        createdAt: Timestamp.fromDate(new Date()),
       };
 
-      // Add the new review to the Firestore collection
-      const docRef = await addDoc(collection(db, 'reviews'), newReview);
+      let docRef;
+      if (userReview) {
+        // If a review by this user for this product already exists, update it
+        docRef = doc(db, 'reviews', userReview.id);
+        await updateDoc(docRef, newReview);
+      } else {
+        // Add the new review to the Firestore collection
+        docRef = await addDoc(collection(db, 'reviews'), newReview);
+      }
 
       // Add the new review to the local state, and include the id from Firestore
-      setReviews([...reviews, { ...newReview, id: docRef.id }]);
+      const newReviewWithId = { ...newReview, id: docRef.id };
+      setReviews([...reviews.filter(review => review.id !== userReview?.id), newReviewWithId]);
+
+      // Set userReview to the new review
+      setUserReview(newReviewWithId);
 
       // Clear the form
       setReviewComment('');
       setReviewRating(0);
 
-      alert('Review submitted successfully.');
+      alert(userReview ? 'Review updated successfully.' : 'Review submitted successfully.');
     } catch (error) {
       console.error('Error adding review: ', error);
     }
   };
   console.log("the average rating:", averageRating)
 
-
+  //The reviews will render differently based on whether a user has made a review before or not
   return (
     <>
       <ToastContainer/>
@@ -249,7 +255,7 @@ const SingleProduct = () => {
                           type="number"
                           name=""
                           min={1}
-                          max={10}
+                          max={location.state.quantity}
                           className="form-control"
                           style={{ width: "70px" }}
                           value={quantity}
@@ -306,36 +312,36 @@ const SingleProduct = () => {
               <div className="review-inner-wrapper">
 
 
-              <div  className="review-form py-4">
-                <h4>Write a Review</h4>
-                <form onSubmit={addReview}>
-                  <div>
-                  <ReactStars
-                    count={5}
-                    value="3"
-                    edit = {true}
-                    size={24}
-                    activeColor="#ffd700"
-                    onChange={(newRating) => setReviewRating(newRating)}
-                  />
-                  </div>
-                  <div>
-                    <textarea
-                        name=""
-                        id=""
-                        className="w-100 form-control"
-                        cols="30"
-                        rows="4"
-                        placeholder="Comments"
-                        value={reviewComment}
-                        onChange={(event) => setReviewComment(event.target.value)}
-                    ></textarea>
-                  </div>
-                  <div className="d-flex justify-content-end">
-                    <button className="button border-0">Submit Review</button>
-                  </div>
-                </form>
-              </div>
+                <div  className="review-form py-4">
+                  <h4>{userReview ? 'Update your previous review' : 'Write a Review'}</h4>
+                  <form onSubmit={addReview}>
+                    <div>
+                      <ReactStars
+                          count={5}
+                          value={userReview?.rating || "3"}
+                          edit = {true}
+                          size={24}
+                          activeColor="#ffd700"
+                          onChange={(newRating) => setReviewRating(newRating)}
+                      />
+                    </div>
+                    <div>
+        <textarea
+            name=""
+            id=""
+            className="w-100 form-control"
+            cols="30"
+            rows="4"
+            placeholder="Comments"
+            value={reviewComment || userReview?.comment}
+            onChange={(event) => setReviewComment(event.target.value)}
+        ></textarea>
+                    </div>
+                    <div className="d-flex justify-content-end">
+                      <button className="button border-0">{userReview ? 'Update Review' : 'Submit Review'}</button>
+                    </div>
+                  </form>
+                </div>
                 <div>
                   <h4 className="mb-2">Customer Reviews</h4>
                   <div className="d-flex align-items-center gap-10">
