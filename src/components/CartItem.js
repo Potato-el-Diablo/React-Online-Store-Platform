@@ -53,10 +53,11 @@ const CartItem = ({ item, quantity: initialQuantity, onUpdateSubtotal, onRemove,
                         max={99}
                         id=""
                         onChange={handleChange} // Update this line
+                        role={"spinbutton"}
                     />
                 </div>
                 <div className="cart-col-5">
-                    <button onClick={handleRemoveClick} className="btn btn-danger">Delete</button>
+                    <button onClick={handleRemoveClick} className="btn btn-danger" >Delete</button>
                 </div>
             </div>
             <div className="cart-col-4">

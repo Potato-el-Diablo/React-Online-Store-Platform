@@ -83,12 +83,12 @@ const SingleProduct = () => {
   const handleAddToCart = async (productId, quantity) => {
     try {
       // Show toast messages
-      toast.success(`User ID: ${userId}`, {
+    /*  toast.success(`User ID: ${userId}`, {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
       toast.success(`The product you are adding is: ${productId}`, {
         position: toast.POSITION.BOTTOM_RIGHT,
-      });
+      });  */
 
       // Add the product to the user's cart
       const userCartRef = doc(db, 'Carts', userId);
@@ -138,15 +138,39 @@ const SingleProduct = () => {
       return;
     }
 
+    // Check if the user has already reviewed this product
+    const existingReview = reviews.find((review) => review.userId === userId && review.productId === productId);
+
+    if (existingReview) {
+      // If a review by this user for this product already exists, show a toast error message
+      toast.error('You have already written a review. You cannot write a new one.', {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      return;
+    }
+
+
     try {
-      await addDoc(collection(db, 'reviews'), {
+      // Create new review object
+      const newReview = {
         userId,
         productId: location.state.productId,
         productName: location.state.productName,
         rating: reviewRating,
         comment: reviewComment,
         createdAt: new Date(),
-      });
+      };
+
+      // Add the new review to the Firestore collection
+      const docRef = await addDoc(collection(db, 'reviews'), newReview);
+
+      // Add the new review to the local state, and include the id from Firestore
+      setReviews([...reviews, { ...newReview, id: docRef.id }]);
+
+      // Clear the form
+      setReviewComment('');
+      setReviewRating(0);
+
       alert('Review submitted successfully.');
     } catch (error) {
       console.error('Error adding review: ', error);
