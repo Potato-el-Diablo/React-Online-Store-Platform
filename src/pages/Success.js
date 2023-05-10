@@ -1,49 +1,42 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { db } from './firebase';
-import { doc, getDoc, updateDoc, writeBatch } from 'firebase/firestore';
+import { db, auth } from './firebase';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { useCart } from './CartContext';
 
 const Success = () => {
     // Get cartItems from the context
-    const { cartItems, setCartItems } = useCart();
+    const { setCartItems } = useCart();
 
-    useEffect(() => {
-        // Get the cartItems data from localStorage and convert it back to an array
+    const handleSuccessfulCheckout = async () => {
+        // Retrieve the cartItems data from localStorage
         const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 
-        const handleSuccessfulCheckout = async () => {
-            // Begin a batch write operation
-            const batch = writeBatch(db);
+        // For each item in the cart, update the corresponding document in Firestore
+        for (const item of cartItems) {
+            const itemRef = doc(db, 'Products', item.id);
+            const itemSnapshot = await getDoc(itemRef);
 
-            // Iterate over each item in the cart
-            for (let item of cartItems) {
-                // Get a reference to the product document in Firestore
-                const productRef = doc(db, 'Products', item.id);
-
-                // Get the current product document
-                const productSnapshot = await getDoc(productRef);
-
-                if (productSnapshot.exists()) {
-                    // Calculate the new stock value
-                    const newStock = productSnapshot.data().stock - item.quantity;
-
-                    // Use the batch operation to update the 'stock' field of the product document
-                    batch.update(productRef, { stock: newStock });
-                }
+            if (itemSnapshot.exists()) {
+                const newStock = itemSnapshot.data().stock - item.quantity;
+                await updateDoc(itemRef, { stock: newStock });
             }
+        }
 
-            // Commit the batch operation to Firestore
-            await batch.commit();
+        // Clear the cart in Firestore
+        if (auth.currentUser) {
+            const userCartRef = doc(db, 'Carts', auth.currentUser.uid);
+            await updateDoc(userCartRef, { products: [] });
+        }
 
-            // Clear the cart items from localStorage and localstate
-            setCartItems([]);
-            localStorage.removeItem('cartItems');
-        };
+        // Clear the cart items both in local state and localStorage
+        setCartItems([]);
+        localStorage.removeItem('cartItems');
+    };
 
-        // Call the function to handle successful checkout
+    useEffect(() => {
         handleSuccessfulCheckout();
-    }, []);
+    }, []); // Run once on mount
 
     return (
         <div>
