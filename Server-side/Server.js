@@ -51,7 +51,7 @@ app.post('/create-checkout-session', async (req, res)=> {
 })
 
 const port = process.env.PORT || 3000;
-// Start up our server on port 5001
+// Start up our server on Heroku port
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
