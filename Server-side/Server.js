@@ -49,5 +49,9 @@ app.post('/create-checkout-session', async (req, res)=> {
         res.status(500).json({error: e.message })
     }
 })
+
+const port = process.env.PORT || 3000;
 // Start up our server on port 5001
-app.listen( 'https://evening-sands-70201.herokuapp.com', () => console.log('Server listening on heroku'));
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+});
