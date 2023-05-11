@@ -68,32 +68,32 @@ const MyAccount = () => {
                     <button onClick={handleClick}>{showReviews ? 'Hide reviews' : 'Show your reviews'}</button>
                 </div>
                 <div style={{ border: '1px solid #ddd', padding: '10px', borderRadius: '5px', width: '80%' }}>
-            {showOrders && (
-                <>
-                    {userOrders.length === 0 ? (
-                        <p>You have not placed any orders yet.</p>
-                    ) : (
-                        <ul>
-                            {userOrders.map((order, index) => (
-                                <li key={index} className="orderBox">
-                                    <div className="orderHeader">
-                                        <h3>Order Number: {order.orderNumber}</h3>
-                                        <button className="orderDetailsButton" className="button">Order Details</button>
-                                    </div>
-                                    <p>Order Date: {order.createdAt.toDate().toLocaleDateString()}</p>
-                                    <div className="orderItems">
-                                        {order.items.map((item) => (
-                                            <div key={item.id} className="orderItem">
-                                                <img src={item.image} alt={item.name} style={{ width: '50px' }} />
+                    {showOrders && (
+                        <>
+                            {userOrders.length === 0 ? (
+                                <p>You have not placed any orders yet.</p>
+                            ) : (
+                                <ul>
+                                    {userOrders.map((order, index) => (
+                                        <li key={index} className="orderBox">
+                                            <div className="orderHeader">
+                                                <h3>Order Number: {order.orderNumber}</h3>
+                                                <button className="orderDetailsButton" className="button">Order Details</button>
                                             </div>
-                                        ))}
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
+                                            <p>Order Date: {order.createdAt.toDate().toLocaleDateString()}</p>
+                                            <div className="orderItems">
+                                                {order.items.map((item) => (
+                                                    <div key={item.id} className="orderItem">
+                                                        <img src={item.image} alt={item.name} style={{ width: '50px' }} />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </>
                     )}
-                </>
-            )}
 
             {showReviews && (
                 <>

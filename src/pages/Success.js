@@ -38,23 +38,34 @@ const Success = () => {
 
             let currentOrderNumber;
             if (orderNumberSnapshot.exists()) {
-                currentOrderNumber=orderNumberSnapshot.data().lastOrder + 1;
+                currentOrderNumber = orderNumberSnapshot.data().lastOrder + 1;
                 await updateDoc(orderNumberRef, { lastOrder: currentOrderNumber});
             } else {
-                currentOrderNumber=1;
+                currentOrderNumber = 1;
                 await setDoc(orderNumberRef, { lastOrder: currentOrderNumber });
             }
 
             const ordersRef = collection(db, 'Orders');
+
+            // Create an array of objects, each containing id, name, image, price, and quantity
+            const itemDetails = cartItems.map(item => ({
+                id: item.id,
+                name: item.name,
+                image: item.image,
+                price: item.price,
+                quantity: item.quantity,
+            }));
+
             await addDoc(ordersRef, {
                 createdAt: new Date(),
-                items: cartItems,
+                items: itemDetails,  // Save the itemDetails instead of cartItems
                 subtotal: subtotal,
                 userId: auth.currentUser.uid,
                 orderNumber: currentOrderNumber,
             });
             setOrderNumber(currentOrderNumber);
         }
+
 
 
         // Clear the cart items both in local state and localStorage
