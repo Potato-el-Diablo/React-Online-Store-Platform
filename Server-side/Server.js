@@ -8,7 +8,7 @@ const cors = require("cors")
 app.use(express.json())
 app.use(
     cors({
-        origin: "http://localhost:3000",
+        origin: "https://testing-e6ee0.web.app/",
         methods: ["POST"], // Add the allowed HTTP methods
         credentials: true, // Allow credentials (cookies, headers with authentication info, etc.)
     })
@@ -40,8 +40,8 @@ app.post('/create-checkout-session', async (req, res)=> {
                 quantity: item.quantity,
             }
         }),
-        success_url: 'http://localhost:3000/success',
-        cancel_url: 'http://localhost:3000/cart',
+        success_url: 'https://testing-e6ee0.web.app/success',
+        cancel_url: 'https://testing-e6ee0.web.app//cart',
 
     })
         res.json({url: session.url})
@@ -50,4 +50,4 @@ app.post('/create-checkout-session', async (req, res)=> {
     }
 })
 // Start up our server on port 5001
-app.listen(5001, () => console.log('Server listening on port 5001'));
+app.listen( 'https://evening-sands-70201.herokuapp.com', () => console.log('Server listening on heroku'));

@@ -16,7 +16,7 @@ const Cart = () => {
     // Use the useCart hook to access cartItems and setCartItems
     const { cartItems, setCartItems } = useCart();
     const handleButtonClick = () => {
-        fetch("http://localhost:5001/create-checkout-session", {
+        fetch("https://evening-sands-70201.herokuapp.com/create-checkout-session", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
