@@ -22,6 +22,12 @@ import MyAccount from "./pages/MyAccount";
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import Checkout from "./components/Checkout";
+import GamingCategoricalSearch from "./pages/GamingCategoricalSearch";
+import CellphonesAndSmartwatchesCategoricalSearch from "./pages/CellphonesAndSmartwatchesCategoricalSearch";
+import BooksAndCoursesCategoricalSearch from "./pages/BooksAndCoursesCategoricalSearch";
+import ComputersAndElectronicsCategoricalSearch from "./pages/ComputersAndElectronicsCategoricalSearch";
+import HomeAndAppliancesCategoricalSearch from "./pages/HomeAndAppliancesCategoricalSearch";
+import TvAudioAndMediaCategoricalSearch from "./pages/TvAudioAndMediaCategoricalSearch";
 const stripePromise = loadStripe('pk_test_51N4dpfECtnw33ZKc2BL6hUXmq8UzHP8oGpP71gWeNOHrLsuDfQWATvS64pJVrke4JIPvqAgZjps0IuxOqfFsE5VJ00HarVDp2R');
 
 function App() {
@@ -41,6 +47,12 @@ function App() {
                     <Route path="forgot-password" element={<ForgotPassword/>} />
                     <Route path="myproducts" element={<MyProducts/>}/>
                     <Route path="cart" element={<Cart/>} />
+                    <Route path="gamingsearch" element={<GamingCategoricalSearch/>}/>
+                    <Route path="cellphonesandsmartwatchessearch" element={<CellphonesAndSmartwatchesCategoricalSearch/>}/>
+                    <Route path="booksandcoursessearch" element={<BooksAndCoursesCategoricalSearch/>}/>
+                    <Route path="computersandelectronicssearch" element={<ComputersAndElectronicsCategoricalSearch/>}/>
+                    <Route path="homeandappliancessearch" element={<HomeAndAppliancesCategoricalSearch/>}/>
+                    <Route path="tvaudioandmediasearch" element={<TvAudioAndMediaCategoricalSearch/>}/>
                     <Route path = "search" element={<Searched/>} />
                     <Route path ="product/:id" element = {<SingleProduct/>}/>
                     <Route path="MyAccount" element ={<MyAccount/>}/>
