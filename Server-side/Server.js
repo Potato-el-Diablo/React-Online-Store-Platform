@@ -41,7 +41,7 @@ app.post('/create-checkout-session', async (req, res)=> {
             }
         }),
         success_url: 'https://testing-e6ee0.web.app/success',
-        cancel_url: 'https://testing-e6ee0.web.app//cart',
+        cancel_url: 'https://testing-e6ee0.web.app/cart',
 
     })
         res.json({url: session.url})
