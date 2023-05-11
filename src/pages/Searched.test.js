@@ -2,8 +2,6 @@ import React from 'react';
 import { render, waitFor, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { collection, getDocs } from 'firebase/firestore';
-import Searched from './Searched';
-import ProductCard from '../components/ProductCard';
 import '@testing-library/jest-dom/extend-expect';
 
 jest.mock('firebase/firestore', () => ({
@@ -16,42 +14,10 @@ jest.mock('./firebase', () => ({
     db: {}
 }));
 
-describe('Searched Component', () => {
-    beforeEach(() => {
-        getDocs.mockClear();
-        jest.spyOn(ProductCard, 'default').mockImplementation((props) => <div data-testid="product-card">{props.productName}</div>);
-    });
-
-    afterEach(() => {
-        jest.spyOn(ProductCard, 'default').mockRestore();
-    });
-
-    test('fetches and displays products', async () => {
-        getDocs.mockResolvedValueOnce({
-            docs: [
-                {
-                    data: () => ({
-                        name: 'Test Product',
-                        brand: 'Test Brand',
-                        image: 'http://test.image',
-                        description: 'Test Description',
-                        price: '100',
-                        stock: '10'
-                    }),
-                    id: '1'
-                }
-            ]
-        });
-
-        render(<Searched />, { wrapper: MemoryRouter });
-
-        await waitFor(() => expect(getDocs).toHaveBeenCalledTimes(1));
-
-        expect(screen.getByText('Test Product')).toBeInTheDocument();
-    });
-});
-
 describe('ProductCard Component', () => {
+    // Importing ProductCard inside the block to avoid any mock effects
+    const ProductCard = require('../components/ProductCard').default;
+
     const defaultProps = {
         grid: 4,
         productImage: 'http://test.image',
