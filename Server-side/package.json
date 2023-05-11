@@ -32,7 +32,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "node server.js",
+    "start": "node Server.js",
     "dev": "nodemon server.js"
   },
   "eslintConfig": {
