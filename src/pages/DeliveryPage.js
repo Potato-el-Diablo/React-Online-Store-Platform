@@ -4,6 +4,7 @@ import { db } from "./firebase";
 import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
 import { Link, useLocation } from 'react-router-dom';
+import {loadStripe} from "@stripe/stripe-js";
 
 const DeliveryPage = () => {
   const [deliveryOption, setDeliveryOption] = useState(null);
@@ -14,7 +15,10 @@ const DeliveryPage = () => {
     city: null,
     postalCode: null,
     collection: null
+
   });
+  const location = useLocation();
+  const cartItems = location.state?.cartItems || [];
   const [deliveryCost, setDeliveryCost] = useState(null);
   const [deliveryDate, setDeliveryDate] = useState(null);
 
@@ -49,15 +53,47 @@ const DeliveryPage = () => {
     }
   };
 
-  const handleProceedToCheckout = () => {
+  const handleProceedToCheckout = async () => {
     if (deliveryOption === 'delivery' && deliveryAddress !== '') {
       console.log('Proceeding to checkout');
     } else if (deliveryOption === 'collection' && estimatedTime !== '') {
       console.log('Proceeding to checkout');
     } else {
       console.log('Please submit delivery address or select a collection center before proceeding to checkout');
+      return;
+    }
+
+    try {
+      const response = await fetch("https://evening-sands-70201.herokuapp.com/create-checkout-session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          cartItems: cartItems,
+          deliveryOption: deliveryOption,
+          deliveryAddress: deliveryAddress,
+          deliveryCost: deliveryCost,
+        }),
+      });
+
+      const data = await response.json();
+      const sessionId = data.id;
+
+      const stripe = await loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+      if (stripe) {
+        const result = await stripe.redirectToCheckout({ sessionId });
+        if (result.error) {
+          console.log(result.error.message);
+        }
+      } else {
+        console.log("Stripe.js has not loaded yet.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
     }
   };
+
 
 
   // database link?
@@ -160,7 +196,8 @@ const DeliveryPage = () => {
 
       
   {(deliveryOption === 'delivery' && deliveryAddress !== '') || (deliveryOption === 'collection' && estimatedTime !== '' )? (
-    <button id="checkout-btn" className="form-submit"  onClick={(e)=>{handleFormSubmit(e.target.value)}}>Proceed to Checkout</button>
+      <button id="checkout-btn" className="form-submit" onClick={handleProceedToCheckout}>Proceed to Checkout</button>
+
   ) : null}
 
 {/* onClick={handleProceedToCheckout} */}

@@ -49,7 +49,7 @@ function App() {
                     <Route path="/success" element={<Success/>} />
                     <Route path="/MyAccount" component={MyAccount} />
                     <Route path="/OrderDetails/:orderNumber" element={<OrderDetails />} />
-                    <Route path="delivery" element={<DeliveryPage/>}/>
+                    <Route path="/delivery" element={<DeliveryPage/>}/>
                     <Route path="/Checkout" element={
                         <Elements stripe={stripePromise}>
                             <Checkout />
