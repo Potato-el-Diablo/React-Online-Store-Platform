@@ -8,12 +8,12 @@ import { Link, useLocation } from 'react-router-dom';
 const DeliveryPage = () => {
   const [deliveryOption, setDeliveryOption] = useState(null);
   const [deliveryAddress, setDeliveryAddress] = useState({
-    houseNumber: '',
-    streetName: '',
-    suburb: '',
-    city: '',
-    postalCode: '',
-    collection: ''
+    houseNumber: null,
+    streetName: null,
+    suburb: null,
+    city: null,
+    postalCode: null,
+    collection: null
   });
   const [deliveryCost, setDeliveryCost] = useState(null);
   const [deliveryDate, setDeliveryDate] = useState(null);
