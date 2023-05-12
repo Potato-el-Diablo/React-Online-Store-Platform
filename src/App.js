@@ -23,6 +23,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import Checkout from "./components/Checkout";
 import OrderDetails from "./pages/OrderDetails";
+import DeliveryPage from "./pages/DeliveryPage";
 const stripePromise = loadStripe('pk_test_51N4dpfECtnw33ZKc2BL6hUXmq8UzHP8oGpP71gWeNOHrLsuDfQWATvS64pJVrke4JIPvqAgZjps0IuxOqfFsE5VJ00HarVDp2R');
 
 function App() {
