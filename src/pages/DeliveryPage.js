@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "./firebase";
 import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const DeliveryPage = () => {
   const [deliveryOption, setDeliveryOption] = useState(null);
@@ -57,32 +57,39 @@ const DeliveryPage = () => {
     }
   };
 
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
-    if (!deliveryAddress.houseNumber || !deliveryAddress.streetName || !deliveryAddress.suburb || !deliveryAddress.city || !deliveryAddress.postalCode) {
-      alert('Please fill out all fields!');
-      return;
-    }
 
-    try {
-      const docRef = await addDoc(collection(db, 'Orders'), {
-        deliveryAddress: {
-          houseNumber: deliveryAddress.houseNumber,
-          streetName: deliveryAddress.streetName,
-          suburb: deliveryAddress.suburb,
-          city: deliveryAddress.city,
-          postalCode: deliveryAddress.postalCode,
-          collection_center: deliveryAddress.collection,
-        },
-        // other fields for the order
-      });
-      console.log('Order submitted successfully!', docRef.id);
-      alert('Order submitted successfully!');
-    } catch (error) {
-      console.error('Error writing order to Firestore: ', error);
-      alert('Error submitting order. Please try again later.');
-    }
-  };
+  // database link?
+
+  // submit user information
+  
+    const handleFormSubmit = async (event) => {
+      event.preventDefault();
+      if (!deliveryAddress.houseNumber || !deliveryAddress.streetName || !deliveryAddress.suburb || !deliveryAddress.city || !deliveryAddress.postalCode) {
+        alert('Please fill out all fields!');
+        return;
+      }
+  
+      try {
+        const docRef = await addDoc(collection(db, 'AddressDetails'), {
+          deliveryAddress: {
+            houseNumber: deliveryAddress.houseNumber,
+            streetName: deliveryAddress.streetName,
+            suburb: deliveryAddress.suburb,
+            city: deliveryAddress.city,
+            postalCode: deliveryAddress.postalCode,
+            collection_center: deliveryAddress.collection,
+          },
+          // other fields for the order
+        });
+        console.log('Order submitted successfully!', docRef.id);
+        alert('Order submitted successfully!');
+      } catch (error) {
+        console.error('Error writing order to Firestore: ', error);
+        alert('Error submitting order. Please try again later.');
+      }
+    };
+  
+  
 
   
   return (
@@ -101,33 +108,33 @@ const DeliveryPage = () => {
           <h3 className="section-heading">Delivery Address</h3>
 
           <div>
-  <table>
-    <tbody>
-      <tr>
-        <td><label id="address" className='form-input' htmlFor="houseNumber">House/Apartment Number:</label></td>
-        <td><textarea className="form-container" id="houseNumber" name="houseNumber" value={deliveryAddress.houseNumber} onChange={handleDeliveryAddressChange} /></td>
-      </tr>
-      <tr>
-        <td><label className='form-input' htmlFor="streetName">Street Name:</label></td>
-        <td><textarea className="form-container" id="streetName" name="streetName" value={deliveryAddress.streetName} onChange={handleDeliveryAddressChange} /></td>
-      </tr>
-      <tr>
-        <td><label className='form-input' htmlFor="suburb">Suburb:</label></td>
-        <td><textarea className="form-container" id="suburb" name="suburb" value={deliveryAddress.suburb} onChange={handleDeliveryAddressChange} /></td>
-      </tr>
-      <tr>
-        <td><label className='form-input' htmlFor="city">City:</label></td>
-        <td><textarea className="form-container" id="city" name="city" value={deliveryAddress.city} onChange={handleDeliveryAddressChange} /></td>
-      </tr>
-      <tr>
-        <td><label className='form-input' htmlFor="postalCode">Postal Code:</label></td>
-        <td><textarea className="form-container" id="postalCode" name="postalCode" value={deliveryAddress.postalCode} onChange={handleDeliveryAddressChange} /></td>
-      </tr>
-    </tbody>
-  </table>
-  <button className="form-submit" onClick={(e) => handleSubmitAddress(e.target.value)}>Submit Address</button>
-</div>
-
+    <table>
+      <tbody>
+        <tr>
+          <td><label id="address" className='form-input' htmlFor="houseNumber">House/Apartment Number:</label></td>
+          <td><textarea className="form-container" id="houseNumber" name="houseNumber" value={deliveryAddress.houseNumber} onChange={handleDeliveryAddressChange} /></td>
+        </tr>
+        <tr>
+          <td><label className='form-input' htmlFor="streetName">Street Name:</label></td>
+          <td><textarea className="form-container" id="streetName" name="streetName" value={deliveryAddress.streetName} onChange={handleDeliveryAddressChange}  /></td>
+        </tr>
+        <tr>
+          <td><label className='form-input' htmlFor="suburb">Suburb:</label></td>
+          <td><textarea className="form-container" id="suburb" name="suburb" value={deliveryAddress.suburb} onChange={handleDeliveryAddressChange} /></td>
+        </tr>
+        <tr>
+          <td><label className='form-input' htmlFor="city">City:</label></td>
+          <td><textarea className="form-container" id="city" name="city" value={deliveryAddress.city} onChange={handleDeliveryAddressChange} /></td>
+        </tr>
+        <tr>
+          <td><label className='form-input' htmlFor="postalCode">Postal Code:</label></td>
+          <td><textarea className="form-container" id="postalCode" name="postalCode" value={deliveryAddress.postalCode} onChange={handleDeliveryAddressChange} /></td>
+        </tr>
+      </tbody>
+    </table>
+    <button className="form-submit"  onClick={(e) => handleSubmitAddress(e.target.value)} >Submit Address</button>
+  </div>
+  
 
           {deliveryCost && (
             <p><b>Delivery cost:</b> R{deliveryCost}</p>
@@ -150,11 +157,11 @@ const DeliveryPage = () => {
     )}
 
       
-{(deliveryOption === 'delivery' && deliveryAddress !== '') || (deliveryOption === 'collection' && estimatedTime !== '' )? (
-  <button id="checkout-btn" className="form-submit" onClick={handleProceedToCheckout}>Proceed to Checkout</button>
-) : null}
+  {(deliveryOption === 'delivery' && deliveryAddress !== '') || (deliveryOption === 'collection' && estimatedTime !== '' )? (
+    <button id="checkout-btn" className="form-submit"  onClick={(e)=>{handleFormSubmit(e.target.value)}}>Proceed to Checkout</button>
+  ) : null}
 
-
+{/* onClick={handleProceedToCheckout} */}
     </div>
     
     
