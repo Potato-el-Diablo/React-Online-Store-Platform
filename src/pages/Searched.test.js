@@ -42,6 +42,9 @@ describe('Searched', () => {
   
     it('should fetch products on mount', async () => {
         const mockData = {
+            getDocs : () =>{
+                return docs;
+            },
             docs: [
            {
              data: () => ({
@@ -69,8 +72,9 @@ describe('Searched', () => {
            },
          ],
        };
-       const getDocsSpy = jest.spyOn(mockData,'docs');
-       getDocsSpy.mockResolvedValueOnce(mockData);
+
+        const getDocsSpy = jest.spyOn(mockData,'getDocs');
+        getDocsSpy.mockResolvedValueOnce(mockData);
   
     render(<Searched />);
   
