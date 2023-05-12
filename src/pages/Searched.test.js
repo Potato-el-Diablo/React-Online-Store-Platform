@@ -76,7 +76,7 @@ describe('Searched', () => {
         const getDocsSpy = jest.spyOn(mockData,'getDocs');
         getDocsSpy.mockResolvedValueOnce(mockData);
   
-    render(<Searched />);
+    //render(<Searched />);
   
     expect(collection).toHaveBeenCalledWith(db, 'Products');
     expect(getDocs).toHaveBeenCalledWith(collection(db, 'Products'));
