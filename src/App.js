@@ -22,6 +22,7 @@ import MyAccount from "./pages/MyAccount";
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import Checkout from "./components/Checkout";
+import OrderDetails from "./pages/OrderDetails";
 const stripePromise = loadStripe('pk_test_51N4dpfECtnw33ZKc2BL6hUXmq8UzHP8oGpP71gWeNOHrLsuDfQWATvS64pJVrke4JIPvqAgZjps0IuxOqfFsE5VJ00HarVDp2R');
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
                     <Route path ="product/:id" element = {<SingleProduct/>}/>
                     <Route path="MyAccount" element ={<MyAccount/>}/>
                     <Route path="/success" element={<Success/>} />
+                    <Route path="/OrderDetails" element={<OrderDetails/>} />
                     <Route path="/Checkout" element={
                         <Elements stripe={stripePromise}>
                             <Checkout />

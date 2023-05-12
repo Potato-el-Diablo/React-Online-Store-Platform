@@ -3,6 +3,7 @@ import { getDocs, collection, query, where } from 'firebase/firestore';
 import { db } from './firebase';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import ReactStars from 'react-rating-stars-component';
+import { NavLink } from 'react-router-dom';
 
 const MyAccount = () => {
     const [userId, setUserId] = useState('');
@@ -78,7 +79,7 @@ const MyAccount = () => {
                                         <li key={index} className="orderBox">
                                             <div className="orderHeader">
                                                 <h3>Order Number: {order.orderNumber}</h3>
-                                                <button className="orderDetailsButton" className="button">Order Details</button>
+                                                <NavLink className="button" to={`/OrderDetails/${order.orderNumber}`}>Order Details</NavLink>
                                             </div>
                                             <p>Order Date: {order.createdAt.toDate().toLocaleDateString()}</p>
                                             <div className="orderItems">
@@ -95,29 +96,29 @@ const MyAccount = () => {
                         </>
                     )}
 
-            {showReviews && (
-                <>
-                    {userReviews.length === 0 ? (
-                        <p>You have not submitted any reviews yet.</p>
-                    ) : (
-                        <ul>
-                            {userReviews.map((review, index) => (
-                                <li key={index} className="reviewBox">
-                                    <h3>Review for {review.productName}</h3>
-                                    <ReactStars
-                                        count={5}
-                                        value={review.rating}
-                                        edit={false}
-                                        size={24}
-                                        activeColor="#ffd700"
-                                    />
-                                    <p>{review.comment}</p>
-                                </li>
-                            ))}
-                        </ul>
+                    {showReviews && (
+                        <>
+                            {userReviews.length === 0 ? (
+                                <p>You have not submitted any reviews yet.</p>
+                            ) : (
+                                <ul>
+                                    {userReviews.map((review, index) => (
+                                        <li key={index} className="reviewBox">
+                                            <h3>Review for {review.productName}</h3>
+                                            <ReactStars
+                                                count={5}
+                                                value={review.rating}
+                                                edit={false}
+                                                size={24}
+                                                activeColor="#ffd700"
+                                            />
+                                            <p>{review.comment}</p>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </>
                     )}
-                </>
-            )}
                 </div>
             </div>
         </div>
