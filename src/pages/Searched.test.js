@@ -69,7 +69,7 @@ describe('Searched', () => {
            },
          ],
        };
-       const getDocsSpy = jest.spyOn(mockData, 'docs');
+       const getDocsSpy = jest.spyOn(mockData);
        getDocsSpy.mockResolvedValueOnce(mockData);
   
     render(<Searched />);
