@@ -136,3 +136,29 @@ describe('Login', () => {
     });
 
 });
+
+describe('Login SignIn', () => {
+    it('should navigate to home page after successful login', async () => {
+      const mockNavigate = jest.fn();
+      const mockSignInWithEmailAndPassword = jest.fn(() => Promise.resolve({user: {}}));
+      const mockAuth = jest.fn(() => ({signInWithEmailAndPassword: mockSignInWithEmailAndPassword}));
+      const {getByLabelText, getByTestId} = render(
+        <BrowserRouter>
+          <Login />
+        </BrowserRouter>,
+        {wrapper: ({children}) => <BrowserRouter>{children}</BrowserRouter>},
+      );
+  
+      const emailInput = getByLabelText('Email address');
+      const passwordInput = getByLabelText('Password');
+      const loginButton = getByTestId('login-button');
+  
+      fireEvent.change(emailInput, {target: {value: 'test@example.com'}});
+      fireEvent.change(passwordInput, {target: {value: 'password'}});
+      fireEvent.click(loginButton);
+  
+      expect(mockAuth).toHaveBeenCalled();
+      expect(mockSignInWithEmailAndPassword).toHaveBeenCalledWith('test@example.com', 'password');
+      await expect(mockNavigate).toHaveBeenCalledWith('/');
+    });
+  });
