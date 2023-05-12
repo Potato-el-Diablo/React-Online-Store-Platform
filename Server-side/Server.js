@@ -9,7 +9,7 @@ app.use(express.json())
 app.use(
     cors({
         origin: "https://testing-e6ee0.web.app/",
-        methods: ["POST"], // Add the allowed HTTP methods
+        methods: ["POST", "GET"], // Add 'GET' method
         credentials: true, // Allow credentials (cookies, headers with authentication info, etc.)
     })
 );
