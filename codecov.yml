@@ -5,3 +5,4 @@ ignore:
   - "src/features/counter/counterAPI.js"
   - "src/index.js"
   - "src/pages/Cart.js"
+  -
