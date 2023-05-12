@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, waitFor, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection } from 'firebase/firestore';
 import '@testing-library/jest-dom/extend-expect';
 
 jest.mock('firebase/firestore', () => ({
@@ -38,47 +38,44 @@ describe('ProductCard Component', () => {
     });
 });
 
-// describe('Searched', () => {
-//     beforeEach(() => {
-//       jest.clearAllMocks();
-//     });
+describe('Searched', () => {
   
-//     it('should fetch products on mount', async () => {
-//       const mockData = {
-//         docs: [
-//           {
-//             data: () => ({
-//               id: '1',
-//               name: 'Product 1',
-//               brand: 'Brand 1',
-//               image: 'https://example.com/product1.png',
-//               description: 'Product 1 description',
-//               price: 9.99,
-//               stock: 10,
-//             }),
-//             id: '1',
-//           },
-//           {
-//             data: () => ({
-//               id: '2',
-//               name: 'Product 2',
-//               brand: 'Brand 2',
-//               image: 'https://example.com/product2.png',
-//               description: 'Product 2 description',
-//               price: 19.99,
-//               stock: 5,
-//             }),
-//             id: '2',
-//           },
-//         ],
-//       };
-//       const getDocsSpy = jest.spyOn(mockData, 'docs');
-//       getDocsSpy.mockResolvedValueOnce(mockData);
+    it('should fetch products on mount', async () => {
+        const mockData = {
+            docs: [
+           {
+             data: () => ({
+               id: '1',
+               name: 'Product 1',
+               brand: 'Brand 1',
+               image: 'https://example.com/product1.png',
+               description: 'Product 1 description',
+               price: 9.99,
+               stock: 10,
+             }),
+             id: '1',
+           },
+           {
+             data: () => ({
+               id: '2',
+               name: 'Product 2',
+               brand: 'Brand 2',
+               image: 'https://example.com/product2.png',
+               description: 'Product 2 description',
+               price: 19.99,
+               stock: 5,
+             }),
+             id: '2',
+           },
+         ],
+       };
+       const getDocsSpy = jest.spyOn(mockData, 'docs');
+       getDocsSpy.mockResolvedValueOnce(mockData);
   
-//       render(<Searched />);
+    render(<Searched />);
   
-//       expect(collection).toHaveBeenCalledWith(db, 'Products');
-//       expect(getDocs).toHaveBeenCalledWith(collection(db, 'Products'));
-//       expect(getDocsSpy).toHaveBeenCalled();
-//     });
-//   });
+    expect(collection).toHaveBeenCalledWith(db, 'Products');
+    expect(getDocs).toHaveBeenCalledWith(collection(db, 'Products'));
+    expect(getDocsSpy).toHaveBeenCalled();
+    });
+});
