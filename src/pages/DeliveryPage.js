@@ -28,9 +28,11 @@ const DeliveryPage = () => {
   };
 
   const handleSubmitAddress = () => {
-    setDeliveryCost(150);
+    
     const now = new Date();
-    const randomInteger = Math.floor(Math.random() * 5) + 1;
+    let randomInteger = Math.floor(Math.random() *2) + 1;
+    setDeliveryCost(randomInteger*100 + 50);
+    randomInteger = Math.floor(Math.random() *5) + 1;
     const deliveryDate = new Date(now.getTime() + (randomInteger * 24 * 60 * 60 * 1000));
     setDeliveryDate(deliveryDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }));
   };
@@ -63,9 +65,9 @@ const DeliveryPage = () => {
   // submit user information
   
     const handleFormSubmit = async (event) => {
-      event.preventDefault();
-      if (!deliveryAddress.houseNumber || !deliveryAddress.streetName || !deliveryAddress.suburb || !deliveryAddress.city || !deliveryAddress.postalCode) {
-        alert('Please fill out all fields!');
+      // event.preventDefault();
+      if (!deliveryAddress.collection||(!deliveryAddress.houseNumber && !deliveryAddress.streetName && !deliveryAddress.suburb && !deliveryAddress.city && !deliveryAddress.postalCode)) {
+        console.log('Please fill out all fields!');
         return;
       }
   
@@ -77,15 +79,15 @@ const DeliveryPage = () => {
             suburb: deliveryAddress.suburb,
             city: deliveryAddress.city,
             postalCode: deliveryAddress.postalCode,
-            collection_center: deliveryAddress.collection,
+            collection: deliveryAddress.collection,
           },
           // other fields for the order
         });
         console.log('Order submitted successfully!', docRef.id);
-        alert('Order submitted successfully!');
+        console.log('Order submitted successfully!');
       } catch (error) {
         console.error('Error writing order to Firestore: ', error);
-        alert('Error submitting order. Please try again later.');
+        console.log('Error submitting order. Please try again later.');
       }
     };
   
@@ -147,7 +149,7 @@ const DeliveryPage = () => {
       {deliveryOption === 'collection' && (
         <div>
             <h3 className="section-heading">Collection Centres</h3>
-            <select id="collection_center"onChange={(e) => handleCollectionCenterChange(e.target.value)}>
+            <select id="collection" onChange={(e) => handleFormSubmit(e.target.value)}>
             <option value="wits">Wits Pickup Centre</option>
             <option value="field">Field Pickup Centre</option>
             <option value="orange">Orange Pickup Centre</option>
