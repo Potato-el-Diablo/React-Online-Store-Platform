@@ -6,7 +6,7 @@ import { db } from './firebase';
 import { useCart } from '../pages/CartContext';
 
 // Mock the CartContext
-jest.mock('./CartContext', () => ({
+jest.mock('../pages/CartContext', () => ({
   useCart: () => ({
     setCartItems: jest.fn(),
   }),
