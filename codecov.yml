@@ -4,3 +4,4 @@ ignore:
   - "src/pages/MyProducts.js"
   - "src/features/counter/counterAPI.js"
   - "src/index.js"
+  - "src/pages/Cart.js"
