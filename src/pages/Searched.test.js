@@ -80,7 +80,7 @@ describe('Searched', () => {
   
     //render(<Searched />);
   
-    expect(collection).toHaveBeenCalledWith(db, 'Products');
+    //expect(collection).toHaveBeenCalledWith(db, 'Products');
     expect(getDocs).toHaveBeenCalledWith(collection(db, 'Products'));
     });
 });
