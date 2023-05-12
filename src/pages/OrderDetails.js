@@ -13,9 +13,10 @@ const OrderDetails = () => {
     useEffect(() => {
 
         const fetchOrderDetails = async () => {
+            console.log("OrderNumber"+orderNumber)
             const orderQuery = query(
                 collection(db, 'Orders'),
-                where('orderNumber', '==', orderNumber)
+                where('orderNumber', '==', Number(orderNumber))
             );
             const querySnapshot = await getDocs(orderQuery);
             const fetchedOrder = querySnapshot.docs.map((doc) => ({
