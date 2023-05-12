@@ -11,6 +11,7 @@ const OrderDetails = () => {
     const [orderDetails, setOrderDetails] = useState(null);
 
     useEffect(() => {
+
         const fetchOrderDetails = async () => {
             const orderQuery = query(
                 collection(db, 'Orders'),
@@ -26,6 +27,7 @@ const OrderDetails = () => {
         fetchOrderDetails();
     }, [orderNumber]);
 
+    console.log(orderDetails)
     if (!orderDetails) {
         return <p>Loading...</p>;
     }
