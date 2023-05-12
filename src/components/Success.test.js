@@ -1,8 +1,8 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import Success from './Success';
-import { db } from './firebase';
+import { render, waitFor } from '@testing-library/react';
+import { UserEvent } from '@testing-library/user-event/dist/types/setup/setup';
+import Success from '../pages/Success';
+import { db } from '../pages/firebase';
 import { useCart } from '../pages/CartContext';
 
 // Mock the CartContext
@@ -13,7 +13,7 @@ jest.mock('../pages/CartContext', () => ({
 }));
 
 // Mock the Firestore methods
-jest.mock('firebase/firestore', () => ({
+jest.mock('../pages/firebase/firestore', () => ({
   doc: jest.fn(),
   getDoc: jest.fn(),
   updateDoc: jest.fn(),
@@ -36,22 +36,22 @@ describe('Success', () => {
     localStorage.setItem('cartItems', JSON.stringify(mockCartItems));
 
     // Set the currentUser in auth
-    jest.spyOn(require('./firebase').auth, 'currentUser', 'get').mockReturnValue(mockUser);
+    jest.spyOn(require('../pages/firebase').auth, 'currentUser', 'get').mockReturnValue(mockUser);
 
     // Mock the Firestore data for Product A
     const mockProductARef = { id: '123', data: () => ({ stock: 5 }) };
-    jest.spyOn(require('./firebase').db, 'doc').mockReturnValueOnce(mockProductARef);
+    jest.spyOn(require('../pages/firebase').db, 'doc').mockReturnValueOnce(mockProductARef);
 
     // Mock the Firestore data for Product B
     const mockProductBRef = { id: '456', data: () => ({ stock: 10 }) };
-    jest.spyOn(require('./firebase').db, 'doc').mockReturnValueOnce(mockProductBRef);
+    jest.spyOn(require('../pages/firebase').db, 'doc').mockReturnValueOnce(mockProductBRef);
 
     // Mock the Firestore data for OrderNumber
     const mockOrderNumberRef = { data: () => ({ lastOrder: 1 }) };
-    jest.spyOn(require('./firebase').db, 'doc').mockReturnValueOnce(mockOrderNumberRef);
+    jest.spyOn(require('../pages/firebase').db, 'doc').mockReturnValueOnce(mockOrderNumberRef);
 
     // Mock the Firestore addDoc method for Orders
-    jest.spyOn(require('./firebase').db, 'collection').mockReturnValueOnce({
+    jest.spyOn(require('../pages/firebase').db, 'collection').mockReturnValueOnce({
       add: jest.fn().mockResolvedValueOnce(),
     });
   });
@@ -59,12 +59,12 @@ describe('Success', () => {
   it('updates the stock of each product in Firestore correctly', async () => {
     await render(<Success />);
 
-    expect(require('./firebase').db.doc).toHaveBeenCalledTimes(2);
-    expect(require('./firebase').db.doc).toHaveBeenNthCalledWith(1, 'Products/123');
-    expect(require('./firebase').db.doc).toHaveBeenNthCalledWith(2, 'Products/456');
-    expect(require('./firebase').db.doc().data).toHaveBeenCalledTimes(2);
-    expect(require('./firebase').db.doc().data).toHaveBeenNthCalledWith(1);
-    expect(require('./firebase').db.doc().data).toHaveBeenNthCalledWith(2);
-    expect(require('./firebase').db.updateDoc).toHaveBeenCalledTimes(2);
+    expect(require('../pages/firebase').db.doc).toHaveBeenCalledTimes(2);
+    expect(require('../pages/firebase').db.doc).toHaveBeenNthCalledWith(1, 'Products/123');
+    expect(require('../pages/firebase').db.doc).toHaveBeenNthCalledWith(2, 'Products/456');
+    expect(require('../pages/firebase').db.doc().data).toHaveBeenCalledTimes(2);
+    expect(require('../pages/firebase').db.doc().data).toHaveBeenNthCalledWith(1);
+    expect(require('../pages/firebase').db.doc().data).toHaveBeenNthCalledWith(2);
+    expect(require('../pages/firebase').db.updateDoc).toHaveBeenCalledTimes(2);
   });
 });
