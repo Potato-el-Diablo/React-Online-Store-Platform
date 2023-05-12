@@ -35,7 +35,7 @@ describe('Success', () => {
     localStorage.setItem('cartItems', JSON.stringify(mockCartItems));
 
     // Set the currentUser in auth
-    jest.spyOn(require('../pages/firebase').auth, 'currentUser', 'get').mockReturnValue(mockUser);
+    //jest.spyOn(require('../pages/firebase').auth, 'currentUser', 'get').mockReturnValue(mockUser);
 
     // Mock the Firestore data for Product A
     const mockProductARef = { id: '123', data: () => ({ stock: 5 }) };
