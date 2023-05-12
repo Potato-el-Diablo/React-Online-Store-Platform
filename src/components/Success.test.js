@@ -3,6 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Success from './Success';
 import { db } from './firebase';
+import { useCart } from '../pages/CartContext';
 
 // Mock the CartContext
 jest.mock('./CartContext', () => ({
