@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import { UserEvent } from '@testing-library/user-event/dist/types/setup/setup';
 import Success from '../pages/Success';
 import { db } from '../pages/firebase';
 import { useCart } from '../pages/CartContext';
