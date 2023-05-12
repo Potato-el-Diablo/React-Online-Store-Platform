@@ -37,3 +37,48 @@ describe('ProductCard Component', () => {
         expect(screen.getByAltText('Test Product')).toBeInTheDocument();
     });
 });
+
+describe('Searched', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+  
+    it('should fetch products on mount', async () => {
+      const mockData = {
+        docs: [
+          {
+            data: () => ({
+              id: '1',
+              name: 'Product 1',
+              brand: 'Brand 1',
+              image: 'https://example.com/product1.png',
+              description: 'Product 1 description',
+              price: 9.99,
+              stock: 10,
+            }),
+            id: '1',
+          },
+          {
+            data: () => ({
+              id: '2',
+              name: 'Product 2',
+              brand: 'Brand 2',
+              image: 'https://example.com/product2.png',
+              description: 'Product 2 description',
+              price: 19.99,
+              stock: 5,
+            }),
+            id: '2',
+          },
+        ],
+      };
+      const getDocsSpy = jest.spyOn(mockData, 'docs');
+      getDocsSpy.mockResolvedValueOnce(mockData);
+  
+      render(<Searched />);
+  
+      expect(collection).toHaveBeenCalledWith(db, 'Products');
+      expect(getDocs).toHaveBeenCalledWith(collection(db, 'Products'));
+      expect(getDocsSpy).toHaveBeenCalled();
+    });
+  });
