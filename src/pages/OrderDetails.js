@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getDocs, collection, query, where } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import Meta from '../components/Meta';
+import BreadCrumb from '../components/BreadCrumb';
+import OrderProductCard from '../components/OrderProductCard';
 import { db } from './firebase';
 
 const OrderDetails = () => {
@@ -11,7 +14,7 @@ const OrderDetails = () => {
         const fetchOrderDetails = async () => {
             const orderQuery = query(
                 collection(db, 'Orders'),
-                where('orderNumber', '==', Number(orderNumber))
+                where('orderNumber', '==', orderNumber)
             );
             const querySnapshot = await getDocs(orderQuery);
             const fetchedOrder = querySnapshot.docs.map((doc) => ({
@@ -28,21 +31,33 @@ const OrderDetails = () => {
     }
 
     return (
-        <div>
-            <h2>Order Details</h2>
-            <h3>Order Number: {orderDetails.orderNumber}</h3>
-            <p>Order Date: {orderDetails.createdAt.toDate().toLocaleDateString()}</p>
-            <div className="orderItems">
-                {orderDetails.items.map((item) => (
-                    <div key={item.id} className="orderItem">
-                        <img src={item.image} alt={item.name} style={{ width: '50px' }} />
-                        <p>{item.name}</p>
-                        <p>Quantity: {item.quantity}</p>
+        <>
+            <Meta title={'Order Details'} />
+            <BreadCrumb title="Order Details" />
+            <div className="store-wrapper home-wrapper-2 py-5">
+                <div className="row">
+                    <div className="col-9">
+                        <h2>Order Details</h2>
+                        <h3>Order Number: {orderDetails.orderNumber}</h3>
+                        <p>Order Date: {orderDetails.createdAt.toDate().toLocaleDateString()}</p>
+                        <div className="orderItems">
+                            <div className="d-flex gap-10 flex-wrap">
+                                {orderDetails.items.map((item) => (
+                                    <OrderProductCard
+                                        key={item.id}
+                                        productImage={item.image}
+                                        productName={item.name}
+                                        productQuantity={item.quantity}
+                                    />
+                                ))}
+                            </div>
+                        </div>
                     </div>
-                ))}
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 
 export default OrderDetails;
+

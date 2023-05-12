@@ -46,7 +46,8 @@ function App() {
                     <Route path ="product/:id" element = {<SingleProduct/>}/>
                     <Route path="MyAccount" element ={<MyAccount/>}/>
                     <Route path="/success" element={<Success/>} />
-                    <Route path="/OrderDetails" element={<OrderDetails/>} />
+                    <Route path="/MyAccount" component={MyAccount} />
+                    <Route path="/OrderDetails/:orderNumber" element={<OrderDetails />} />
                     <Route path="/Checkout" element={
                         <Elements stripe={stripePromise}>
                             <Checkout />
