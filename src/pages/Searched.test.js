@@ -3,6 +3,8 @@ import { render, waitFor, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { collection } from 'firebase/firestore';
 import '@testing-library/jest-dom/extend-expect';
+import { db } from './firebase';
+import { getDocs } from 'firebase/firestore';
 
 jest.mock('firebase/firestore', () => ({
     collection: jest.fn(),
@@ -80,6 +82,5 @@ describe('Searched', () => {
   
     expect(collection).toHaveBeenCalledWith(db, 'Products');
     expect(getDocs).toHaveBeenCalledWith(collection(db, 'Products'));
-    expect(getDocsSpy).toHaveBeenCalled();
     });
 });
