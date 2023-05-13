@@ -48,6 +48,7 @@ const OrderDetails = () => {
                                 {orderDetails.items.map((item) => (
                                     <OrderProductCard
                                         key={item.id}
+                                        productPrice={item.price}
                                         productImage={item.image}
                                         productName={item.name}
                                         productQuantity={item.quantity}

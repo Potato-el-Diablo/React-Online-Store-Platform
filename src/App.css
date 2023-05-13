@@ -969,6 +969,20 @@ z-index: 1000;
       max-width: 90%;
     }
   }
-  
-  
+
   /* Delivery page ends */
+
+/* Order history items start here */
+
+.orderItems .d-flex {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.orderItems .product-image img {
+  width: 150px; /* change this to the width you want */
+  height: 150px; /* change this to the height you want */
+  object-fit: cover;
+}
+
+/* Order history items end here */

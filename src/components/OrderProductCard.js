@@ -9,7 +9,7 @@ const OrderProductCard = ({
                               productName,
                               productDescription,
                               productPrice,
-                              productStock
+                              productQuantity
                           }) => {
     let location = useLocation();
 
@@ -28,7 +28,7 @@ const OrderProductCard = ({
                         <p className="description">{productDescription}</p>
                         <div className="d-grip gap-2 d-md-block">
                             <p className="price">R{productPrice}</p>
-                            <p className="stock">Stock Ordered: {productStock}</p>
+                            <p className="stock">Stock Ordered: {productQuantity}</p>
                         </div>
                     </div>
                 </Link>
