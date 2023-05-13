@@ -4,8 +4,49 @@ import { db } from "./firebase";
 import Meta from '../components/Meta';
 import BreadCrumb from '../components/BreadCrumb';
 import { Link, useLocation } from 'react-router-dom';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { loadStripe } from '@stripe/stripe-js';
+import { useHistory } from 'react-router-dom';
+import { useCart } from './CartContext'; // Import the useCart hook
+
+const stripePromise = loadStripe('pk_test_51N4dpfECtnw33ZKc2BL6hUXmq8UzHP8oGpP71gWeNOHrLsuDfQWATvS64pJVrke4JIPvqAgZjps0IuxOqfFsE5VJ00HarVDp2R');
+
 
 const DeliveryPage = () => {
+
+  // Use the useCart hook to access cartItems and setCartItems
+  const { cartItems, setCartItems } = useCart();
+  const handleButtonClick = () => {
+    fetch("https://evening-sands-70201.herokuapp.com/create-checkout-session", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // Send along all the information about the items
+      body: JSON.stringify({
+        items: cartItems.map((item) => ({
+          id: item.id,
+          priceInCents: item.price * 100,
+          name: item.name,
+          quantity: item.quantity,
+        })),
+      }),
+    })
+        .then((res) => {
+          if (res.ok) return res.json();
+          // If there is an error then make sure we catch that
+          return res.json().then((e) => Promise.reject(e));
+        })
+        .then(({ url }) => {
+          // On success redirect the customer to the returned URL
+          window.location = url;
+        })
+        .catch((e) => {
+          console.error(e.error);
+        });
+  };
+
+
   const [deliveryOption, setDeliveryOption] = useState(null);
   const [deliveryAddress, setDeliveryAddress] = useState({
     houseNumber: null,
@@ -158,9 +199,9 @@ const DeliveryPage = () => {
         </div>
     )}
 
-      
+
   {(deliveryOption === 'delivery' && deliveryAddress !== '') || (deliveryOption === 'collection' && estimatedTime !== '' )? (
-    <button id="checkout-btn" className="form-submit"  onClick={(e)=>{handleFormSubmit(e.target.value)}}>Proceed to Checkout</button>
+      <button id="checkout-btn" className="form-submit"  onClick={(e) => {handleFormSubmit(e.target.value); handleButtonClick();}}>Proceed to Checkout</button>
   ) : null}
 
 {/* onClick={handleProceedToCheckout} */}
