@@ -15,6 +15,7 @@ const stripePromise = loadStripe('pk_test_51N4dpfECtnw33ZKc2BL6hUXmq8UzHP8oGpP71
 const Cart = () => {
     // Use the useCart hook to access cartItems and setCartItems
     const { cartItems, setCartItems } = useCart();
+
     // const handleButtonClick = () => {
     //     fetch("https://evening-sands-70201.herokuapp.com/create-checkout-session", {
     //         method: "POST",
@@ -233,7 +234,7 @@ const Cart = () => {
                             <div className="d-flex flex-column align-items-end">
                                 <h4>Subtotal: R {subtotal}</h4>
                                 <p>Taxes and Shipping Calculated at checkout</p>
-                                <Link to="/delivery" className="button">
+                                <Link to="delivery" className="button">
                                     Checkout
                                 </Link>
                             </div>

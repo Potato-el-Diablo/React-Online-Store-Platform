@@ -15,7 +15,7 @@ const stripePromise = loadStripe('pk_test_51N4dpfECtnw33ZKc2BL6hUXmq8UzHP8oGpP71
 const DeliveryPage = () => {
 
   // Use the useCart hook to access cartItems and setCartItems
-  const { cartItems, setCartItems } = useCart();
+  const cartItems = JSON.parse(localStorage.getItem('cartItems'));
   const handleButtonClick = () => {
     fetch("https://evening-sands-70201.herokuapp.com/create-checkout-session", {
       method: "POST",
