@@ -8,11 +8,9 @@ export const useCart = () => {
 
 export const CartProvider = ({ children }) => {
     const [cartItems, setCartItems] = useState([]);
-    const [deliveryInfo, setDeliveryInfo] = useState(null);
-
 
     return (
-        <CartContext.Provider value={{ cartItems, setCartItems, deliveryInfo, setDeliveryInfo }}>
+        <CartContext.Provider value={{ cartItems, setCartItems }}>
             {children}
         </CartContext.Provider>
     );

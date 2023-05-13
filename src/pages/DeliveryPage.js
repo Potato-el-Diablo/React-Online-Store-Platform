@@ -15,8 +15,7 @@ const stripePromise = loadStripe('pk_test_51N4dpfECtnw33ZKc2BL6hUXmq8UzHP8oGpP71
 const DeliveryPage = () => {
 
   // Use the useCart hook to access cartItems and setCartItems
-  const { cartItems: localCartItems, setDeliveryInfo } = useCart();
-  const cartItems = localCartItems || JSON.parse(localStorage.getItem('cartItems'));
+  const cartItems = JSON.parse(localStorage.getItem('cartItems'));
   const handleButtonClick = () => {
     fetch("https://evening-sands-70201.herokuapp.com/create-checkout-session", {
       method: "POST",
@@ -131,11 +130,6 @@ const DeliveryPage = () => {
         console.error('Error writing order to Firestore: ', error);
         console.log('Error submitting order. Please try again later.');
       }
-      setDeliveryInfo({
-        deliveryMethod: deliveryOption,
-        pickupPoint: deliveryOption === "collection" ? deliveryAddress.collection : null,
-        deliveryAddress: deliveryOption === "delivery" ? deliveryAddress : null,
-      });
     };
   
   

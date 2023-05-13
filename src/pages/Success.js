@@ -6,7 +6,7 @@ import { useCart } from './CartContext';
 
 const Success = () => {
     // Get cartItems from the context
-    const { setCartItems, deliveryInfo } = useCart();
+    const { setCartItems } = useCart();
     const [orderNumber, setOrderNumber] = useState(1);
 
     const handleSuccessfulCheckout = async () => {
@@ -62,9 +62,6 @@ const Success = () => {
                 subtotal: subtotal,
                 userId: auth.currentUser.uid,
                 orderNumber: currentOrderNumber,
-                deliveryMethod: deliveryInfo.deliveryMethod,
-                pickupPoint: deliveryInfo.pickupPoint,
-                deliveryAddress: deliveryInfo.deliveryAddress,
             });
             setOrderNumber(currentOrderNumber);
         }
