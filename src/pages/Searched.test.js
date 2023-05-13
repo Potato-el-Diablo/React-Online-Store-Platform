@@ -5,6 +5,7 @@ import { collection } from 'firebase/firestore';
 import '@testing-library/jest-dom/extend-expect';
 import { db } from './firebase';
 import { getDocs } from 'firebase/firestore';
+import Searched from './Searched';
 
 jest.mock('firebase/firestore', () => ({
     collection: jest.fn(),
@@ -78,7 +79,7 @@ describe('Searched', () => {
         const getDocsSpy = jest.spyOn(mockData,'getDocs');
         getDocsSpy.mockResolvedValueOnce(mockData);
   
-    render(<Searched />),{wrapper, MemoryRouter};
+    render(<Searched />);
   
     expect(collection).toHaveBeenCalledWith(db, 'Products');
     expect(getDocs).toHaveBeenCalledWith(collection(db, 'Products'));
