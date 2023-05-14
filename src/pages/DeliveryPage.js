@@ -190,7 +190,7 @@ const DeliveryPage = () => {
       {deliveryOption === 'collection' && (
         <div>
             <h3 className="section-heading">Collection Centres</h3>
-            <select id="collection" onChange={(e) => handleFormSubmit(e.target.value)}>
+            <select id="collection" data-testid="collection" onChange={(e) => handleFormSubmit(e.target.value)}>
             <option value="wits">Wits Pickup Centre</option>
             <option value="field">Field Pickup Centre</option>
             <option value="orange">Orange Pickup Centre</option>
