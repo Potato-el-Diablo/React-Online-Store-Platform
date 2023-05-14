@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import counterReducer from './counterSlice';
 import { Counter } from './Counter';
+import '@testing-library/jest-dom/extend-expect';
 
 test('renders the count value from state', () => {
     const store = configureStore({
