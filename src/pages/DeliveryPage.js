@@ -90,7 +90,8 @@ const DeliveryPage = () => {
     }
   };
 
-  const handleProceedToCheckout = () => {
+  //If there are issues with proceeding to checkout, uncomment this to look at the console logs
+ /* const handleProceedToCheckout = () => {
     if (deliveryOption === 'delivery' && deliveryAddress !== '') {
       console.log('Proceeding to checkout');
     } else if (deliveryOption === 'collection' && estimatedTime !== '') {
@@ -98,8 +99,7 @@ const DeliveryPage = () => {
     } else {
       console.log('Please submit delivery address or select a collection center before proceeding to checkout');
     }
-  };
-
+  };  */
 
   // database link?
 
