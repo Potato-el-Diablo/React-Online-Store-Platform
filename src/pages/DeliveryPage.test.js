@@ -54,8 +54,8 @@ describe('DeliveryPage', () => {
     test('handles collection center change', () => {
         render(<DeliveryPage />);
         fireEvent.click(screen.getByLabelText('Collection'));
-        fireEvent.change(screen.getByTestId('collection'), { target: { value: 'wits' } });
-        expect(screen.getByText('Estimated dispatch time:')).toHaveTextContent('Estimated dispatch time:');
+        fireEvent.change(screen.getByTestId('collection'), { target: { value: 'field' } });
+        expect(screen.getByTestId('estimated-time')).toHaveTextContent('3-4 days');
     });
 });
 
