@@ -19,8 +19,10 @@ beforeEach(() => {
     sendPasswordResetEmail.mockImplementation((auth, email) => {
         return Promise.resolve();
     });
-});
 
+    // Mock window.alert
+    window.alert = jest.fn();
+});
 test('renders ForgotPassword and triggers email send on form submit', async () => {
     render(
         <Router>
