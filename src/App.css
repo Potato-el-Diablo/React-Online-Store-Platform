@@ -984,5 +984,9 @@ z-index: 1000;
   height: 150px; /* change this to the height you want */
   object-fit: cover;
 }
+.d-flex.justify-content-center {
+  justify-content: center;
+}
+
 
 /* Order history items end here */
