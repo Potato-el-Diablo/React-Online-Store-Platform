@@ -32,10 +32,6 @@ const OrderDetails = () => {
     if (!orderDetails) {
         return <p>Loading...</p>;
     }
-    const calculateSubTotal = (items) => {
-        return items.reduce((total, item) => total + (item.price * item.quantity), 0);
-    };
-
 
     return (
         <>
@@ -44,10 +40,10 @@ const OrderDetails = () => {
             <div className="store-wrapper home-wrapper-2 py-5">
                 <div className="row">
                     <div className="col-9">
-                        <h2 style={{textAlign: "center"}}>Order Details</h2>
-                        <h3 style={{textAlign: "center"}}>Order Number: {orderDetails.orderNumber}</h3>
-                        <p style={{textAlign: "center"}}>Order Date: {orderDetails.createdAt.toDate().toLocaleDateString()}</p>
-                        <div className="orderItems justify-content-center">
+                        <h2>Order Details</h2>
+                        <h3>Order Number: {orderDetails.orderNumber}</h3>
+                        <p>Order Date: {orderDetails.createdAt.toDate().toLocaleDateString()}</p>
+                        <div className="orderItems">
                             <div className="d-flex gap-10 flex-wrap">
                                 {orderDetails.items.map((item) => (
                                     <OrderProductCard
@@ -60,7 +56,6 @@ const OrderDetails = () => {
                                 ))}
                             </div>
                         </div>
-                        <h3 style={{textAlign: "center"}}>Subtotal: R {calculateSubTotal(orderDetails.items).toFixed(2)}</h3>
                     </div>
                 </div>
             </div>

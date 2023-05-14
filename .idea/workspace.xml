@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="210705c5-207a-4957-8740-df7ac1b18442" name="Changes" comment="Unit tests">
+    <list default="true" id="210705c5-207a-4957-8740-df7ac1b18442" name="Changes" comment="Updated some stuff">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.cache/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/.eslintcache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.cache/default-development/0.pack" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/default-development/0.pack" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.cache/default-development/index.pack.old" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/default-development/index.pack.old" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Checkout.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Checkout.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/OrderDetails.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/OrderDetails.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,12 +41,11 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/neonkosi/Documents/GitHub/React-Online-Store-Platform3&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/neonkosi/Documents/GitHub/React-Online-Store-Platform/src/config&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs.jest.jest_package&quot;: &quot;/Users/neonkosi/Documents/GitHub/React-Online-Store-Platform3/node_modules/react-scripts&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -72,34 +68,7 @@
       <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.start">
-    <configuration name="Checkout Component" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
-      <working-dir value="$PROJECT_DIR$" />
-      <envs />
-      <scope-kind value="SUITE" />
-      <test-file value="$PROJECT_DIR$/src/components/Checkout.test.js" />
-      <test-names>
-        <test-name value="Checkout Component" />
-      </test-names>
-      <method v="2" />
-    </configuration>
-    <configuration name="Checkout Component.handles form submission" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
-      <working-dir value="$PROJECT_DIR$" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/src/components/Checkout.test.js" />
-      <test-names>
-        <test-name value="Checkout Component" />
-        <test-name value="handles form submission" />
-      </test-names>
-      <method v="2" />
-    </configuration>
+  <component name="RunManager">
     <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -113,8 +82,6 @@
     <recent_temporary>
       <list>
         <item itemvalue="npm.start" />
-        <item itemvalue="Jest.Checkout Component" />
-        <item itemvalue="Jest.Checkout Component.handles form submission" />
       </list>
     </recent_temporary>
   </component>
@@ -142,10 +109,6 @@
       <workItem from="1682269763070" duration="321000" />
       <workItem from="1683814790949" duration="5833000" />
       <workItem from="1683830022737" duration="13536000" />
-      <workItem from="1683899320043" duration="111000" />
-      <workItem from="1683899538972" duration="788000" />
-      <workItem from="1683966741849" duration="2145000" />
-      <workItem from="1684017790427" duration="3073000" />
     </task>
     <task id="LOCAL-00001" summary="Added Cart">
       <created>1680239162000</created>
@@ -196,28 +159,7 @@
       <option name="project" value="LOCAL" />
       <updated>1683886834026</updated>
     </task>
-    <task id="LOCAL-00008" summary="Unit tests are cooking">
-      <created>1683899377327</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1683899377327</updated>
-    </task>
-    <task id="LOCAL-00009" summary="Unit tests are cooking">
-      <created>1683899410864</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1683899410864</updated>
-    </task>
-    <task id="LOCAL-00010" summary="Unit tests">
-      <created>1683899555316</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1683899555316</updated>
-    </task>
-    <option name="localTasksCounter" value="11" />
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -241,8 +183,6 @@
     <MESSAGE value="Edited App.css (found errors)" />
     <MESSAGE value="removed console log from home page" />
     <MESSAGE value="Updated OrderDetails.js" />
-    <MESSAGE value="Unit tests are cooking" />
-    <MESSAGE value="Unit tests" />
-    <option name="LAST_COMMIT_MESSAGE" value="Unit tests" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated OrderDetails.js" />
   </component>
 </project>
