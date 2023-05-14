@@ -51,12 +51,30 @@ describe('DeliveryPage', () => {
     });
 
 
-    test('handles collection center change', () => {
-        render(<DeliveryPage />);
-        fireEvent.click(screen.getByLabelText('Collection'));
-        fireEvent.change(screen.getByTestId('collection'), { target: { value: 'field' } });
-        expect(screen.getByTestId('estimated-time')).toHaveTextContent('3-4 days');
+    describe('DeliveryPage - handleCollectionCenterChange', () => {
+        test('sets estimated time to "1-2 days" when "wits" is selected', () => {
+            render(<DeliveryPage />);
+            fireEvent.click(screen.getByLabelText('Collection'));
+            fireEvent.change(screen.getByTestId('collection'), { target: { value: 'wits' } });
+            expect(screen.getByTestId('estimated-time')).toHaveTextContent('1-2 days');
+        });
+
+        test('handles collection center change', () => {
+            render(<DeliveryPage />);
+            fireEvent.click(screen.getByLabelText('Collection'));
+            fireEvent.change(screen.getByTestId('collection'), { target: { value: 'field' } });
+            expect(screen.getByTestId('estimated-time')).toHaveTextContent('3-4 days');
+        });
+
+
+        test('sets estimated time to "2-5 days" when "orange" is selected', () => {
+            render(<DeliveryPage />);
+            fireEvent.click(screen.getByLabelText('Collection'));
+            fireEvent.change(screen.getByTestId('collection'), { target: { value: 'orange' } });
+            expect(screen.getByTestId('estimated-time')).toHaveTextContent('2-5 days');
+        });
     });
+
 });
 
 
