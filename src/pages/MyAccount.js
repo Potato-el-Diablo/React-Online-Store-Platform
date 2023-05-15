@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { getDocs, collection, query, where } from 'firebase/firestore';
+import {getDocs, collection, query, where, updateDoc, doc} from 'firebase/firestore';
 import { db } from './firebase';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import ReactStars from 'react-rating-stars-component';
 import { NavLink } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 const MyAccount = () => {
     const [userId, setUserId] = useState('');
@@ -60,6 +61,61 @@ const MyAccount = () => {
         setShowReviews(false);
     };
 
+    const EditableReview = ({ review, onEdit }) => {
+        const [isEditing, setIsEditing] = useState(false);
+        const { register, handleSubmit, formState: { errors } } = useForm();
+
+        const handleEdit = () => {
+            setIsEditing(!isEditing);
+        };
+
+        const onSubmit = async (data) => {
+            const reviewRef = doc(db, 'reviews', review.id);
+            await updateDoc(reviewRef, {
+                rating: data.rating,
+                comment: data.comment
+            });
+            onEdit();
+            handleEdit();
+        };
+
+        return (
+            <div className="reviewBox">
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <h3>Review for {review.productName}</h3>
+                    <button onClick={handleEdit}>Edit Review</button>
+                </div>
+                {isEditing ? (
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <label>
+                            Rating:
+                            <input {...register("rating", { required: true })} defaultValue={review.rating} />
+                        </label>
+                        {errors.rating && <p>Rating is required</p>}
+                        <label>
+                            Comment:
+                            <textarea {...register("comment", { required: true })} defaultValue={review.comment} />
+                        </label>
+                        {errors.comment && <p>Comment is required</p>}
+                        <input type="submit" />
+                    </form>
+                ) : (
+                    <>
+                        <ReactStars
+                            count={5}
+                            value={review.rating}
+                            edit={false}
+                            size={24}
+                            activeColor="#ffd700"
+                        />
+                        <p>{review.comment}</p>
+                    </>
+                )}
+            </div>
+        );
+    };
+
+
     return (
         <div>
             <h2>My Account</h2>
@@ -103,17 +159,11 @@ const MyAccount = () => {
                             ) : (
                                 <ul>
                                     {userReviews.map((review, index) => (
-                                        <li key={index} className="reviewBox">
-                                            <h3>Review for {review.productName}</h3>
-                                            <ReactStars
-                                                count={5}
-                                                value={review.rating}
-                                                edit={false}
-                                                size={24}
-                                                activeColor="#ffd700"
-                                            />
-                                            <p>{review.comment}</p>
-                                        </li>
+                                        <EditableReview
+                                            key={index}
+                                            review={review}
+                                            onEdit={handleClick}
+                                        />
                                     ))}
                                 </ul>
                             )}
