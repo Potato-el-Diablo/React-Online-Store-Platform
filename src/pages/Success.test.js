@@ -1,5 +1,6 @@
-import { render, screen } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { render, cleanup, screen, fireEvent } from '@testing-library/react';
+import { CartContext } from './CartContext';
 import Success from './Success';
 import { doc, getDoc, updateDoc, addDoc, collection, setDoc } from 'firebase/firestore';
 import { auth, db } from './firebase';
@@ -48,6 +49,21 @@ beforeEach(() => {
     collection.mockReturnValue({});
 });
 
+// Mock the CartContext
+const mockSetCartItems = jest.fn();
+
+
+describe('Success Page', () => {
+    afterEach(cleanup);
+
+    test('it renders without crashing', () => {
+        render(
+            <CartContext.Provider value={{ setCartItems: mockSetCartItems }}>
+                <Success />
+            </CartContext.Provider>
+        );
+        expect(screen.getByText(/Payment Successful!/i)).toBeInTheDocument();
+    });
 
 test('renders success message', async () => {
     render(
@@ -87,4 +103,6 @@ test('updates Firestore and localStorage correctly', async () => {
 
     // Check if localStorage was cleared
     expect(localStorage.getItem('cartItems')).toBeNull();
+});
+
 });
