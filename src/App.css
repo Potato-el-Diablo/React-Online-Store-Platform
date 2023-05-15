@@ -823,6 +823,11 @@ color: var(--color-1c1c1b);
   border-radius: 10px;
 }
 
+.product-modal img{
+  max-width: 150;
+  max-height: 150;
+}
+
 .product-overlay{
 position: fixed;
 top: 0;
