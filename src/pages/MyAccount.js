@@ -4,7 +4,7 @@ import { db } from './firebase';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import ReactStars from 'react-rating-stars-component';
 import { NavLink } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 
 const MyAccount = () => {
     const [userId, setUserId] = useState('');
@@ -63,7 +63,7 @@ const MyAccount = () => {
 
     const EditableReview = ({ review, onEdit }) => {
         const [isEditing, setIsEditing] = useState(false);
-        const { register, handleSubmit, formState: { errors } } = useForm();
+        const { register, handleSubmit, control, formState: { errors } } = useForm();
 
         const handleEdit = () => {
             setIsEditing(!isEditing);
@@ -87,17 +87,37 @@ const MyAccount = () => {
                 </div>
                 {isEditing ? (
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <label>
-                            Rating:
-                            <input {...register("rating", { required: true })} defaultValue={review.rating} />
-                        </label>
-                        {errors.rating && <p>Rating is required</p>}
-                        <label>
-                            Comment:
-                            <textarea {...register("comment", { required: true })} defaultValue={review.comment} />
-                        </label>
-                        {errors.comment && <p>Comment is required</p>}
-                        <input type="submit" />
+                        <div>
+                            <label>
+                                Rating:
+                                <Controller
+                                    name="rating"
+                                    control={control}
+                                    defaultValue={review.rating}
+                                    rules={{ required: true }}
+                                    render={({ field }) => (
+                                        <ReactStars
+                                            count={5}
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                            size={24}
+                                            activeColor="#ffd700"
+                                        />
+                                    )}
+                                />
+                            </label>
+                            {errors.rating && <p>Rating is required</p>}
+                        </div>
+                        <div>
+                            <label>
+                                Comment:
+                                <textarea {...register("comment", { required: true })} defaultValue={review.comment} />
+                            </label>
+                            {errors.comment && <p>Comment is required</p>}
+                        </div>
+                        <div>
+                            <input type="submit" />
+                        </div>
                     </form>
                 ) : (
                     <>
