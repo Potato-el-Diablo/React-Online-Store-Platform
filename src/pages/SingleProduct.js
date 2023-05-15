@@ -194,12 +194,11 @@ const SingleProduct = () => {
         <div className = "container-xxl">
           <div className="row">
             <div className="col-6">
-              <div className="main-product-image">
-                <div >
-                  <img src={productImage} alt={productName}/>
-                </div>
+              <div className="main-product-image" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', overflow: 'hidden', height: '500px'}}>
+                <img src={productImage} alt={productName} style={{maxWidth: '100%', maxHeight: '100%', height: 'auto', width: 'auto'}}/>
               </div>
-               {/* removed additional images to avoid issues for now  */}
+
+              {/* removed additional images to avoid issues for now  */}
                 {/* <div className="other-product-images d-flex flex-wrap gap-15"> */}
                   {/* <div><img src="/images/watch.jpg" alt="watch"/></div> */}
                   {/* <div><img src="/images/watch.jpg" alt="watch"/></div>  */}

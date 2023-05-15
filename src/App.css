@@ -759,8 +759,8 @@ color: var(--color-1c1c1b);
 }
 .main-product-image img{
   width: 100% !important;
-  height: 500px !important;
-  object-fit: cover;
+  height: auto !important;
+  object-fit: contain;
 
 }
 .other-product-images>div{
