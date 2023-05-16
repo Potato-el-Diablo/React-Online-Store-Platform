@@ -22,7 +22,7 @@ import MyAccount from "./pages/MyAccount";
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import Checkout from "./components/Checkout";
-Categorical-Search-Dev
+
 import GamingCategoricalSearch from "./pages/GamingCategoricalSearch";
 import CellphonesAndSmartwatchesCategoricalSearch from "./pages/CellphonesAndSmartwatchesCategoricalSearch";
 import BooksAndCoursesCategoricalSearch from "./pages/BooksAndCoursesCategoricalSearch";
@@ -32,7 +32,7 @@ import TvAudioAndMediaCategoricalSearch from "./pages/TvAudioAndMediaCategorical
 
 import OrderDetails from "./pages/OrderDetails";
 import DeliveryPage from "./pages/DeliveryPage";
-main
+
 const stripePromise = loadStripe('pk_test_51N4dpfECtnw33ZKc2BL6hUXmq8UzHP8oGpP71gWeNOHrLsuDfQWATvS64pJVrke4JIPvqAgZjps0IuxOqfFsE5VJ00HarVDp2R');
 
 function App() {
