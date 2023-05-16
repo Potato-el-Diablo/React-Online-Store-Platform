@@ -99,7 +99,11 @@ describe('Login', () => {
         expect(loginTitle).toBeInTheDocument();
     });
 
-    
+    test('renders Sign in with Google button', () => {
+        renderLogin();
+        const signInWithGoogleButton = screen.getByText(/Sign in with Google/i);
+        expect(signInWithGoogleButton).toBeInTheDocument();
+    });
 
     test('renders Email input field', () => {
         renderLogin();
