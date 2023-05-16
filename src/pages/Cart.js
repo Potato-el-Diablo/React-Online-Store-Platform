@@ -16,39 +16,7 @@ const Cart = () => {
     // Use the useCart hook to access cartItems and setCartItems
     const { cartItems, setCartItems } = useCart();
 
-    // const handleButtonClick = () => {
-    //     fetch("https://evening-sands-70201.herokuapp.com/create-checkout-session", {
-    //         method: "POST",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //         // Send along all the information about the items
-    //         body: JSON.stringify({
-    //             items: cartItems.map((item) => ({
-    //                 id: item.id,
-    //                 priceInCents: item.price * 100,
-    //                 name: item.name,
-    //                 quantity: item.quantity,
-    //             })),
-    //         }),
-    //     })
-    //         .then((res) => {
-    //             if (res.ok) return res.json();
-    //             // If there is an error then make sure we catch that
-    //             return res.json().then((e) => Promise.reject(e));
-    //         })
-    //         .then(({ url }) => {
-    //             // On success redirect the customer to the returned URL
-    //             window.location = url;
-    //         })
-    //         .catch((e) => {
-    //             console.error(e.error);
-    //         });
-    // };
-
-
     const [subtotal, setSubtotal] = useState(0);
-
 
     const [itemSubtotals, setItemSubtotals] = useState({});
 
@@ -99,7 +67,7 @@ const Cart = () => {
         setItemSubtotals(newItemSubtotals);
     }, [cartItems]);
 
-
+    //Gets the cart from the database so that the items are displayed
     const fetchUserCartItems = async () => {
         if (!auth.currentUser) return;
 
@@ -162,6 +130,7 @@ const Cart = () => {
         };
     }, []);
 
+    //Handles removing an item from cart
     const handleRemoveItem = async (itemId) => {
         const userCartRef = doc(db, 'Carts', auth.currentUser.uid);
         const userCartSnapshot = await getDoc(userCartRef);
