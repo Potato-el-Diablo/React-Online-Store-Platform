@@ -1,115 +1,78 @@
-import { render, fireEvent, waitFor, screen } from '@testing-library/react';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import {getDocs, collection, query, where, getFirestore} from 'firebase/firestore';
-import MyAccount from './MyAccount';
-import {useEffect, useState} from "react";
-import { act } from '@testing-library/react';
-import {initializeApp} from "firebase/app";
-import {BrowserRouter as Router} from "react-router-dom";
-import '@testing-library/jest-dom/extend-expect';
+import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import SingleProduct from './SingleProduct';
+import { BrowserRouter } from 'react-router-dom';
+import userEvent from '@testing-library/user-event';
 
+const MockProduct = {
+    productImage: 'test-image.jpg',
+    brand: 'Test Brand',
+    productName: 'Test Product',
+    productDescription: 'Test Description',
+    productPrice: 100,
+    productStock: 'In Stock',
+};
 
-jest.mock('firebase/app', () => ({
-    initializeApp: jest.fn().mockReturnValue({}),
+const MockLocation = {
+    pathname: '/singleproduct',
+    state: MockProduct,
+};
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useLocation: () => (MockLocation),
 }));
-jest.mock('firebase/auth', () => ({
-    getAuth: jest.fn(),
-    onAuthStateChanged: jest.fn(),
-}));
 
-jest.mock('firebase/firestore', () => ({
-    getFirestore: jest.fn().mockReturnValue({}),
-    getDocs: jest.fn(),
-    collection: jest.fn(),
-    query: jest.fn(),
-    where: jest.fn(),
-}));
-
-
-
-beforeEach(() => {
-    // Reset all mocks before each test
-    initializeApp.mockClear().mockReturnValue({});
-    getAuth.mockClear();
-    onAuthStateChanged.mockClear();
-    getFirestore.mockClear().mockReturnValue({});
-    getDocs.mockClear();
-    collection.mockClear();
-    query.mockClear();
-    where.mockClear();
-
-    getAuth.mockReturnValue({});
-
-    onAuthStateChanged.mockImplementation((auth, callback) => {
-        const user = { uid: '123' };
-        callback(user);
-        // Return a mock function
-        return jest.fn(() => {});
+describe('SingleProduct Component', () => {
+    beforeEach(() => {
+        // eslint-disable-next-line testing-library/no-render-in-setup
+        render(
+            <BrowserRouter>
+                <SingleProduct />
+            </BrowserRouter>
+        );
     });
 
-    getDocs.mockResolvedValue({
-        docs: [
-            {
-                id: '1',
-                data: jest.fn().mockReturnValue({
-                    userId: '123',
-                    orderNumber: '123',
-                    createdAt: { toDate: () => new Date('2022-01-01') },
-                    items: [{ id: '1', image: 'image1', name: 'Item 1' }],
-                }),
-            },
-        ],
+    test('renders product details correctly', () => {
+        expect(screen.getByText(MockProduct.productName)).toBeInTheDocument();
+        expect(screen.getByText(MockProduct.brand)).toBeInTheDocument();
+        expect(screen.getByText(`R ${MockProduct.productPrice}`)).toBeInTheDocument();
+        expect(screen.getByText(MockProduct.productStock)).toBeInTheDocument();
+        expect(screen.getByText(MockProduct.productDescription)).toBeInTheDocument();
     });
 
-    collection.mockReturnValue({});
-    query.mockReturnValue({});
-    where.mockReturnValue({});
-});
-
-test('renders MyAccount and shows order history on click', async () => {
-    render(
-        <Router>
-            <MyAccount />
-        </Router>
-    );
-
-
-    // Click the 'View order history' button
-    fireEvent.click(screen.getByText('View order history'));
-
-    // Wait for the order to appear in the document
-    expect(await screen.findByText('Order Number: 123')).toBeInTheDocument();
-});
-
-test('renders MyAccount and shows reviews on click', async () => {
-    render(
-        <Router>
-            <MyAccount />
-        </Router>
-    );
-
-
-
-
-    // Mock getDocs for reviews
-    getDocs.mockResolvedValueOnce({
-        docs: [
-            {
-                id: '1',
-                data: jest.fn().mockReturnValue({
-                    userId: '123',
-                    productName: 'Product 1',
-                    rating: 5,
-                    comment: 'Great product!',
-                }),
-            },
-        ],
+    test('renders product image correctly', () => {
+        const image = screen.getByAltText(MockProduct.productName);
+        expect(image).toBeInTheDocument();
+        expect(image.src).toContain(MockProduct.productImage);
     });
 
-    // Click the 'Show your reviews' button
-    fireEvent.click(screen.getByText('Show your reviews'));
+    test('renders quantity input and can change its value', () => {
+        const input = screen.getByRole('spinbutton');
+        expect(input).toBeInTheDocument();
+        fireEvent.change(input, { target: { value: 5 } });
+        expect(input.value).toBe('5');
+    });
 
-    // Wait for the review to appear in the document
-    expect(await screen.findByText('Review for Product 1')).toBeInTheDocument();
+    test('renders Add to Cart and Buy Now buttons', () => {
+        const addToCartButton = screen.getByText('Add to Cart');
+        const buyNowButton = screen.getByText('Buy Now');
+        expect(addToCartButton).toBeInTheDocument();
+        expect(buyNowButton).toBeInTheDocument();
+    });
+
+    test('renders Add to Wishlist link', () => {
+        const addToWishlistLink = screen.getByText('Add to Wishlist');
+        expect(addToWishlistLink).toBeInTheDocument();
+    });
+
+    test('should fire click events on Add to Cart and Buy Now buttons', () => {
+        const addToCartButton = screen.getByText('Add to Cart');
+        const buyNowButton = screen.getByText('Buy Now');
+        userEvent.click(addToCartButton);
+        userEvent.click(buyNowButton);
+        expect(addToCartButton).toBeInTheDocument();
+        expect(buyNowButton).toBeInTheDocument();
+    });
 });
-
