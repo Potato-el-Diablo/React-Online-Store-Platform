@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 import { db, auth } from './firebase';
-import {doc, getDoc, updateDoc, addDoc, collection, setDoc} from 'firebase/firestore';
+import {doc, getDoc, updateDoc, addDoc, collection, setDoc, query, where, getDocs} from 'firebase/firestore';
 import { useCart } from './CartContext';
 import emailjs from '@emailjs/browser'
 
@@ -67,21 +67,28 @@ const Success = () => {
             setOrderNumber(currentOrderNumber);
         }
         if (auth.currentUser) {
-            const userRef = doc(db, 'buyers', auth.currentUser.uid);
-            const userSnap = await getDoc(userRef);
+            console.log(`Current user ID: ${auth.currentUser.uid}`);
 
-            if (userSnap.exists()) {
-                const user = userSnap.data();
+            const userQuery = query(
+                collection(db, 'buyers'),
+                where('uid', '==', auth.currentUser.uid)
+            );
+
+            const querySnapshot = await getDocs(userQuery);
+            if (!querySnapshot.empty) {
+                const userDoc = querySnapshot.docs[0];
+                const user = userDoc.data();
 
                 if (user.email) {
                     const userEmail = user.email;
-
+                    const itemsString = cartItems.map(item => `${item.quantity} of ${item.name}`).join(', ');
+                    console.log(itemsString);  // Add this line
                     await emailjs.send('service_himaqlr', 'template_ds431qf', {
                         orderNumber: currentOrderNumber,
-                        subtotal: subtotal,
-                        items: cartItems.map(item => `${item.quantity} of ${item.name}`).join(', '),
+                        subtotal: subtotal.toString(),
+                        items: itemsString,
                         orderDate: new Date().toLocaleDateString(),
-                        to_email: userEmail
+                        to_email: userEmail,
                     }, '0tHoysH7w4GDDDWkS');
 
                     console.log(`Success! Email sent to ${userEmail}`);
@@ -89,7 +96,7 @@ const Success = () => {
                     console.error('Error: user.email is undefined');
                 }
             } else {
-                console.error('Error: userSnap does not exist');
+                console.error('No matching documents.');
             }
         }
 
