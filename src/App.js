@@ -52,12 +52,6 @@ function App() {
                     <Route path="forgot-password" element={<ForgotPassword/>} />
                     <Route path="myproducts" element={<MyProducts/>}/>
                     <Route path="cart" element={<Cart/>} />
-                    <Route path="gamingsearch" element={<GamingCategoricalSearch/>}/>
-                    <Route path="cellphonesandsmartwatchessearch" element={<CellphonesAndSmartwatchesCategoricalSearch/>}/>
-                    <Route path="booksandcoursessearch" element={<BooksAndCoursesCategoricalSearch/>}/>
-                    <Route path="computersandelectronicssearch" element={<ComputersAndElectronicsCategoricalSearch/>}/>
-                    <Route path="homeandappliancessearch" element={<HomeAndAppliancesCategoricalSearch/>}/>
-                    <Route path="tvaudioandmediasearch" element={<TvAudioAndMediaCategoricalSearch/>}/>
                     <Route path = "search" element={<Searched/>} />
                     <Route path ="product/:id" element = {<SingleProduct/>}/>
                     <Route path="MyAccount" element ={<MyAccount/>}/>
