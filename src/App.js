@@ -23,12 +23,6 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import Checkout from "./components/Checkout";
 
-import GamingCategoricalSearch from "./pages/GamingCategoricalSearch";
-import CellphonesAndSmartwatchesCategoricalSearch from "./pages/CellphonesAndSmartwatchesCategoricalSearch";
-import BooksAndCoursesCategoricalSearch from "./pages/BooksAndCoursesCategoricalSearch";
-import ComputersAndElectronicsCategoricalSearch from "./pages/ComputersAndElectronicsCategoricalSearch";
-import HomeAndAppliancesCategoricalSearch from "./pages/HomeAndAppliancesCategoricalSearch";
-import TvAudioAndMediaCategoricalSearch from "./pages/TvAudioAndMediaCategoricalSearch";
 
 import OrderDetails from "./pages/OrderDetails";
 import DeliveryPage from "./pages/DeliveryPage";
