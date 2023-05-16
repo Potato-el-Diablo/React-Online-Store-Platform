@@ -15,35 +15,36 @@ const stripePromise = loadStripe('pk_test_51N4dpfECtnw33ZKc2BL6hUXmq8UzHP8oGpP71
 const Cart = () => {
     // Use the useCart hook to access cartItems and setCartItems
     const { cartItems, setCartItems } = useCart();
-    const handleButtonClick = () => {
-        fetch("http://localhost:5001/create-checkout-session", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            // Send along all the information about the items
-            body: JSON.stringify({
-                items: cartItems.map((item) => ({
-                    id: item.id,
-                    priceInCents: item.price * 100,
-                    name: item.name,
-                    quantity: item.quantity,
-                })),
-            }),
-        })
-            .then((res) => {
-                if (res.ok) return res.json();
-                // If there is an error then make sure we catch that
-                return res.json().then((e) => Promise.reject(e));
-            })
-            .then(({ url }) => {
-                // On success redirect the customer to the returned URL
-                window.location = url;
-            })
-            .catch((e) => {
-                console.error(e.error);
-            });
-    };
+
+    // const handleButtonClick = () => {
+    //     fetch("https://evening-sands-70201.herokuapp.com/create-checkout-session", {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //         },
+    //         // Send along all the information about the items
+    //         body: JSON.stringify({
+    //             items: cartItems.map((item) => ({
+    //                 id: item.id,
+    //                 priceInCents: item.price * 100,
+    //                 name: item.name,
+    //                 quantity: item.quantity,
+    //             })),
+    //         }),
+    //     })
+    //         .then((res) => {
+    //             if (res.ok) return res.json();
+    //             // If there is an error then make sure we catch that
+    //             return res.json().then((e) => Promise.reject(e));
+    //         })
+    //         .then(({ url }) => {
+    //             // On success redirect the customer to the returned URL
+    //             window.location = url;
+    //         })
+    //         .catch((e) => {
+    //             console.error(e.error);
+    //         });
+    // };
 
 
     const [subtotal, setSubtotal] = useState(0);
@@ -233,9 +234,9 @@ const Cart = () => {
                             <div className="d-flex flex-column align-items-end">
                                 <h4>Subtotal: R {subtotal}</h4>
                                 <p>Taxes and Shipping Calculated at checkout</p>
-                                <button onClick={handleButtonClick} className="button">
+                                <Link to="/delivery" className="button">
                                     Checkout
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     </div>

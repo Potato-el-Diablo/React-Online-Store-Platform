@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 import { db, auth } from './firebase';
-import {doc, getDoc, updateDoc, addDoc, collection, setDoc} from 'firebase/firestore';
+import {doc, getDoc, updateDoc, addDoc, collection, setDoc, query, where, getDocs} from 'firebase/firestore';
 import { useCart } from './CartContext';
+import emailjs from '@emailjs/browser'
 
 const Success = () => {
     // Get cartItems from the context
@@ -13,6 +14,7 @@ const Success = () => {
         // Retrieve the cartItems data from localStorage
         const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
         let subtotal = 0;
+        let currentOrderNumber;
 
         // For each item in the cart, update the corresponding document in Firestore
         for (const item of cartItems) {
@@ -37,22 +39,70 @@ const Success = () => {
             const orderNumberSnapshot = await getDoc(orderNumberRef);
 
             if (orderNumberSnapshot.exists()) {
-                setOrderNumber(orderNumberSnapshot.data().lastOrder + 1);
-                await updateDoc(orderNumberRef, { lastOrder: orderNumberSnapshot.data().lastOrder + 1 });
+                currentOrderNumber = orderNumberSnapshot.data().lastOrder + 1;
+                await updateDoc(orderNumberRef, { lastOrder: currentOrderNumber});
             } else {
-                setOrderNumber(1);
-                await setDoc(orderNumberRef, { lastOrder: 1 });
+                currentOrderNumber = 1;
+                await setDoc(orderNumberRef, { lastOrder: currentOrderNumber });
             }
 
             const ordersRef = collection(db, 'Orders');
+
+            // Create an array of objects, each containing id, name, image, price, and quantity
+            const itemDetails = cartItems.map(item => ({
+                id: item.id,
+                name: item.name,
+                image: item.image,
+                price: item.price,
+                quantity: item.quantity,
+            }));
+
             await addDoc(ordersRef, {
                 createdAt: new Date(),
-                items: cartItems,
+                items: itemDetails,  // Save the itemDetails instead of cartItems
                 subtotal: subtotal,
                 userId: auth.currentUser.uid,
-                orderNumber: orderNumber,
+                orderNumber: currentOrderNumber,
             });
+            setOrderNumber(currentOrderNumber);
         }
+        if (auth.currentUser) {
+            console.log(`Current user ID: ${auth.currentUser.uid}`);
+
+            const userQuery = query(
+                collection(db, 'buyers'),
+                where('uid', '==', auth.currentUser.uid)
+            );
+
+            const querySnapshot = await getDocs(userQuery);
+            if (!querySnapshot.empty) {
+                const userDoc = querySnapshot.docs[0];
+                const user = userDoc.data();
+
+                if (user.email) {
+                    const userEmail = user.email;
+                    const itemsString = cartItems.map(item => `${item.quantity} of ${item.name}`).join(', ');
+                    console.log(itemsString);  // Add this line
+                    await emailjs.send('service_himaqlr', 'template_ds431qf', {
+                        orderNumber: currentOrderNumber,
+                        subtotal: subtotal.toString(),
+                        items: itemsString,
+                        orderDate: new Date().toLocaleDateString(),
+                        to_email: userEmail,
+                    }, '0tHoysH7w4GDDDWkS');
+
+                    console.log(`Success! Email sent to ${userEmail}`);
+                } else {
+                    console.error('Error: user.email is undefined');
+                }
+            } else {
+                console.error('No matching documents.');
+            }
+        }
+
+
+
+
 
         // Clear the cart items both in local state and localStorage
         setCartItems([]);
