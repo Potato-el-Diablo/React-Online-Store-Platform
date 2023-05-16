@@ -17,7 +17,7 @@ const OrderDetails = () => {
     useEffect(() => {
 
         const fetchOrderDetails = async () => {
-            console.log("OrderNumber"+orderNumber)
+            console.log("OrderNumber: "+orderNumber)
             const orderQuery = query(
                 collection(db, 'Orders'),
                 where('orderNumber', '==', Number(orderNumber))
