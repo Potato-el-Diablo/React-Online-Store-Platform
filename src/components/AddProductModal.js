@@ -34,7 +34,7 @@ export default function AddProductModal({
         };
 
         const myHandleRemoveTag = (index) => {
-            setProductTags(prevTags => prevTags.filter((_, i) => i !== index));  
+            setProductTags(prevTags => prevTags.filter((_, i) => i !== index));  //Remove tag from parameter
         };
 
     const handleAddProduct = async () => {

@@ -16,6 +16,7 @@ const SellerProductCard = ({
                            }) => {
     let location = useLocation();
 
+    //Send product parameters to UpdateProductModal
     const handleEditOnClick = () => {
         editOnClick({ productImage, brand, productName, productDescription, productPrice, productStock });
     };

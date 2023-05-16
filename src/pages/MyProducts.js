@@ -13,11 +13,12 @@ import UpdateProductModal from '../components/UpdateProductModal';
 const MyProducts = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isUpdateOpen, setIsUpdateOpen] = useState(false);
-    const [selectedProduct, setSelectedProduct] = useState(null); // New state variable
-    const grid = 12;
+    const [selectedProduct, setSelectedProduct] = useState(null); 
+    const grid = 12; //Static Grid size for viewing products
 
     const [products, setProducts] = useState([]);
 
+    //Get product list from Firebase according to user
     useEffect(() => {
         const authInstance = getAuth();
         const unsubscribe = onAuthStateChanged(authInstance, async (user) => {

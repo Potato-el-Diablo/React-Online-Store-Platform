@@ -8,6 +8,7 @@ class TagsForm extends Component {
     };
   }
 
+  //Add tag to the array
   handleAddTag = (event) => {
     const { tags} = this.state;
     const {onAddTag} = this.props;
@@ -20,9 +21,10 @@ class TagsForm extends Component {
         tags: [...tags, event.target.text]
     });
 
-    onAddTag(event);
+    onAddTag(event); // Call event to visually add tag
   }
 
+  //Remove tag from array
   handleRemoveTag = (index) => {
     const { tags } = this.state;
     const {onRemoveTag} = this.props;
@@ -30,7 +32,7 @@ class TagsForm extends Component {
       tags: tags.filter((tag, i) => i !== index)
     });
 
-    onRemoveTag(index);
+    onRemoveTag(index); // Call event to visually remove tag
   }
 
   render() {

@@ -38,10 +38,13 @@ export default function UpdateProductModal({
     
     const [myProductTags, setProductTags] = useState(productTags || []);
     
+    //Immediately change the product details values as changes are made in the form
     const handleChange = (e) => {
         const { name, value } = e.target;
         setState((prevState) => ({ ...prevState, [name]: value }));
     };
+
+    //Send update of product to FireBase
 
     const handleUpdateProduct = async () => {
         const productRef = doc(db, 'Products', productId);
@@ -54,7 +57,7 @@ export default function UpdateProductModal({
             tags: myProductTags,
             price: state.productPrice,
             stock: state.productStock,
-            sellerEmail: email, // Include sellerEmail field
+            sellerEmail: email, 
         });
 
 
@@ -75,9 +78,9 @@ export default function UpdateProductModal({
     const myHandleRemoveTag = (index) => {
         setProductTags(prevTags => {
             if (Array.isArray(prevTags)) { // Check if prevTags is an array
-              return prevTags.filter((_, i) => i !== index);
+              return prevTags.filter((_, i) => i !== index); //If it is, remove the tag from the array
             } else {
-              return prevTags;
+              return prevTags; // Otherwise, just return the array
             }
           });  
     };
