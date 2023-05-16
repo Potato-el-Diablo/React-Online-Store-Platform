@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { db, auth } from './firebase';
 import {doc, getDoc, updateDoc, addDoc, collection, setDoc} from 'firebase/firestore';
 import { useCart } from './CartContext';
+import emailjs from '@emailjs/browser'
 
 const Success = () => {
     // Get cartItems from the context
@@ -13,6 +14,7 @@ const Success = () => {
         // Retrieve the cartItems data from localStorage
         const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
         let subtotal = 0;
+        let currentOrderNumber;
 
         // For each item in the cart, update the corresponding document in Firestore
         for (const item of cartItems) {
@@ -36,7 +38,6 @@ const Success = () => {
             const orderNumberRef = doc(db, 'OrderNumber', 'lastOrderNumber');
             const orderNumberSnapshot = await getDoc(orderNumberRef);
 
-            let currentOrderNumber;
             if (orderNumberSnapshot.exists()) {
                 currentOrderNumber = orderNumberSnapshot.data().lastOrder + 1;
                 await updateDoc(orderNumberRef, { lastOrder: currentOrderNumber});
@@ -65,6 +66,28 @@ const Success = () => {
             });
             setOrderNumber(currentOrderNumber);
         }
+        if (auth.currentUser) {
+            const userRef = doc(db, 'buyers', auth.currentUser.uid);
+            const userSnap = await getDoc(userRef);
+            const user = userSnap.data();
+
+            const orderDetails = {
+                orderNumber: currentOrderNumber,
+                orderDate: new Date().toLocaleDateString(),
+                subtotal: subtotal,
+                items: cartItems.map(item => `${item.quantity} of ${item.name}`).join(', ')
+            };
+
+            const userEmail = auth.currentUser.email; // assuming user.email contains the user's email
+
+            await emailjs.send('service_himaqlr', 'template_ds431qf', {
+                orderNumber: currentOrderNumber,
+                subtotal: subtotal,
+                items: cartItems.map(item => `${item.quantity} of ${item.name}`).join(', '),
+                orderDate: new Date().toLocaleDateString(),
+            }, '0tHoysH7w4GDDDWkS', {to_email: userEmail});
+        }
+
 
 
 
