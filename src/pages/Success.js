@@ -69,25 +69,30 @@ const Success = () => {
         if (auth.currentUser) {
             const userRef = doc(db, 'buyers', auth.currentUser.uid);
             const userSnap = await getDoc(userRef);
-            const user = userSnap.data();
 
-            const orderDetails = {
-                orderNumber: currentOrderNumber,
-                orderDate: new Date().toLocaleDateString(),
-                subtotal: subtotal,
-                items: cartItems.map(item => `${item.quantity} of ${item.name}`).join(', ')
-            };
+            if (userSnap.exists()) {
+                const user = userSnap.data();
 
-            const userEmail = user.email; // assuming user.email contains the user's email
+                if (user.email) {
+                    const userEmail = user.email;
 
-            await emailjs.send('service_himaqlr', 'template_ds431qf', {
-                orderNumber: currentOrderNumber,
-                subtotal: subtotal,
-                items: cartItems.map(item => `${item.quantity} of ${item.name}`).join(', '),
-                orderDate: new Date().toLocaleDateString(),
-                to_email: userEmail,
-            }, '0tHoysH7w4GDDDWkS' );
+                    await emailjs.send('service_himaqlr', 'template_ds431qf', {
+                        orderNumber: currentOrderNumber,
+                        subtotal: subtotal,
+                        items: cartItems.map(item => `${item.quantity} of ${item.name}`).join(', '),
+                        orderDate: new Date().toLocaleDateString(),
+                        to_email: userEmail
+                    }, '0tHoysH7w4GDDDWkS');
+
+                    console.log(`Success! Email sent to ${userEmail}`);
+                } else {
+                    console.error('Error: user.email is undefined');
+                }
+            } else {
+                console.error('Error: userSnap does not exist');
+            }
         }
+
 
 
 
