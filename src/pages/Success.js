@@ -78,14 +78,15 @@ const Success = () => {
                 items: cartItems.map(item => `${item.quantity} of ${item.name}`).join(', ')
             };
 
-            const userEmail = auth.currentUser.email; // assuming user.email contains the user's email
+            const userEmail = user.email; // assuming user.email contains the user's email
 
             await emailjs.send('service_himaqlr', 'template_ds431qf', {
                 orderNumber: currentOrderNumber,
                 subtotal: subtotal,
                 items: cartItems.map(item => `${item.quantity} of ${item.name}`).join(', '),
                 orderDate: new Date().toLocaleDateString(),
-            }, '0tHoysH7w4GDDDWkS', {to_email: userEmail});
+                to_email: userEmail,
+            }, '0tHoysH7w4GDDDWkS' );
         }
 
 
