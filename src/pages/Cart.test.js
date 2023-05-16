@@ -22,6 +22,7 @@ describe("Cart", () => {
 
 });
 
+//Mocks and checks if the quantity is correctly updated with the subtotal also updating
 test('updates quantity when user changes quantity input', () => {
     // Arrange
     const mockItem = {

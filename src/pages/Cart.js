@@ -8,7 +8,7 @@ import { db, auth } from './firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { loadStripe } from '@stripe/stripe-js';
 import { useHistory } from 'react-router-dom';
-import { useCart } from './CartContext'; // Import the useCart hook
+import { useCart } from './CartContext';
 
 const stripePromise = loadStripe('pk_test_51N4dpfECtnw33ZKc2BL6hUXmq8UzHP8oGpP71gWeNOHrLsuDfQWATvS64pJVrke4JIPvqAgZjps0IuxOqfFsE5VJ00HarVDp2R');
 
