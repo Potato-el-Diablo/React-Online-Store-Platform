@@ -10,10 +10,11 @@ const OrderDetails = () => {
     const { orderNumber } = useParams();
     const [orderDetails, setOrderDetails] = useState(null);
 
+    //Calculates the subtotal of the ordered products
     const calculateSubTotal = (items) => {
         return items.reduce((total, item) => total + (item.price * item.quantity), 0);
     };
-
+    //Gets the individual order details from the database
     useEffect(() => {
 
         const fetchOrderDetails = async () => {
@@ -36,7 +37,7 @@ const OrderDetails = () => {
     if (!orderDetails) {
         return <p>Loading...</p>;
     }
-
+    //Displays the ordered details
     return (
         <>
             <Meta title={'Order Details'} />

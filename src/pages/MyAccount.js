@@ -13,6 +13,7 @@ const MyAccount = () => {
     const [userOrders, setUserOrders] = useState([]);
     const [showOrders, setShowOrders] = useState(false);
 
+    //Authorizes that a user is logged in
     useEffect(() => {
         const auth = getAuth();
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -27,7 +28,7 @@ const MyAccount = () => {
             unsubscribe();
         };
     }, []);
-
+    //Fetches and displays the users reviews
     const handleClick = async () => {
         if (!showReviews && userId) {
             const userReviewsQuery = query(
@@ -44,6 +45,7 @@ const MyAccount = () => {
         setShowReviews(!showReviews);
         setShowOrders(false);
     };
+    //Fetches and displays the users Order History
     const handleOrderClick = async () => {
         if (!showOrders && userId) {
             const userOrdersQuery = query(
@@ -60,7 +62,7 @@ const MyAccount = () => {
         setShowOrders(!showOrders);
         setShowReviews(false);
     };
-
+    //Allows the user to edit reviews from My Account
     const EditableReview = ({ review, onEdit }) => {
         const [isEditing, setIsEditing] = useState(false);
         const { register, handleSubmit, control, formState: { errors } } = useForm();
@@ -78,7 +80,7 @@ const MyAccount = () => {
             onEdit();
             handleEdit();
         };
-
+        // Displays an editable review when "edit" is clicked
         return (
             <div className="reviewBox">
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -135,7 +137,7 @@ const MyAccount = () => {
         );
     };
 
-
+    //Displays either the users order history or review history
     return (
         <div>
             <h2>My Account</h2>

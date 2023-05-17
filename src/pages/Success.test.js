@@ -6,6 +6,7 @@ import { doc, getDoc, updateDoc, addDoc, collection, setDoc } from 'firebase/fir
 import { auth, db } from './firebase';
 import '@testing-library/jest-dom/extend-expect';
 
+//Mock the necessary dependencies
 jest.mock('./firebase', () => ({
     auth: {
         currentUser: { uid: '123' },

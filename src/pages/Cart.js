@@ -50,7 +50,7 @@ const Cart = () => {
         localStorage.setItem('cartItems', JSON.stringify(cartItems));
     }, [cartItems]);
 
-
+    //Used to get each individual items subtotal
     useEffect(() => {
         const newSubtotal = Object.values(itemSubtotals).reduce(
             (accumulator, currentValue) => accumulator + currentValue,
@@ -150,7 +150,7 @@ const Cart = () => {
         // Remove the item from the cartItems state
         setCartItems((prevCartItems) => prevCartItems.filter((item) => item.id !== itemId));
 
-        // Update the subtotal
+        // Update the final subtotal
         setSubtotal((prevSubtotal) => {
             const newSubtotal = prevSubtotal - (itemSubtotals[itemId] || 0);
             console.log("Updated subtotal:", newSubtotal); // Debugging line
@@ -165,9 +165,6 @@ const Cart = () => {
             return updatedSubtotals;
         });
     };
-
-    // This example sets up an endpoint using the Express framework.
-// Watch this video to get started: https://youtu.be/rPR2aJ6XnAc.
 
 
     return (
@@ -191,7 +188,7 @@ const Cart = () => {
                                     quantity={item.quantity} // Pass the quantity as a prop
                                     onUpdateSubtotal={handleUpdateSubtotal}
                                     onUpdateQuantity={handleUpdateQuantity} // Pass the handleUpdateQuantity function as a prop
-                                    onRemove={handleRemoveItem}
+                                    onRemove={handleRemoveItem}   //Allows for removing cart item
                                 />
                             ))}
                         </div>

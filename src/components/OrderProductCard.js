@@ -13,6 +13,7 @@ const OrderProductCard = ({
                           }) => {
     let location = useLocation();
 
+    // This is what is displayed when you press "Order Details" in Order History
     return (
         <>
             <div className={` ${location.pathname === "/OrderHistory" ? `gr-${grid}` : "col3"} `}>

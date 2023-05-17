@@ -16,6 +16,8 @@ const DeliveryPage = () => {
 
   // Use the useCart hook to access cartItems and setCartItems
   const cartItems = JSON.parse(localStorage.getItem('cartItems'));
+
+  //Calls the stripe checkout page once delivery is completed
   const handleButtonClick = () => {
     fetch("https://evening-sands-70201.herokuapp.com/create-checkout-session", {
       method: "POST",
@@ -38,7 +40,7 @@ const DeliveryPage = () => {
           return res.json().then((e) => Promise.reject(e));
         })
         .then(({ url }) => {
-          // On success redirect the customer to the returned URL
+          // On success redirect the customer to the Stripe page
           window.location = url;
         })
         .catch((e) => {
@@ -67,7 +69,7 @@ const DeliveryPage = () => {
     const { name, value } = event.target;
     setDeliveryAddress(prevState => ({ ...prevState, [name]: value }));
   };
-
+  //Calculates the delivery cost and estimated shipping date
   const handleSubmitAddress = () => {
     
     const now = new Date();
@@ -101,9 +103,8 @@ const DeliveryPage = () => {
     }
   };  */
 
-  // database link?
 
-  // submit user information
+    // submits the user delivery details to the database
   
     const handleFormSubmit = async (event) => {
       // event.preventDefault();
@@ -134,7 +135,7 @@ const DeliveryPage = () => {
   
   
 
-  
+  //Renders the delivery page
   return (
     <div align="center">
       <h2 className="section-heading" align="center">Choose a delivery option</h2>

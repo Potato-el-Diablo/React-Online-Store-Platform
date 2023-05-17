@@ -66,6 +66,7 @@ const Success = () => {
             });
             setOrderNumber(currentOrderNumber);
         }
+        //This is used to send an email to the user about their order details
         if (auth.currentUser) {
             console.log(`Current user ID: ${auth.currentUser.uid}`);
 

@@ -8,7 +8,7 @@ import {initializeApp} from "firebase/app";
 import {BrowserRouter as Router} from "react-router-dom";
 import '@testing-library/jest-dom/extend-expect';
 
-
+//Mock the necessary dependancies
 jest.mock('firebase/app', () => ({
     initializeApp: jest.fn().mockReturnValue({}),
 }));
@@ -87,9 +87,6 @@ test('renders MyAccount and shows reviews on click', async () => {
             <MyAccount />
         </Router>
     );
-
-
-
 
     // Mock getDocs for reviews
     getDocs.mockResolvedValueOnce({

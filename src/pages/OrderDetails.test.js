@@ -5,6 +5,7 @@ import OrderDetails from './OrderDetails';
 import { getDocs, collection, query, where } from 'firebase/firestore';
 import '@testing-library/jest-dom/extend-expect';
 
+//Mock the necessary dependencies
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useParams: jest.fn(),
@@ -21,7 +22,7 @@ jest.mock('firebase/firestore', () => ({
 describe('OrderDetails', () => {
     beforeEach(() => {
         useParams.mockReturnValue({ orderNumber: '123' });
-
+        //Mocks a document with order details
         getDocs.mockResolvedValue({
             docs: [
                 {
@@ -42,6 +43,7 @@ describe('OrderDetails', () => {
         where.mockReturnValue({});
     });
 
+    //Mocks are needed for correct rendering
     it('should render order details correctly', async () => {
         render(
             <Router>
