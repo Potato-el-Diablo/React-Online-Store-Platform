@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 import { db, auth } from './firebase';
-import {doc, getDoc, updateDoc, addDoc, collection, setDoc, query, where, getDocs} from 'firebase/firestore';
+import {doc, getDoc, updateDoc, addDoc, collection, setDoc, query, where, getDocs, writeBatch} from 'firebase/firestore';
 import { useCart } from './CartContext';
 import emailjs from '@emailjs/browser'
 
@@ -9,6 +9,78 @@ const Success = () => {
     // Get cartItems from the context
     const { setCartItems } = useCart();
     const [orderNumber, setOrderNumber] = useState(1);
+
+    const getSellerIdByEmail = async (sellerEmail) => {
+        const sellerQuery = query(
+            collection(db, 'sellers'),
+            where('companyEmail', '==', sellerEmail.toLowerCase())  // Convert to lowercase for comparison
+        );
+        const querySnapshot = await getDocs(sellerQuery);
+        if (!querySnapshot.empty) {
+            const sellerDoc = querySnapshot.docs[0];
+            return sellerDoc.id;
+        }
+        throw new Error(`Seller not found for email: ${sellerEmail}`);
+    }
+
+
+    const addToSellerAnalytics = async (cartItems) => {
+        const date = getDate(new Date());
+
+        // Create a map to hold all batches for each seller
+        let batches = new Map();
+
+        for (const item of cartItems) {
+            const sellerId = await getSellerIdByEmail(item.sellerEmail);
+            const sellerRef = doc(db, 'sellers', sellerId);
+            const dateRef = doc(sellerRef, 'analytics', date);
+
+            const dateSnapshot = await getDoc(dateRef);
+            let dateData = dateSnapshot.exists() ? dateSnapshot.data() : {};
+
+            if (item.id in dateData) {
+                dateData[item.id] += item.quantity;
+            } else {
+                dateData[item.id] = item.quantity;
+            }
+
+            // Get the batch for this seller or create a new one if it doesn't exist
+            let batch = batches.get(sellerId);
+            if (!batch) {
+                batch = writeBatch(db);
+                batches.set(sellerId, batch);
+            }
+
+            batch.set(dateRef, dateData);
+        }
+
+        // Commit all batches
+        for (let batch of batches.values()) {
+            await batch.commit();
+        }
+    };
+    function getDate(d) {
+        const dd = String(d.getDate()).padStart(2, '0');
+        const mm = String(d.getMonth() + 1).padStart(2, '0'); //January is 0!
+        const yyyy = d.getFullYear();
+
+        return dd + '-' + mm + '-' + yyyy;
+    }
+
+    function getWeekNumber(d) {
+        // Copy date so don't modify original
+        d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+        // Set to nearest Thursday: current date + 4 - current day number
+        // Make Sunday's day number 7
+        d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+        // Get first day of year
+        var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+        // Calculate full weeks to nearest Thursday
+        var weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+        // Return array of year and week number
+        return weekNo;
+    }
+
 
     const handleSuccessfulCheckout = async () => {
         // Retrieve the cartItems data from localStorage
@@ -55,6 +127,7 @@ const Success = () => {
                 image: item.image,
                 price: item.price,
                 quantity: item.quantity,
+                sellerEmail: item.sellerEmail,
             }));
 
             await addDoc(ordersRef, {
@@ -65,6 +138,7 @@ const Success = () => {
                 orderNumber: currentOrderNumber,
             });
             setOrderNumber(currentOrderNumber);
+            await addToSellerAnalytics(itemDetails);
         }
         //This is used to send an email to the user about their order details
         if (auth.currentUser) {
