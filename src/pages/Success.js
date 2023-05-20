@@ -27,38 +27,48 @@ const Success = () => {
     const addToSellerAnalytics = async (cartItems) => {
         const date = getDate(new Date());
 
-        // Create a map to hold all batches for each seller
-        let batches = new Map();
+        // Create a map to hold all updates for each seller
+        let updates = new Map();
 
         for (const item of cartItems) {
             const sellerId = await getSellerIdByEmail(item.sellerEmail);
             const sellerRef = doc(db, 'sellers', sellerId);
             const dateRef = doc(sellerRef, 'analytics', date);
 
-            const dateSnapshot = await getDoc(dateRef);
-            let dateData = dateSnapshot.exists() ? dateSnapshot.data() : {};
+            // Combine sellerId and date to create a unique key for each seller/date pair
+            let key = `${sellerId}_${date}`;
+
+            // Get the existing data for this seller/date or create a new object if it doesn't exist
+            let dateData = updates.get(key);
+            if (!dateData) {
+                const dateSnapshot = await getDoc(dateRef);
+                dateData = dateSnapshot.exists() ? dateSnapshot.data() : {};
+                updates.set(key, dateData);
+            }
 
             if (item.id in dateData) {
                 dateData[item.id] += item.quantity;
             } else {
                 dateData[item.id] = item.quantity;
             }
-
-            // Get the batch for this seller or create a new one if it doesn't exist
-            let batch = batches.get(sellerId);
-            if (!batch) {
-                batch = writeBatch(db);
-                batches.set(sellerId, batch);
-            }
-
-            batch.set(dateRef, dateData);
         }
 
-        // Commit all batches
-        for (let batch of batches.values()) {
-            await batch.commit();
+        // Create a batch to hold all the updates
+        let batch = writeBatch(db);
+
+        // Set the data for each document in the batch
+        for (let [key, data] of updates.entries()) {
+            // Split the key back into sellerId and date
+            let [sellerId, date] = key.split("_");
+            const ref = doc(db, 'sellers', sellerId, 'analytics', date);
+            batch.set(ref, data);
         }
+
+        // Commit the batch
+        await batch.commit();
     };
+
+
     function getDate(d) {
         const dd = String(d.getDate()).padStart(2, '0');
         const mm = String(d.getMonth() + 1).padStart(2, '0'); //January is 0!
