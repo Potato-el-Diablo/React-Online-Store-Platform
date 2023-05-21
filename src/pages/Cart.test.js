@@ -77,36 +77,23 @@ describe("Cart", () => {
 
     //Checks if items in cart are successfully removed
     test('removes item from the cart', async () => {
-
-        const mockItem = {
+        const onRemove = jest.fn();
+        const item = {
             id: 'item1',
             name: 'Test Item',
             price: 100,
             image: '/path/to/image.jpg',
+            quantity: 1,
         };
-        const mockUpdateSubtotal = jest.fn();
-        const mockUpdateQuantity = jest.fn();
-        const mockRemove = jest.fn();
-        const initialQuantity = 1;
 
-        render(
-            <CartItem
-                item={mockItem}
-                quantity={initialQuantity}
-                onUpdateSubtotal={mockUpdateSubtotal}
-                onRemove={mockRemove}
-                onUpdateQuantity={mockUpdateQuantity}
-            />
-        );
-        fireEvent.click(screen.getByText('Delete'));
+        render(<CartItem item={item} quantity={1} onUpdateSubtotal={jest.fn()} onRemove={onRemove} onUpdateQuantity={jest.fn()} />);
 
-        // Wait for changes to propagate through useEffects
-        // eslint-disable-next-line testing-library/no-unnecessary-act
-        await act(async () => {
-            await waitFor(() => expect(updateDoc).toHaveBeenCalled());
-        });
+        const deleteButton = await screen.findByText('Delete');
+
+        fireEvent.click(deleteButton);
+
+        expect(onRemove).toHaveBeenCalled();
     });
-
 
 
 });
