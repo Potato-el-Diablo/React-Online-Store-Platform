@@ -251,6 +251,7 @@ const Cart = () => {
 
 
                         <div className="voucher-dropdown" style={{ textAlign: "center", marginBottom: "20px" }}>
+                            <h4>Available Vouchers:</h4>
                             <select
                                 className="dropdownStyles"
                                 onChange={(e) => handleVoucherSelect(e.target.value)}
@@ -263,6 +264,7 @@ const Cart = () => {
                                 ))}
                             </select>
                         </div>
+
 
 
                         <div className="col-12 py-2 mt-4"></div>

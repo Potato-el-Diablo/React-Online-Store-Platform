@@ -1008,6 +1008,14 @@ z-index: 1000;
   flex-shrink: 0;
 }
 
+.voucher-dropdown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
 
 .dropdownStyles {
   width: 300px;
