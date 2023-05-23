@@ -1,18 +1,70 @@
 import React, { useState, useEffect } from 'react';
 import {getDocs, collection, query, where, updateDoc, doc} from 'firebase/firestore';
-import { db } from './firebase';
+import {auth, db} from './firebase';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import ReactStars from 'react-rating-stars-component';
 import { NavLink } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
+import { useLocation } from "react-router-dom";
+
+
+
 
 const MyAccount = () => {
+    const location = useLocation();
     const [userId, setUserId] = useState('');
     const [userReviews, setUserReviews] = useState([]);
     const [showReviews, setShowReviews] = useState(false);
     const [userOrders, setUserOrders] = useState([]);
     const [showOrders, setShowOrders] = useState(false);
+    const [userInfo, setUserInfo] = useState(null);
+    const [showUserInfo, setShowUserInfo] = useState(false);
+    // State to track if the user is logged in
+    const [loggedIn, setLoggedIn] = useState(false);
 
+    // State to track if the user is a seller
+    // eslint-disable-next-line no-unused-vars
+    const [isSeller, setIsSeller] = useState(false);
+
+    // UseEffect hook to user authentication state changes such as logging in
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                setLoggedIn(true);
+                // Check if the user is a seller
+                const sellerRef = collection(db, "sellers");
+                const q = query(sellerRef, where("uid", "==", user.uid));
+                const querySnapshot = await getDocs(q);
+
+                // If the user is a seller, set isSeller to true and store their first name
+                if (!querySnapshot.empty) {
+                    const sellerData = querySnapshot.docs[0];
+                    setIsSeller(true);
+                } else {
+                    setIsSeller(false);
+                    // If the user is not a seller, check if they are a buyer
+                    const buyerRef = collection(db, "buyers");
+                    const q = query(buyerRef, where("uid", "==", user.uid));
+                    const querySnapshot = await getDocs(q);
+                    // If the user is a buyer, store their first name
+                    if (!querySnapshot.empty) {
+                        const buyerData = querySnapshot.docs[0];
+                        const fullName = buyerData.data().name;
+                        const firstName = fullName.split(" ")[0];
+
+                    }
+                }
+            } else {
+                // If the user is not logged in, reset states
+                setLoggedIn(false);
+                setIsSeller(false);
+            }
+        });
+
+        return () => {
+            unsubscribe();
+        };
+    }, []);
     //Authorizes that a user is logged in
     useEffect(() => {
         const auth = getAuth();
@@ -62,6 +114,37 @@ const MyAccount = () => {
         setShowOrders(!showOrders);
         setShowReviews(false);
     };
+    // When "show customer info" is clicked, this function will handle the request
+    const handleUserInfoClick = async () => {
+        if (!showUserInfo && userId) {
+            console.log("seller bool on my acc:", isSeller)
+            let userQuery;
+            if(isSeller) {
+                userQuery = query(
+                    collection(db, 'sellers'),
+                    where('uid', '==', userId)
+                );
+            } else {
+                userQuery = query(
+                    collection(db, 'buyers'),
+                    where('uid', '==', userId)
+                );
+            }
+
+            const querySnapshot = await getDocs(userQuery);
+            const fetchedUser = querySnapshot.docs.map((doc) => ({
+                ...doc.data(),
+                id: doc.id,
+            }));
+
+            setUserInfo(fetchedUser[0]);  // assuming one user will be returned
+        }
+        setShowUserInfo(!showUserInfo);
+        setShowOrders(false);
+        setShowReviews(false);
+    };
+
+
     //Allows the user to edit reviews from My Account
     const EditableReview = ({ review, onEdit }) => {
         const [isEditing, setIsEditing] = useState(false);
@@ -143,8 +226,10 @@ const MyAccount = () => {
             <h2>My Account</h2>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', marginRight: '20px' }}>
+                    <button className="button" onClick={handleUserInfoClick}>{showUserInfo ? 'Hide Personal Info' : 'Show personal info'}</button>
                     <button className="button" onClick={handleOrderClick}>{showOrders ? 'Hide order history' : 'View order history'}</button>
                     <button className="button" onClick={handleClick}>{showReviews ? 'Hide reviews' : 'Show your reviews'}</button>
+
                 </div>
                 <div style={{ border: '1px solid #ddd', padding: '10px', borderRadius: '5px', width: '80%' }}>
                     {showOrders && (
@@ -191,6 +276,27 @@ const MyAccount = () => {
                             )}
                         </>
                     )}
+                    {showUserInfo && (
+                        <>
+                            {userInfo ? (
+                                <div>
+                                    <h3>User Information</h3>
+                                    <p>Name: {isSeller ? `${userInfo.firstName} ${userInfo.lastName}` : userInfo.name}</p>
+                                    <p>Email: {isSeller ? userInfo.companyEmail : userInfo.email}</p>
+                                    <p>Mobile Number: {userInfo.mobileNumber}</p>
+                                    {isSeller && (
+                                        <>
+                                            <p>Company Name: {userInfo.companyName}</p>
+                                            <p>Company Telephone: {userInfo.companyTelephone}</p>
+                                        </>
+                                    )}
+                                </div>
+                            ) : (
+                                <p>No user information available.</p>
+                            )}
+                        </>
+                    )}
+
                 </div>
             </div>
         </div>
