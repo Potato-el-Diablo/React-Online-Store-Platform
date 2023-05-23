@@ -114,8 +114,6 @@ const Success = async () => {
     }
 
 
-
-
     const handleSuccessfulCheckout = async () => {
         // Retrieve the cartItems data from localStorage
         const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
@@ -226,8 +224,13 @@ const Success = async () => {
     };
 
     useEffect(() => {
-        handleSuccessfulCheckout();
-    }, []); // Run once on mount
+        const checkout = async () => {
+            await handleSuccessfulCheckout();
+        };
+
+        checkout();
+    }, [setCartItems]);
+
 
     return (
         <div>
