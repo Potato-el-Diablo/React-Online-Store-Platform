@@ -220,7 +220,7 @@ const Header = () => {
                                         {isSeller && <NavLink className="text-white" to="/MyProducts">My Products</NavLink>}
                                         <NavLink className="text-white" to={{
                                             pathname: "/MyAccount",
-                                            state: { isSeller: isSeller }
+                                            state: { isSeller: {isSeller} }
                                         }}>My Account</NavLink>
                                     </div>
                                 </div>
