@@ -3,10 +3,11 @@ import { BsSearch } from "react-icons/bs";
 import { auth, db } from "../pages/firebase";
 import React, { useState, useEffect } from "react";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import MyAccount from "../pages/MyAccount";
+
 
 
 const Header = () => {
+
     const [searchQuery, setSearchQuery] = useState("");
     const navigate = useNavigate();
 
@@ -78,7 +79,6 @@ const Header = () => {
         <>
             {/* This header (line 8-22) is the top header with the hotline and free shipping text*/}
             <header className="header-top-strip py-3" data-testid="header">
-                <MyAccount isSeller={isSeller} />
                 <div className="container-xxl">
                     <div className="row align-items-center">
                         <div className="col-6">
@@ -215,7 +215,10 @@ const Header = () => {
                                         <NavLink className="text-white" to = "/contact">Contact</NavLink>
                                         {/* Conditionally renders the MyProducts button if you are a seller */}
                                         {isSeller && <NavLink className="text-white" to="/MyProducts">My Products</NavLink>}
-                                        <NavLink className="text-white" to="/MyAccount">My Account</NavLink>
+                                        <NavLink className="text-white" to={{
+                                            pathname: "/MyAccount",
+                                            state: { isSeller: isSeller }
+                                        }}>My Account</NavLink>
                                     </div>
                                 </div>
 

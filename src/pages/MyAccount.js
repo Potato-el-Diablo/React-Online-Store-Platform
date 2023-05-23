@@ -5,10 +5,14 @@ import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import ReactStars from 'react-rating-stars-component';
 import { NavLink } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
+import { useLocation } from "react-router-dom";
 
 
 
-const MyAccount = ({isSeller}) => {
+
+const MyAccount = () => {
+    const location = useLocation();
+    const { isSeller } = location.state || { isSeller: false };  // default value if state is undefined
     const [userId, setUserId] = useState('');
     const [userReviews, setUserReviews] = useState([]);
     const [showReviews, setShowReviews] = useState(false);
@@ -69,6 +73,7 @@ const MyAccount = ({isSeller}) => {
     // When "show customer info" is clicked, this function will handle the request
     const handleUserInfoClick = async () => {
         if (!showUserInfo && userId) {
+            console.log("seller bool on my acc:", isSeller)
             let userQuery;
             if(isSeller) {
                 userQuery = query(
