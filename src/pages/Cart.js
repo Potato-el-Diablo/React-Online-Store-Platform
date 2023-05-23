@@ -16,7 +16,7 @@ const Cart = () => {
     // Use the useCart hook to access cartItems and setCartItems
     const { cartItems, setCartItems } = useCart();
 
-    const [subtotal, setSubtotal] = useState(0);
+    let [subtotal, setSubtotal] = useState(0);
 
     const [itemSubtotals, setItemSubtotals] = useState({});
 
@@ -222,6 +222,8 @@ const Cart = () => {
         });
     };
 
+    subtotal = (subtotal - discount).toFixed(2)
+
 
     return (
         <>
@@ -275,7 +277,7 @@ const Cart = () => {
                                 Continue Shopping
                             </Link>
                             <div className="d-flex flex-column align-items-end">
-                                <h4>Subtotal: R {(subtotal - discount).toFixed(2)}</h4>
+                                <h4>Subtotal: R {subtotal}</h4>
                                 <p>Taxes and Shipping Calculated at checkout</p>
                                 <Link to="/delivery" className="button" onClick={handleCheckout}>
                                     Checkout
