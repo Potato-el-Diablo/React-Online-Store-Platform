@@ -98,6 +98,7 @@ const MyAccount = () => {
         }
         setShowReviews(!showReviews);
         setShowOrders(false);
+        setShowUserInfo(false);
     };
     //Fetches and displays the users Order History
     const handleOrderClick = async () => {
@@ -115,6 +116,7 @@ const MyAccount = () => {
         }
         setShowOrders(!showOrders);
         setShowReviews(false);
+        setShowUserInfo(false);
     };
     // When "show customer info" is clicked, this function will handle the request
     const handleUserInfoClick = async () => {
