@@ -9,6 +9,12 @@ import Login from "./pages/Login";
 import SignupBuyer from "./pages/SignupBuyer";
 import Home from "./pages/Home";
 import OurStore from "./pages/OurStore"
+import BooksAndCoursesCategorySearch from "./pages/BooksAndCoursesCategoricalSearch";
+import CellphonesAndSmartwatchesCategorySearch from "./pages/CellphonesAndSmartwatchesCategoricalSearch";
+import ComputersAndElectronincsCategorySearch from "./pages/ComputersAndElectronicsCategoricalSearch";
+import GamingCategorySearch from "./pages/GamingCategoricalSearch";
+import HomeAndAppliancesCategoricalSearch from "./pages/HomeAndAppliancesCategoricalSearch";
+import TvAudioAndMediaCategoricalSearch from "./pages/TvAudioAndMediaCategoricalSearch";
 import ForgotPassword from './pages/ForgotPassword';
 import Cart from './pages/Cart';
 import MyProducts from './pages/MyProducts';
@@ -51,6 +57,12 @@ function App() {
                     <Route path="MyAccount" element ={<MyAccount/>}/>
                     <Route path="/success" element={<Success/>} />
                     <Route path="/MyAccount" component={MyAccount} />
+                    <Route path="/BooksAndCoursesCategorySearch" element={<BooksAndCoursesCategorySearch/>} />
+                    <Route path="/CellphonesAndSmartwatchesCategorySearch" element={<CellphonesAndSmartwatchesCategorySearch/>} />
+                    <Route path="/ComputersAndElectronincsCategorySearch" element={<ComputersAndElectronincsCategorySearch/>} />
+                    <Route path="/GamingCategorySearch" element={<GamingCategorySearch/>} />
+                    <Route path="/HomeAndAppliancesCategoricalSearch" element={<HomeAndAppliancesCategoricalSearch/>} />
+                    <Route path="/TvAudioAndMediaCategoricalSearch" element={<TvAudioAndMediaCategoricalSearch/>} />
                     <Route path="/OrderDetails/:orderNumber" element={<OrderDetails />} />
                     <Route path="delivery" element={<DeliveryPage/>}/>
                     <Route path="/Checkout" element={

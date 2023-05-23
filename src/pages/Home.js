@@ -127,7 +127,7 @@ const Home = () => {
                             <div>
                                 <h6>Home and Appliances</h6>
 
-                                <Link className="button" to="/product">Explore</Link>
+                                <Link className="button" to="/HomeAndAppliancesCategoricalSearch">Explore</Link>
                             </div>
                             <img src="/images/camera.jpg" alt="camera"/>
                         </div>
@@ -135,7 +135,7 @@ const Home = () => {
                             <div>
                                 <h6>TV, Audio, and Media</h6>
 
-                                <Link className="button" to="/product">Explore</Link>
+                                <Link className="button" to="/TvAudioAndMediaCategoricalSearch">Explore</Link>
                             </div>
                             <img src="/images/tv.jpg" alt="camera"/>
                         </div>
@@ -143,7 +143,7 @@ const Home = () => {
                             <div>
                                 <h6>Gaming</h6>
 
-                                <Link className="button" to="/product">Explore</Link>
+                                <Link className="button" to="/GamingCategorySearch">Explore</Link>
                             </div>
                             <img src="/images/headphone.jpg" alt="headphone"/>
                         </div>
@@ -158,7 +158,7 @@ const Home = () => {
                             <div>
                                 <h6>Books and Courses</h6>
 
-                                <Link className="button" to="/product">Explore</Link>
+                                <Link className="button" to="/BooksAndCoursesCategorySearch">Explore</Link>
                             </div>
                             <img src="/images/camera.jpg" alt="camera"/>
                         </div>
@@ -166,7 +166,7 @@ const Home = () => {
                             <div>
                                 <h6>Cellphones and Smartwatches</h6>
 
-                                <Link className="button" to="/product">Explore</Link>
+                                <Link className="button" to="/CellphonesAndSmartwatchesCategorySearch">Explore</Link>
                             </div>
                             <img src="/images/tv.jpg" alt="camera"/>
                         </div>
@@ -174,7 +174,7 @@ const Home = () => {
                             <div>
                                 <h6>Computers and Electronics</h6>
 
-                                <Link className="button" to="/product">Explore</Link>
+                                <Link className="button" to="/ComputersAndElectronincsCategorySearch">Explore</Link>
                             </div>
                             <img src="/images/headphone.jpg" alt="headphone"/>
                         </div>
