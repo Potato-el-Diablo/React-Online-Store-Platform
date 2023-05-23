@@ -148,14 +148,17 @@ const Header = () => {
                                         <img src="images/user.svg" alt="user"/>
                                         <p className="mb-0">
                                             <NavLink className="text-white" to="login">
-                                            <span
-                                                dangerouslySetInnerHTML={{
-                                                    __html: loggedIn
-                                                        ? `Logged In. <br /> Welcome ${userName}`
-                                                        : "Login <br /> My Account",
-                                                }}
-                                            />
+                                                {loggedIn ? (
+                                                    <>
+                                                        Logged In. <br /> Welcome {userName}
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        Login <br /> My Account
+                                                    </>
+                                                )}
                                             </NavLink>
+
                                         </p>
                                     </Link>
                                 </div>
