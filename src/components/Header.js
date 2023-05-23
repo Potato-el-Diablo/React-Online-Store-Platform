@@ -3,6 +3,7 @@ import { BsSearch } from "react-icons/bs";
 import { auth, db } from "../pages/firebase";
 import React, { useState, useEffect } from "react";
 import { collection, query, where, getDocs } from "firebase/firestore";
+import MyAccount from "../pages/MyAccount";
 
 
 const Header = () => {
@@ -77,6 +78,7 @@ const Header = () => {
         <>
             {/* This header (line 8-22) is the top header with the hotline and free shipping text*/}
             <header className="header-top-strip py-3" data-testid="header">
+                <MyAccount isSeller={isSeller} />
                 <div className="container-xxl">
                     <div className="row align-items-center">
                         <div className="col-6">

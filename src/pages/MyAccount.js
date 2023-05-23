@@ -6,12 +6,16 @@ import ReactStars from 'react-rating-stars-component';
 import { NavLink } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 
-const MyAccount = () => {
+
+
+const MyAccount = ({isSeller}) => {
     const [userId, setUserId] = useState('');
     const [userReviews, setUserReviews] = useState([]);
     const [showReviews, setShowReviews] = useState(false);
     const [userOrders, setUserOrders] = useState([]);
     const [showOrders, setShowOrders] = useState(false);
+    const [userInfo, setUserInfo] = useState(null);
+    const [showUserInfo, setShowUserInfo] = useState(false);
 
     //Authorizes that a user is logged in
     useEffect(() => {
@@ -62,6 +66,36 @@ const MyAccount = () => {
         setShowOrders(!showOrders);
         setShowReviews(false);
     };
+    // When "show customer info" is clicked, this function will handle the request
+    const handleUserInfoClick = async () => {
+        if (!showUserInfo && userId) {
+            let userQuery;
+            if(isSeller) {
+                userQuery = query(
+                    collection(db, 'sellers'),
+                    where('uid', '==', userId)
+                );
+            } else {
+                userQuery = query(
+                    collection(db, 'buyers'),
+                    where('uid', '==', userId)
+                );
+            }
+
+            const querySnapshot = await getDocs(userQuery);
+            const fetchedUser = querySnapshot.docs.map((doc) => ({
+                ...doc.data(),
+                id: doc.id,
+            }));
+
+            setUserInfo(fetchedUser[0]);  // assuming one user will be returned
+        }
+        setShowUserInfo(!showUserInfo);
+        setShowOrders(false);
+        setShowReviews(false);
+    };
+
+
     //Allows the user to edit reviews from My Account
     const EditableReview = ({ review, onEdit }) => {
         const [isEditing, setIsEditing] = useState(false);
@@ -145,7 +179,7 @@ const MyAccount = () => {
                 <div style={{ display: 'flex', flexDirection: 'column', marginRight: '20px' }}>
                     <button className="button" onClick={handleOrderClick}>{showOrders ? 'Hide order history' : 'View order history'}</button>
                     <button className="button" onClick={handleClick}>{showReviews ? 'Hide reviews' : 'Show your reviews'}</button>
-                    <button className="button"></button>
+                    <button className="button" onClick={handleUserInfoClick}></button>
                 </div>
                 <div style={{ border: '1px solid #ddd', padding: '10px', borderRadius: '5px', width: '80%' }}>
                     {showOrders && (
@@ -192,6 +226,27 @@ const MyAccount = () => {
                             )}
                         </>
                     )}
+                    {showUserInfo && (
+                        <>
+                            {userInfo ? (
+                                <div>
+                                    <h3>User Information</h3>
+                                    <p>Name: {isSeller ? `${userInfo.firstName} ${userInfo.lastName}` : userInfo.name}</p>
+                                    <p>Email: {isSeller ? userInfo.companyEmail : userInfo.email}</p>
+                                    <p>Mobile Number: {userInfo.mobileNumber}</p>
+                                    {isSeller && (
+                                        <>
+                                            <p>Company Name: {userInfo.companyName}</p>
+                                            <p>Company Telephone: {userInfo.companyTelephone}</p>
+                                        </>
+                                    )}
+                                </div>
+                            ) : (
+                                <p>No user information available.</p>
+                            )}
+                        </>
+                    )}
+
                 </div>
             </div>
         </div>
