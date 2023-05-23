@@ -56,15 +56,24 @@ const Cart = () => {
         const selectedVoucher = vouchers.find((voucher) => voucher.id === voucherId);
         setSelectedVoucher(selectedVoucher);
 
-        // Calculate the discount and update the discount state
         if (selectedVoucher) {
-            const newDiscount = (subtotal / 100) * selectedVoucher.Discount;
-            setDiscount(newDiscount);
+            const discountPercent = selectedVoucher.Discount;
+            const updatedItems = cartItems.map(item => ({
+                ...item,
+                price: (item.originalPrice * (1 - discountPercent / 100)).toFixed(2),
+            }));
+            setCartItems(updatedItems);
         } else {
-            // Reset the discount if no voucher is selected
-            setDiscount(0);
+            // Reset the prices if no voucher is selected
+            const updatedItems = cartItems.map(item => ({
+                ...item,
+                price: item.originalPrice,
+            }));
+            setCartItems(updatedItems);
         }
     };
+
+
 
 
     // Updates subtotal in cart page
@@ -75,7 +84,8 @@ const Cart = () => {
         }));
     };
     // updates a cart Item's quantity
-    const handleUpdateQuantity = async (itemId, newQuantity) => {
+    // Updates a cart Item's quantity
+    const handleUpdateQuantity = async (itemId, newQuantity, price) => {
         const userCartRef = doc(db, 'Carts', auth.currentUser.uid);
         const userCartSnapshot = await getDoc(userCartRef);
         const cartProducts = userCartSnapshot.data().products;
@@ -90,29 +100,35 @@ const Cart = () => {
         await updateDoc(userCartRef, {
             products: updatedProducts,
         });
+
+        // Update subtotal here after updating quantity
+        handleUpdateSubtotal(itemId, newQuantity * price);
     };
+
 
     useEffect(() => {
         // Convert the cartItems array to a JSON string and store it in localStorage
         localStorage.setItem('cartItems', JSON.stringify(cartItems));
     }, [cartItems]);
 
-    //Used to get each individual items subtotal
+    useEffect(() => {
+        const newSubtotal = cartItems.reduce(
+            (accumulator, item) => accumulator + (item.price * item.quantity),
+            0
+        );
+        setSubtotal(newSubtotal);
+    }, [cartItems, itemSubtotals]);
+
+
     useEffect(() => {
         const newSubtotal = Object.values(itemSubtotals).reduce(
-            (accumulator, currentValue) => accumulator + currentValue,
+            (accumulator, itemSubtotal) => accumulator + itemSubtotal,
             0
         );
         setSubtotal(newSubtotal);
     }, [itemSubtotals]);
 
-    useEffect(() => {
-        const newItemSubtotals = cartItems.reduce((accumulator, item) => {
-            accumulator[item.id] = item.price * item.quantity;
-            return accumulator;
-        }, {});
-        setItemSubtotals(newItemSubtotals);
-    }, [cartItems]);
+
 
     //Gets the cart from the database so that the items are displayed
     const fetchUserCartItems = async () => {
@@ -138,7 +154,14 @@ const Cart = () => {
             const productSnapshot = await getDoc(productRef);
 
             if (productSnapshot.exists()) {
-                return { id: productSnapshot.id, quantity: cartProduct.quantity, ...productSnapshot.data() };
+                const productData = productSnapshot.data();
+                return {
+                    id: productSnapshot.id,
+                    quantity: cartProduct.quantity,
+                    originalPrice: parseFloat(productData.price).toFixed(2),
+                    price: parseFloat(productData.price).toFixed(2),
+                    ...productData
+                };
             } else {
                 console.error(`Product not found for ID: ${cartProduct.productId}`);
                 return null;
@@ -149,14 +172,8 @@ const Cart = () => {
         const validItems = fetchedItems.filter((item) => item !== null);
         console.log(validItems);
         setCartItems(validItems);
-
-        // Update the itemSubtotals state with initial values for fetched items
-        const initialItemSubtotals = validItems.reduce((accumulator, item) => {
-            accumulator[item.id] = item.price * item.quantity;
-            return accumulator;
-        }, {});
-        setItemSubtotals(initialItemSubtotals);
     };
+
 
     useEffect(() => {
         let isMounted = true;
@@ -212,7 +229,6 @@ const Cart = () => {
         });
 
 
-
         // Remove the item from the itemSubtotals state
         setItemSubtotals((prevState) => {
             const updatedSubtotals = { ...prevState };
@@ -222,7 +238,7 @@ const Cart = () => {
         });
     };
 
-    subtotal = (subtotal - discount).toFixed(2)
+
 
 
 
@@ -278,7 +294,7 @@ const Cart = () => {
                                 Continue Shopping
                             </Link>
                             <div className="d-flex flex-column align-items-end">
-                                <h4>Subtotal: R {subtotal}</h4>
+                                <h4>Subtotal: R {subtotal.toFixed(2)}</h4>
                                 <p>Taxes and Shipping Calculated at checkout</p>
                                 <Link to="/delivery" className="button" onClick={handleCheckout}>
                                     Checkout
