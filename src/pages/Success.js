@@ -10,6 +10,8 @@ const Success = async () => {
     const {setCartItems} = useCart();
     const [orderNumber, setOrderNumber] = useState(1);
 
+
+
     const getSellerIdByEmail = async (sellerEmail) => {
         const sellerQuery = query(
             collection(db, 'sellers'),
@@ -91,15 +93,7 @@ const Success = async () => {
         return weekNo;
     }
 
-    // Remove the selected voucher from Firestore
-    if (auth.currentUser) {
-        const voucherId = localStorage.getItem('selectedVoucher');
-        if (voucherId) {
-            const voucherRef = doc(db, 'Vouchers', voucherId);
-            await deleteDoc(voucherRef);
-            localStorage.removeItem('selectedVoucher'); // also remove the voucher from localStorage
-        }
-    }
+
 
 
     const handleSuccessfulCheckout = async () => {
@@ -118,6 +112,16 @@ const Success = async () => {
                 await updateDoc(itemRef, {stock: newStock});
             }
             subtotal += item.price * item.quantity;
+        }
+
+        // Remove the selected voucher from Firestore
+        if (auth.currentUser) {
+            const voucherId = localStorage.getItem('selectedVoucher');
+            if (voucherId) {
+                const voucherRef = doc(db, 'Vouchers', voucherId);
+                await deleteDoc(voucherRef);
+                localStorage.removeItem('selectedVoucher'); // also remove the voucher from localStorage
+            }
         }
 
         // Clear the cart in Firestore
