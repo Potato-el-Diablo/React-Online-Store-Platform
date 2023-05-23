@@ -945,7 +945,8 @@ z-index: 1000;
     color: var(--color-131921);
     
   }
-  
+
+
   
   .checkout-button {
     
@@ -1006,6 +1007,14 @@ z-index: 1000;
 
 .footer {
   flex-shrink: 0;
+}
+
+.voucher-dropdown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 20px;
 }
 
 

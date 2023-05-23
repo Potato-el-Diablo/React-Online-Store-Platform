@@ -23,6 +23,10 @@ const Cart = () => {
     const [selectedVoucher, setSelectedVoucher] = useState(null);
     const [vouchers, setVouchers] = useState([]);
 
+    // Add new state for discount
+    const [discount, setDiscount] = useState(0);
+
+
     // Fetches vouchers from the database and selects three randomly
     const fetchVouchers = async () => {
         const vouchersCol = collection(db, 'Vouchers');
@@ -52,16 +56,13 @@ const Cart = () => {
         const selectedVoucher = vouchers.find((voucher) => voucher.id === voucherId);
         setSelectedVoucher(selectedVoucher);
 
-        // Recalculate the subtotal with discount
+        // Calculate the discount and update the discount state
         if (selectedVoucher) {
-            const discount = (subtotal / 100) * selectedVoucher.Discount;
-            setSubtotal(subtotal - discount);
+            const newDiscount = (subtotal / 100) * selectedVoucher.Discount;
+            setDiscount(newDiscount);
         } else {
-            // Re-calculate the subtotal without discount
-            setSubtotal(Object.values(itemSubtotals).reduce(
-                (accumulator, currentValue) => accumulator + currentValue,
-                0
-            ));
+            // Reset the discount if no voucher is selected
+            setDiscount(0);
         }
     };
 
@@ -251,6 +252,7 @@ const Cart = () => {
 
 
                         <div className="voucher-dropdown" style={{ textAlign: "center", marginBottom: "20px" }}>
+                            <h4 >Available Vouchers:</h4>
                             <select
                                 className="dropdownStyles"
                                 onChange={(e) => handleVoucherSelect(e.target.value)}
@@ -265,13 +267,15 @@ const Cart = () => {
                         </div>
 
 
+
+
                         <div className="col-12 py-2 mt-4"></div>
                         <div className="d-flex justify-content-between align-items-baseline">
                             <Link to="/product" className="button">
                                 Continue Shopping
                             </Link>
                             <div className="d-flex flex-column align-items-end">
-                                <h4>Subtotal: R {subtotal}</h4>
+                                <h4>Subtotal: R {(subtotal - discount).toFixed(2)}</h4>
                                 <p>Taxes and Shipping Calculated at checkout</p>
                                 <Link to="/delivery" className="button" onClick={handleCheckout}>
                                     Checkout
