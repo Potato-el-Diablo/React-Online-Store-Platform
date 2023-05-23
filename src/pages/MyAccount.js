@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import {getDocs, collection, query, where, updateDoc, doc} from 'firebase/firestore';
+import {getDocs, collection, query, where, updateDoc, doc, getDoc} from 'firebase/firestore';
 import {auth, db} from './firebase';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import ReactStars from 'react-rating-stars-component';
 import { NavLink } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { useLocation } from "react-router-dom";
-
-
+import {useCart} from "./useCart";
+import '../App.js';
 
 
 const MyAccount = () => {
@@ -25,6 +25,8 @@ const MyAccount = () => {
     // State to track if the user is a seller
     // eslint-disable-next-line no-unused-vars
     const [isSeller, setIsSeller] = useState(false);
+    const [wishlist, setWishlist] = useState([]);
+    const [showWishlist, setShowWishlist] = useState(false);
 
     // UseEffect hook to user authentication state changes such as logging in
     useEffect(() => {
@@ -96,6 +98,7 @@ const MyAccount = () => {
         }
         setShowReviews(!showReviews);
         setShowOrders(false);
+        setShowUserInfo(false);
     };
     //Fetches and displays the users Order History
     const handleOrderClick = async () => {
@@ -113,6 +116,7 @@ const MyAccount = () => {
         }
         setShowOrders(!showOrders);
         setShowReviews(false);
+        setShowUserInfo(false);
     };
     // When "show customer info" is clicked, this function will handle the request
     const handleUserInfoClick = async () => {
@@ -143,6 +147,35 @@ const MyAccount = () => {
         setShowOrders(false);
         setShowReviews(false);
     };
+
+    const handleWishlistClick = async () => {
+        if (!showWishlist && userId) {
+            const userWishlistDoc = doc(db, 'Wishlist', userId);
+            const docSnapshot = await getDoc(userWishlistDoc);
+            if (docSnapshot.exists()) {
+                const userWishlistData = docSnapshot.data();
+                const productIds = userWishlistData.products;
+
+                const wishlistWithProductData = await Promise.all(
+                    productIds.map(async (productId) => {
+                        const productDoc = doc(db, 'Products', productId);
+                        const productSnapshot = await getDoc(productDoc);
+                        if (productSnapshot.exists()) {
+                            return productSnapshot.data();
+                        }
+                    })
+                );
+
+                setWishlist(wishlistWithProductData);
+                console.log("Items in wishlist", wishlistWithProductData);
+            }
+        }
+        setShowWishlist(!showWishlist);
+        setShowOrders(false);
+        setShowReviews(false);
+    };
+
+    const { handleAddToCart } = useCart(userId);
 
 
     //Allows the user to edit reviews from My Account
@@ -229,6 +262,7 @@ const MyAccount = () => {
                     <button className="button" onClick={handleUserInfoClick}>{showUserInfo ? 'Hide Personal Info' : 'Show personal info'}</button>
                     <button className="button" onClick={handleOrderClick}>{showOrders ? 'Hide order history' : 'View order history'}</button>
                     <button className="button" onClick={handleClick}>{showReviews ? 'Hide reviews' : 'Show your reviews'}</button>
+                    <button className="button" onClick={handleWishlistClick}>{showWishlist ? 'Hide Wishlist' : 'View Wishlist'}</button>
 
                 </div>
                 <div style={{ border: '1px solid #ddd', padding: '10px', borderRadius: '5px', width: '80%' }}>
@@ -293,6 +327,30 @@ const MyAccount = () => {
                                 </div>
                             ) : (
                                 <p>No user information available.</p>
+                            )}
+                        </>
+                    )}
+                    {showWishlist && (
+                        <>
+                            {wishlist.length === 0 ? (
+                                <p>Your wishlist is empty.</p>
+                            ) : (
+                                <ul>
+                                    {wishlist.map((item, index) => (
+                                        <li key={index} className="wishlistItem">
+                                            <img className="wishlistItemImg" src={item.image} alt={item.name} />
+                                            <div className="wishlistItemDetails">
+                                                <h3>{item.name}</h3>
+                                                <p className="price" style={{ textDecoration: item.sale ? 'line-through' : 'none'}}>Price: R{item.price}</p>
+                                                {item.sale && <p className="sale-price">On Sale: R{item.sale}</p>}
+                                                <div className={item.stock > 0 ? "in-stock" : "out-of-stock"}>
+                                                    <p>{item.stock > 0 ? "In Stock" : "Out of Stock"}</p>
+                                                </div>
+                                            </div>
+                                            <button className="wishlistItemBtn button" disabled={item.stock <= 0} onClick={() => handleAddToCart(item)}>Add to Cart</button>
+                                        </li>
+                                    ))}
+                                </ul>
                             )}
                         </>
                     )}

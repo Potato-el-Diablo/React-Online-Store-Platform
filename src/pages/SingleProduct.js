@@ -15,6 +15,7 @@ import { Timestamp } from "firebase/firestore";
 
 
 import { useLocation  } from "react-router-dom";
+import {useCart} from "./useCart";
  const grid = 12;
 const SingleProduct = () => {
 
@@ -86,56 +87,7 @@ const SingleProduct = () => {
     }
   }, [reviews]);
 
-  const handleAddToCart = async (productId, quantity) => {
-    try {
-      // Show toast messages
-    /*  toast.success(`User ID: ${userId}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
-      toast.success(`The product you are adding is: ${productId}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });  */
-
-      // Add the product to the user's cart
-      const userCartRef = doc(db, 'Carts', userId);
-      const cartSnapshot = await getDoc(userCartRef);
-
-      if (cartSnapshot.exists()) {
-        // Update the existing cart with the new product ID and quantity
-        const existingProducts = cartSnapshot.data().products;
-        const productIndex = existingProducts.findIndex(
-            (product) => product.productId === productId
-        );
-
-        if (productIndex !== -1) {
-          // The product already exists in the cart, update the quantity
-          existingProducts[productIndex].quantity += quantity;
-        } else {
-          // Add a new product to the cart with the specified quantity
-          existingProducts.push({ productId, quantity });
-        }
-
-        await updateDoc(userCartRef, { products: existingProducts });
-      } else {
-        // Create a new cart with the product ID and quantity
-        await setDoc(userCartRef, {
-          products: [{ productId, quantity }],
-        });
-      }
-
-
-      // Show success message
-      toast.success('Product added to cart successfully', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
-    } catch (error) {
-      // Show error message
-      toast.error('Failed to add product to cart', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
-      console.error('Error adding product to cart:', error);
-    }
-  };
+  const { handleAddToCart } = useCart(userId);
   const addReview = async (e) => {
     e.preventDefault();
 
