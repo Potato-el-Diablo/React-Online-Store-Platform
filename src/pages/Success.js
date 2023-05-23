@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 import { db, auth } from './firebase';
-import {doc, getDoc, updateDoc, addDoc, collection, setDoc, query, where, getDocs, writeBatch} from 'firebase/firestore';
+import {doc, getDoc, updateDoc, addDoc, collection, setDoc, query, where, getDocs, writeBatch, deleteDoc} from 'firebase/firestore';
 import { useCart } from './CartContext';
 import emailjs from '@emailjs/browser'
 
-const Success = () => {
+const Success = async () => {
     // Get cartItems from the context
-    const { setCartItems } = useCart();
+    const {setCartItems} = useCart();
     const [orderNumber, setOrderNumber] = useState(1);
 
     const getSellerIdByEmail = async (sellerEmail) => {
@@ -91,6 +91,16 @@ const Success = () => {
         return weekNo;
     }
 
+    // Remove the selected voucher from Firestore
+    if (auth.currentUser) {
+        const voucherId = localStorage.getItem('selectedVoucher');
+        if (voucherId) {
+            const voucherRef = doc(db, 'Vouchers', voucherId);
+            await deleteDoc(voucherRef);
+            localStorage.removeItem('selectedVoucher'); // also remove the voucher from localStorage
+        }
+    }
+
 
     const handleSuccessfulCheckout = async () => {
         // Retrieve the cartItems data from localStorage
@@ -105,7 +115,7 @@ const Success = () => {
 
             if (itemSnapshot.exists()) {
                 const newStock = itemSnapshot.data().stock - item.quantity;
-                await updateDoc(itemRef, { stock: newStock });
+                await updateDoc(itemRef, {stock: newStock});
             }
             subtotal += item.price * item.quantity;
         }
@@ -113,7 +123,7 @@ const Success = () => {
         // Clear the cart in Firestore
         if (auth.currentUser) {
             const userCartRef = doc(db, 'Carts', auth.currentUser.uid);
-            await updateDoc(userCartRef, { products: [] });
+            await updateDoc(userCartRef, {products: []});
         }
 
         if (auth.currentUser) {
@@ -122,10 +132,10 @@ const Success = () => {
 
             if (orderNumberSnapshot.exists()) {
                 currentOrderNumber = orderNumberSnapshot.data().lastOrder + 1;
-                await updateDoc(orderNumberRef, { lastOrder: currentOrderNumber});
+                await updateDoc(orderNumberRef, {lastOrder: currentOrderNumber});
             } else {
                 currentOrderNumber = 1;
-                await setDoc(orderNumberRef, { lastOrder: currentOrderNumber });
+                await setDoc(orderNumberRef, {lastOrder: currentOrderNumber});
             }
 
             const ordersRef = collection(db, 'Orders');
@@ -184,9 +194,6 @@ const Success = () => {
                 console.error('No matching documents.');
             }
         }
-
-
-
 
 
         // Clear the cart items both in local state and localStorage
