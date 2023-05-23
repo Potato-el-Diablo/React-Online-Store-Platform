@@ -102,6 +102,7 @@ const MyProducts = () => {
                                         productDescription={product.description}
                                         productPrice={product.price}
                                         productStock={product.stock || 'Not available'}
+                                        productSale={product.sale || ''}
                                         editOnClick={() => handleEditOnClick(product)}
                                     />
                                 ))}
