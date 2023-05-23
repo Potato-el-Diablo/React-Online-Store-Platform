@@ -63,6 +63,21 @@ const SellerProductCard = ({
         setSalePrice(null);
     }
 
+    // show/hide sale input and button based on currentSale
+    const saleElements = !currentSale && salePrice !== null ? (
+        <>
+            <input
+                type="text"
+                value={salePrice}
+                onChange={handleSalePriceChange}
+                placeholder="Sale price:"
+            />
+            <button onClick={submitSaleOnClick}>
+                Submit Sale
+            </button>
+        </>
+    ) : null;
+
     return (
         <>
             <div className={` ${location.pathname === "/MyProducts" ? `gr-${grid}` : "col3"} `}>
@@ -76,21 +91,13 @@ const SellerProductCard = ({
                         <h5 className="product-title">{productName}</h5>
                         <ReactStars count={5} size={24} value={4} edit={false} activeColor="#ffd700" />
                         <p className="description">{productDescription}</p>
-                        <div className="d-grip gap-2 d-md-block">
-                            <p className="price">R{productPrice}</p>
-                            {productSale && <p className="sale-price">Sale Price: R{currentSale}</p>}
-                            {salePrice !== null &&
-                                <>
-                                    <input
-                                        type="text"
-                                        value={salePrice}
-                                        onChange={handleSalePriceChange}
-                                        placeholder="Sale price:"
-                                    />
-                                    <button onClick={submitSaleOnClick}>
-                                        Submit Sale
-                                    </button>
-                                </>}
+                        <div className="d-grid gap-2 d-md-block">
+                            <span className="price" style={{ color : 'black'}}>Product Price: </span><span className="price" style={{ textDecoration: currentSale ? 'line-through' : 'none', color : 'black' }}>R{productPrice}</span>
+
+                            {currentSale && <p className="sale-price">Sale Price: R{currentSale}</p>}
+                            <div>
+                                {saleElements}
+                            </div>
                             {error && <p className="error">{error}</p>}
                             <p className="stock">Stock Available: {productStock}</p>
                         </div>
@@ -105,7 +112,7 @@ const SellerProductCard = ({
                             <Link className="button" onClick={removeOnClick}>
                                 Remove Product
                             </Link>
-                            {productSale ? (
+                            {currentSale ? (
                                 <Link className="button" onClick={removeSaleOnClick}>
                                     Remove Sale
                                 </Link>
