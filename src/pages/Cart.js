@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import Checkout from '../components/Checkout';
 import CartItem from '../components/CartItem';
 import { db, auth } from './firebase';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, updateDoc, query, getDocs } from 'firebase/firestore';
 import { loadStripe } from '@stripe/stripe-js';
 import { useHistory } from 'react-router-dom';
 import { useCart } from './CartContext';
@@ -19,6 +19,52 @@ const Cart = () => {
     const [subtotal, setSubtotal] = useState(0);
 
     const [itemSubtotals, setItemSubtotals] = useState({});
+
+    const [selectedVoucher, setSelectedVoucher] = useState(null);
+    const [vouchers, setVouchers] = useState([]);
+
+    // Fetches vouchers from the database and selects three randomly
+    const fetchVouchers = async () => {
+        const vouchersCol = collection(db, 'Vouchers');
+        const allVouchersSnapshot = await getDocs(vouchersCol);
+
+        let allVouchers = [];
+        allVouchersSnapshot.forEach((doc) => {
+            allVouchers.push({ id: doc.id, ...doc.data() });
+        });
+
+        // Randomly select three vouchers
+        let selectedVouchers = [];
+        for (let i = 0; i < 3; i++) {
+            let randomIndex = Math.floor(Math.random() * allVouchers.length);
+            selectedVouchers.push(allVouchers[randomIndex]);
+            allVouchers.splice(randomIndex, 1);
+        }
+
+        setVouchers(selectedVouchers);
+    };
+
+    useEffect(() => {
+        fetchVouchers();
+    }, []);
+
+    const handleVoucherSelect = (voucherId) => {
+        const selectedVoucher = vouchers.find((voucher) => voucher.id === voucherId);
+        setSelectedVoucher(selectedVoucher);
+
+        // Recalculate the subtotal with discount
+        if (selectedVoucher) {
+            const discount = (subtotal / 100) * selectedVoucher.Discount;
+            setSubtotal(subtotal - discount);
+        } else {
+            // Re-calculate the subtotal without discount
+            setSubtotal(Object.values(itemSubtotals).reduce(
+                (accumulator, currentValue) => accumulator + currentValue,
+                0
+            ));
+        }
+    };
+
 
     // Updates subtotal in cart page
     const handleUpdateSubtotal = (itemId, amount) => {
@@ -130,6 +176,13 @@ const Cart = () => {
         };
     }, []);
 
+    const handleCheckout = () => {
+        // Save the selected voucher to localStorage
+        localStorage.setItem('selectedVoucher', JSON.stringify(selectedVoucher));
+
+        //... Proceed with checkout
+    };
+
     //Handles removing an item from cart
     const handleRemoveItem = async (itemId) => {
         const userCartRef = doc(db, 'Carts', auth.currentUser.uid);
@@ -156,6 +209,8 @@ const Cart = () => {
             console.log("Updated subtotal:", newSubtotal); // Debugging line
             return newSubtotal;
         });
+
+
 
         // Remove the item from the itemSubtotals state
         setItemSubtotals((prevState) => {
@@ -192,6 +247,24 @@ const Cart = () => {
                                 />
                             ))}
                         </div>
+
+
+
+                        <div className="voucher-dropdown" style={{ textAlign: "center", marginBottom: "20px" }}>
+                            <select
+                                className="dropdownStyles"
+                                onChange={(e) => handleVoucherSelect(e.target.value)}
+                            >
+                                <option value="">Select a voucher</option>
+                                {vouchers.map((voucher) => (
+                                    <option key={voucher.id} value={voucher.id}>
+                                        {voucher.id.slice(0, 6)} - {voucher.Discount}%
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+
                         <div className="col-12 py-2 mt-4"></div>
                         <div className="d-flex justify-content-between align-items-baseline">
                             <Link to="/product" className="button">
@@ -200,7 +273,7 @@ const Cart = () => {
                             <div className="d-flex flex-column align-items-end">
                                 <h4>Subtotal: R {subtotal}</h4>
                                 <p>Taxes and Shipping Calculated at checkout</p>
-                                <Link to="/delivery" className="button">
+                                <Link to="/delivery" className="button" onClick={handleCheckout}>
                                     Checkout
                                 </Link>
                             </div>

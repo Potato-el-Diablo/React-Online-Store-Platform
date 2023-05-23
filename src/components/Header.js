@@ -200,12 +200,12 @@ const Header = () => {
                                         </button>
                                         <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                             {/*Items under dropdown list*/}
-                                            <li><Link className="dropdown-item text-white" to="/product">Books and Courses</Link></li>
-                                        	<li><Link className="dropdown-item text-white" to="/product">Cellphones and Smartwatches</Link></li>
-                                        	<li><Link className="dropdown-item text-white" to="/product">Computers and Electronins</Link></li>
-                                        	<li><Link className="dropdown-item text-white" to="/product">Gaming</Link></li>
-                                        	<li><Link className="dropdown-item text-white" to="/product">Home and Appliances</Link></li>
-                                        	<li><Link className="dropdown-item text-white" to="/product">TV, Audio and Media</Link></li>
+                                            <li><Link className="dropdown-item text-white" to="/BooksAndCoursesCategorySearch">Books and Courses</Link></li>
+                                        	<li><Link className="dropdown-item text-white" to="/CellphonesAndSmartwatchesCategorySearch">Cellphones and Smartwatches</Link></li>
+                                        	<li><Link className="dropdown-item text-white" to="/ComputersAndElectronincsCategorySearch">Computers and Electronins</Link></li>
+                                        	<li><Link className="dropdown-item text-white" to="/GamingCategorySearch">Gaming</Link></li>
+                                        	<li><Link className="dropdown-item text-white" to="/HomeAndAppliancesCategoricalSearch">Home and Appliances</Link></li>
+                                        	<li><Link className="dropdown-item text-white" to="/TvAudioAndMediaCategoricalSearch">TV, Audio and Media</Link></li>
                                         </ul>
                                     </div>
                                     {/*End of Dropdown button*/}
