@@ -145,7 +145,7 @@ const MyAccount = () => {
                 <div style={{ display: 'flex', flexDirection: 'column', marginRight: '20px' }}>
                     <button className="button" onClick={handleOrderClick}>{showOrders ? 'Hide order history' : 'View order history'}</button>
                     <button className="button" onClick={handleClick}>{showReviews ? 'Hide reviews' : 'Show your reviews'}</button>
-                    <button></button>
+                    <button className="button"></button>
                 </div>
                 <div style={{ border: '1px solid #ddd', padding: '10px', borderRadius: '5px', width: '80%' }}>
                     {showOrders && (
