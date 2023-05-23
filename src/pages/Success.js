@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import { useLocation } from 'react-router-dom'; // Import useLocation
 import { Link } from 'react-router-dom';
 import { db, auth } from './firebase';
 import {doc, getDoc, updateDoc, addDoc, collection, setDoc, query, where, getDocs, writeBatch, deleteDoc} from 'firebase/firestore';
@@ -9,6 +10,25 @@ const Success = async () => {
     // Get cartItems from the context
     const {setCartItems} = useCart();
     const [orderNumber, setOrderNumber] = useState(1);
+
+    const location = useLocation();
+    const [orderDetails, setOrderDetails] = useState(null);
+
+    useEffect(() => {
+        const fetchOrderDetails = async () => {
+            const orderId = location.state.orderId;
+            const docRef = doc(db, 'AddressDetails', orderId);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                setOrderDetails(docSnap.data());
+            } else {
+                console.log('No such document!');
+            }
+        };
+
+        fetchOrderDetails();
+    }, [location]);
 
 
 
