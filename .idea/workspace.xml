@@ -4,18 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="210705c5-207a-4957-8740-df7ac1b18442" name="Changes" comment="updated OrderDetails.js">
+    <list default="true" id="210705c5-207a-4957-8740-df7ac1b18442" name="Changes" comment="Removed &quot;dangerouslySetInnerText&quot; in Header.js">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.cache/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/.eslintcache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/BooksAndCoursesCategoricalSearch.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/CellphonesAndSmartwatchesCategoricalSearch.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/ComputersAndElectronicsCategoricalSearch.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/GamingCategoricalSearch.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/Home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/HomeAndAppliancesCategoricalSearch.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/TvAudioAndMediaCategoricalSearch.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/.cache/default-development/0.pack" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/default-development/0.pack" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/.cache/default-development/1.pack" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/default-development/1.pack" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/.cache/default-development/2.pack" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/default-development/2.pack" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/.cache/default-development/3.pack" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/default-development/3.pack" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/.cache/default-development/index.pack.old" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/default-development/index.pack.old" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -208,7 +207,49 @@
       <option name="project" value="LOCAL" />
       <updated>1684047857671</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Created CustomerInfo.js">
+      <created>1684863658598</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1684863658598</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Updated MyAccount.js">
+      <created>1684863705914</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1684863705914</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Updated MyAccount.js">
+      <created>1684867970024</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1684867970024</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Updated MyAccount.js">
+      <created>1684868062160</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1684868062160</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Updated MyAccount.js (viewing user info)">
+      <created>1684869345401</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1684869345401</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Removed &quot;dangerouslySetInnerText&quot; in Header.js">
+      <created>1684869788943</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1684869788943</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -233,6 +274,10 @@
     <MESSAGE value="removed console log from home page" />
     <MESSAGE value="Updated OrderDetails.js" />
     <MESSAGE value="updated OrderDetails.js" />
-    <option name="LAST_COMMIT_MESSAGE" value="updated OrderDetails.js" />
+    <MESSAGE value="Created CustomerInfo.js" />
+    <MESSAGE value="Updated MyAccount.js" />
+    <MESSAGE value="Updated MyAccount.js (viewing user info)" />
+    <MESSAGE value="Removed &quot;dangerouslySetInnerText&quot; in Header.js" />
+    <option name="LAST_COMMIT_MESSAGE" value="Removed &quot;dangerouslySetInnerText&quot; in Header.js" />
   </component>
 </project>
