@@ -225,6 +225,7 @@ const Cart = () => {
     subtotal = (subtotal - discount).toFixed(2)
 
 
+
     return (
         <>
             <Meta title={'Cart'} />
