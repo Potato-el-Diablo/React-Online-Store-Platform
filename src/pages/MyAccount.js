@@ -90,7 +90,7 @@ const MyAccount = () => {
 
             setUserInfo(fetchedUser[0]);  // assuming one user will be returned
         }
-        console.log("")
+
         setShowUserInfo(!showUserInfo);
         setShowOrders(false);
         setShowReviews(false);
@@ -107,6 +107,7 @@ const MyAccount = () => {
         const handleEdit = () => {
             setIsEditing(!isEditing);
         };
+
 
         const onSubmit = async (data) => {
             const reviewRef = doc(db, 'reviews', review.id);
@@ -239,7 +240,7 @@ const MyAccount = () => {
                                         <form
                                             onSubmit={handleSubmit((data) => {
                                                 // Replace this with the function to update user data in Firebase
-                                                console.log(data);
+                                                console.log('Data:', data);
                                                 setIsEditing(false);
                                             })}
                                             style={{ display: 'flex', flexDirection: 'column', gap: '10px' }} // Add this style
