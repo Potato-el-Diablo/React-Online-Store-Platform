@@ -16,7 +16,6 @@ describe('OurStore Component', () => {
         const ourStoreRegex = new RegExp('Our Store', 'i');
         const pageTitle = screen.getByText(ourStoreRegex);
         const breadcrumb = screen.getAllByText(ourStoreRegex);
-
         expect(pageTitle).toBeInTheDocument();
         expect(breadcrumb.length).toBeGreaterThan(0);
     });
@@ -31,10 +30,25 @@ describe('OurStore Component', () => {
         const sortByText = screen.getByText('Sort By');
         const selectElement = screen.getByRole('combobox');
         const totalProductsText = screen.getByText(/Total Products:/i);
-
         expect(sortByText).toBeInTheDocument();
         expect(selectElement).toBeInTheDocument();
         expect(totalProductsText).toBeInTheDocument();
     });
+
+    test('does the product list and filter box render', ()=> {
+        render(
+            <BrowserRouter>
+                <BooksAndCoursesCategoricalSearch />
+            </BrowserRouter>
+        );
+
+        const productsList = screen.getByTestId('productsList');
+        const tagBox = screen.getByTestId('tagBox');
+        const filterBox = screen.getByTestId('filterBox');
+        expect(productsList).toBeInTheDocument();
+        expect(tagBox).toBeInTheDocument();
+        expect(filterBox).toBeInTheDocument();
+        expect(filterBox).toHaveTextContent('Filter By');
+    })
 
 });
