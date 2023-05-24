@@ -90,6 +90,7 @@ const MyAccount = () => {
 
             setUserInfo(fetchedUser[0]);  // assuming one user will be returned
         }
+        console.log("")
         setShowUserInfo(!showUserInfo);
         setShowOrders(false);
         setShowReviews(false);
