@@ -15,7 +15,6 @@
       <change beforePath="$PROJECT_DIR$/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/MyAccount.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/MyAccount.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,7 +130,7 @@
       <workItem from="1683814790949" duration="5833000" />
       <workItem from="1683830022737" duration="13536000" />
       <workItem from="1684917526083" duration="76000" />
-      <workItem from="1684939448252" duration="5000000" />
+      <workItem from="1684939448252" duration="5865000" />
     </task>
     <task id="LOCAL-00001" summary="Added Cart">
       <created>1680239162000</created>
@@ -308,7 +307,21 @@
       <option name="project" value="LOCAL" />
       <updated>1684940138345</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Update MyAccount.js">
+      <created>1684946869898</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1684946869898</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Update MyAccount.js">
+      <created>1684946873724</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1684946873724</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
