@@ -7,6 +7,7 @@ import { act } from '@testing-library/react';
 import {initializeApp} from "firebase/app";
 import {BrowserRouter as Router} from "react-router-dom";
 import '@testing-library/jest-dom/extend-expect';
+import useUserAuth from './useUserAuth';
 
 //Mock the necessary dependancies
 jest.mock('firebase/app', () => ({
@@ -15,6 +16,11 @@ jest.mock('firebase/app', () => ({
 jest.mock('firebase/auth', () => ({
     getAuth: jest.fn(),
     onAuthStateChanged: jest.fn(),
+}));
+
+jest.mock('./useUserAuth', () => ({
+    __esModule: true,
+    default: jest.fn(),
 }));
 
 jest.mock('firebase/firestore', () => ({
@@ -38,13 +44,10 @@ beforeEach(() => {
     query.mockClear();
     where.mockClear();
 
-    getAuth.mockReturnValue({});
 
-    onAuthStateChanged.mockImplementation((auth, callback) => {
-        const user = { uid: '123' };
-        callback(user);
-        // Return a mock function
-        return jest.fn(() => {});
+    useUserAuth.mockReturnValue({
+        userId: '123',
+        isSeller: false,
     });
 
     getDocs.mockResolvedValue({
