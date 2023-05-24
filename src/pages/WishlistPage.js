@@ -19,7 +19,7 @@ const WishlistPage = () => {
         if (!showWishlist && userId) {
             const userWishlistDoc = doc(db, 'Wishlist', userId);
             const docSnapshot = await getDoc(userWishlistDoc);
-            if (docSnapshot.exists()) {
+            if (docSnapshot.exists) {
                 const userWishlistData = docSnapshot.data();
                 const productIds = userWishlistData.products;
 
@@ -27,7 +27,7 @@ const WishlistPage = () => {
                     productIds.map(async (productId) => {
                         const productDoc = doc(db, 'Products', productId);
                         const productSnapshot = await getDoc(productDoc);
-                        if (productSnapshot.exists()) {
+                        if (productSnapshot.exists) {
                             return productSnapshot.data();
                         }
                     })
@@ -56,22 +56,25 @@ const WishlistPage = () => {
             ) : wishlist.length === 0 ? (
                 <p>Your wishlist is empty.</p>
             ) : (
-                <ul>
-                    {wishlist.map((item, index) => (
-                        <li key={index} className="wishlistItem">
-                            <img className="wishlistItemImg" src={item.image} alt={item.name} />
-                            <div className="wishlistItemDetails">
-                                <h3>{item.name}</h3>
-                                <p className="price" style={{ textDecoration: item.sale ? 'line-through' : 'none'}}>Price: R{item.price}</p>
-                                {item.sale && <p className="sale-price">On Sale: R{item.sale}</p>}
-                                <div className={item.stock > 0 ? "in-stock" : "out-of-stock"}>
-                                    <p>{item.stock > 0 ? "In Stock" : "Out of Stock"}</p>
+                <div>
+                    <h3>Items in wishlist</h3>
+                    <ul>
+                        {wishlist.map((item, index) => (
+                            <li key={index} className="wishlistItem">
+                                <img className="wishlistItemImg" src={item.image} alt={item.name} />
+                                <div className="wishlistItemDetails">
+                                    <h3>{item.name}</h3>
+                                    <p className="price" style={{ textDecoration: item.sale ? 'line-through' : 'none'}}>Price: R{item.price}</p>
+                                    {item.sale && <p className="sale-price">On Sale: R{item.sale}</p>}
+                                    <div className={item.stock > 0 ? "in-stock" : "out-of-stock"}>
+                                        <p>{item.stock > 0 ? "In Stock" : "Out of Stock"}</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <button className="wishlistItemBtn button" disabled={item.stock <= 0} onClick={() => handleAddToCart(item)}>Add to Cart</button>
-                        </li>
-                    ))}
-                </ul>
+                                <button className="wishlistItemBtn button" disabled={item.stock <= 0} onClick={() => handleAddToCart(item)}>Add to Cart</button>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             )}
         </>
     );
