@@ -243,28 +243,30 @@ const MyAccount = () => {
                                             })}
                                             style={{ display: 'flex', flexDirection: 'column', gap: '10px' }} // Add this style
                                         >
-                                            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
-                                                <label>
-                                                    Name: <input defaultValue={userInfo.name} {...register('name')} />
-                                                </label>
-                                                {/*<label>*/}
-                                                {/*    Email: <input defaultValue={userInfo.email} {...register('email')} />*/}
-                                                {/*</label>*/}
-                                            </div>
                                             <label>
-                                                Mobile Number: <input defaultValue={userInfo.mobileNumber} {...register('mobileNumber')} />
+                                                Name: <input className="form-control" defaultValue={userInfo.name} {...register('name')} />
+                                            </label>
+                                            <label>
+                                                Email: <input className="form-control" defaultValue={userInfo.email} disabled />
+                                            </label>
+                                            <label>
+                                                Mobile Number: <input className="form-control" defaultValue={userInfo.mobileNumber} {...register('mobileNumber')} />
                                             </label>
                                             {isSeller && (
-                                                <div style={{ display: 'flex', gap: '10px' }}>
+                                                <>
                                                     <label>
-                                                        Company Name: <input defaultValue={userInfo.companyName} {...register('companyName')} />
+                                                        Company Name: <input className="form-control" defaultValue={userInfo.companyName} {...register('companyName')} />
                                                     </label>
                                                     <label>
-                                                        Company Telephone: <input defaultValue={userInfo.companyTelephone} {...register('companyTelephone')} />
+                                                        Company Telephone: <input className="form-control" defaultValue={userInfo.companyTelephone} {...register('companyTelephone')} />
                                                     </label>
-                                                </div>
+                                                </>
                                             )}
-                                            <input type="submit" value="Save" />
+                                            <input className="button"
+                                                   type="submit"
+                                                   value="Save"
+                                                   style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', maxWidth: '200px', width: '100%' }}
+                                            />
                                         </form>
                                     ) : (
                                         <>
@@ -274,12 +276,13 @@ const MyAccount = () => {
 
                                             <div>
                                                 {isSeller && (
-                                                <>
-                                                    <p>Company Name: {userInfo.companyName}</p>
-                                                    <p>Company Telephone: {userInfo.companyTelephone}</p>
-                                                </>
-                                            )}</div>
-                                            <button className="button" onClick={() => setIsEditing(true)}>Update Profile</button>
+                                                    <>
+                                                        <p>Company Name: {userInfo.companyName}</p>
+                                                        <p>Company Telephone: {userInfo.companyTelephone}</p>
+                                                    </>
+                                                )}
+                                            </div>
+                                            <button className="button"  onClick={() => setIsEditing(true)}>Update Profile</button>
                                         </>
                                     )}
                                 </div>
