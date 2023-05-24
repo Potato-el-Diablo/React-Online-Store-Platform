@@ -117,7 +117,7 @@ const MyAccount = () => {
                     <button onClick={handleEdit}>Edit Review</button>
                 </div>
                 {isEditing ? (
-                    <form onSubmit={handleSubmit(onSubmit)}>
+                    <form onSubmit={handleSubmit(onSubmit)} data-testid="review-form">
                         <div>
                             <label>
                                 Rating:
