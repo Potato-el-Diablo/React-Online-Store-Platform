@@ -288,30 +288,6 @@ const MyAccount = () => {
                             )}
                         </>
                     )}
-                    {showWishlist && (
-                        <>
-                            {wishlist.length === 0 ? (
-                                <p>Your wishlist is empty.</p>
-                            ) : (
-                                <ul>
-                                    {wishlist.map((item, index) => (
-                                        <li key={index} className="wishlistItem">
-                                            <img className="wishlistItemImg" src={item.image} alt={item.name} />
-                                            <div className="wishlistItemDetails">
-                                                <h3>{item.name}</h3>
-                                                <p className="price" style={{ textDecoration: item.sale ? 'line-through' : 'none'}}>Price: R{item.price}</p>
-                                                {item.sale && <p className="sale-price">On Sale: R{item.sale}</p>}
-                                                <div className={item.stock > 0 ? "in-stock" : "out-of-stock"}>
-                                                    <p>{item.stock > 0 ? "In Stock" : "Out of Stock"}</p>
-                                                </div>
-                                            </div>
-                                            <button className="wishlistItemBtn button" disabled={item.stock <= 0} onClick={() => handleAddToCart(item)}>Add to Cart</button>
-                                        </li>
-                                    ))}
-                                </ul>
-                            )}
-                        </>
-                    )}
                 </div>
             </div>
         </div>
