@@ -6,7 +6,7 @@ import { db } from "./firebase";
 import ProductCard from "../components/ProductCard";
 
 
-/*lastest commit*/
+//Defining array to contain all products,that will be filtered and displayed
 const BooksAndCoursesCategoricalSearch = () => {
     const grid = 12;
     const [products, setProducts] = useState([]);
@@ -25,9 +25,7 @@ const BooksAndCoursesCategoricalSearch = () => {
 
     // Filtering products to remove any that arent in the given category
     const filteredProducts = products.filter((product) =>
-        (product.category &&
-        product.category.toLowerCase().includes(searchQuery.toLowerCase())) 
-    );
+        (product.category && product.category.toLowerCase().includes(searchQuery.toLowerCase())));
 
    
 
