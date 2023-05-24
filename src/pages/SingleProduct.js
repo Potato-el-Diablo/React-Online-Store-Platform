@@ -96,7 +96,6 @@ const SingleProduct = () => {
       return;
     }
 
-
     try {
       // Create new review object
       const newReview = {
@@ -135,6 +134,40 @@ const SingleProduct = () => {
     }
   };
   console.log("the average rating:", averageRating)
+
+  const handleAddToWishlist = async (productId) => {
+    try {
+      const userWishlistRef = doc(db, 'Wishlist', userId);
+      const wishlistSnapshot = await getDoc(userWishlistRef);
+
+      if (wishlistSnapshot.exists()) {
+        // Update the existing wishlist with the new product ID
+        const existingProducts = wishlistSnapshot.data().products;
+        if (!existingProducts.includes(productId)) {
+          // The product does not exist in the wishlist, add it
+          existingProducts.push(productId);
+        }
+
+        await updateDoc(userWishlistRef, { products: existingProducts });
+      } else {
+        // Create a new wishlist with the product ID
+        await setDoc(userWishlistRef, {
+          products: [productId],
+        });
+      }
+
+      // Show success message
+      toast.success('Product added to wishlist successfully', {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+    } catch (error) {
+      // Show error message
+      toast.error('Failed to add product to wishlist', {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      console.error('Error adding product to wishlist:', error);
+    }
+  };
 
   //The reviews will render differently based on whether a user has made a review before or not
   return (
@@ -232,7 +265,13 @@ const SingleProduct = () => {
                     
                   </div>
                   {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                  <div><a href=""><AiOutlineHeart className="fs-5 me-2"/>Add to Wishlist</a></div>
+                  <div>
+                    <button onClick={() => handleAddToWishlist(location.state.productId)}>
+                      <AiOutlineHeart className="fs-5 me-2"/>
+                      Add to Wishlist
+                    </button>
+                  </div>
+
                 </div>
               </div>
             </div>

@@ -7,12 +7,12 @@ import { NavLink } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { useLocation } from "react-router-dom";
 import {useCart} from "./useCart";
+import useUserAuth from './useUserAuth';
 import '../App.js';
 
 
 const MyAccount = () => {
     const location = useLocation();
-    const [userId, setUserId] = useState('');
     const [userReviews, setUserReviews] = useState([]);
     const [showReviews, setShowReviews] = useState(false);
     const [userOrders, setUserOrders] = useState([]);
@@ -27,66 +27,8 @@ const MyAccount = () => {
 // Form handling
     const { register, handleSubmit, setValue } = useForm();
 
-    // State to track if the user is a seller
-    // eslint-disable-next-line no-unused-vars
-    const [isSeller, setIsSeller] = useState(false);
-    const [wishlist, setWishlist] = useState([]);
-    const [showWishlist, setShowWishlist] = useState(false);
+    const { userId, isSeller } = useUserAuth();
 
-    // UseEffect hook to user authentication state changes such as logging in
-    useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged(async (user) => {
-            if (user) {
-                setLoggedIn(true);
-                // Check if the user is a seller
-                const sellerRef = collection(db, "sellers");
-                const q = query(sellerRef, where("uid", "==", user.uid));
-                const querySnapshot = await getDocs(q);
-
-                // If the user is a seller, set isSeller to true and store their first name
-                if (!querySnapshot.empty) {
-                    const sellerData = querySnapshot.docs[0];
-                    setIsSeller(true);
-                } else {
-                    setIsSeller(false);
-                    // If the user is not a seller, check if they are a buyer
-                    const buyerRef = collection(db, "buyers");
-                    const q = query(buyerRef, where("uid", "==", user.uid));
-                    const querySnapshot = await getDocs(q);
-                    // If the user is a buyer, store their first name
-                    if (!querySnapshot.empty) {
-                        const buyerData = querySnapshot.docs[0];
-                        const fullName = buyerData.data().name;
-                        const firstName = fullName.split(" ")[0];
-
-                    }
-                }
-            } else {
-                // If the user is not logged in, reset states
-                setLoggedIn(false);
-                setIsSeller(false);
-            }
-        });
-
-        return () => {
-            unsubscribe();
-        };
-    }, []);
-    //Authorizes that a user is logged in
-    useEffect(() => {
-        const auth = getAuth();
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (user) {
-                setUserId(user.uid);
-            } else {
-                setUserId('');
-            }
-        });
-
-        return () => {
-            unsubscribe();
-        };
-    }, []);
     //Fetches and displays the users reviews
     const handleClick = async () => {
         if (!showReviews && userId) {
@@ -155,35 +97,6 @@ const MyAccount = () => {
         setIsEditing(false);
     };
 
-    const handleWishlistClick = async () => {
-        if (!showWishlist && userId) {
-            const userWishlistDoc = doc(db, 'Wishlist', userId);
-            const docSnapshot = await getDoc(userWishlistDoc);
-            if (docSnapshot.exists()) {
-                const userWishlistData = docSnapshot.data();
-                const productIds = userWishlistData.products;
-
-                const wishlistWithProductData = await Promise.all(
-                    productIds.map(async (productId) => {
-                        const productDoc = doc(db, 'Products', productId);
-                        const productSnapshot = await getDoc(productDoc);
-                        if (productSnapshot.exists()) {
-                            return productSnapshot.data();
-                        }
-                    })
-                );
-
-                setWishlist(wishlistWithProductData);
-                console.log("Items in wishlist", wishlistWithProductData);
-            }
-        }
-        setShowWishlist(!showWishlist);
-        setShowOrders(false);
-        setShowReviews(false);
-    };
-
-    const { handleAddToCart } = useCart(userId);
-
 
     //Allows the user to edit reviews from My Account
     const EditableReview = ({ review, onEdit }) => {
@@ -211,7 +124,7 @@ const MyAccount = () => {
                     <button onClick={handleEdit}>Edit Review</button>
                 </div>
                 {isEditing ? (
-                    <form onSubmit={handleSubmit(onSubmit)}>
+                    <form onSubmit={handleSubmit(onSubmit)} data-testid="review-form">
                         <div>
                             <label>
                                 Rating:
@@ -269,7 +182,6 @@ const MyAccount = () => {
                     <button className="button" onClick={handleUserInfoClick}>{showUserInfo ? 'Hide Personal Info' : 'Show personal info'}</button>
                     <button className="button" onClick={handleOrderClick}>{showOrders ? 'Hide order history' : 'View order history'}</button>
                     <button className="button" onClick={handleClick}>{showReviews ? 'Hide reviews' : 'Show your reviews'}</button>
-                    <button className="button" onClick={handleWishlistClick}>{showWishlist ? 'Hide Wishlist' : 'View Wishlist'}</button>
 
                 </div>
                 <div style={{ border: '1px solid #ddd', padding: '10px', borderRadius: '5px', width: '80%' }}>
