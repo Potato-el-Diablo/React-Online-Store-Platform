@@ -113,3 +113,33 @@ test('renders MyAccount and shows reviews on click', async () => {
     expect(await screen.findByText('Review for Product 1')).toBeInTheDocument();
 });
 
+test('should display user information when "Show Personal Info" button is clicked', async () => {
+    // Mock getDocs for user info
+    getDocs.mockResolvedValueOnce({
+        docs: [
+            {
+                id: '1',
+                data: jest.fn().mockReturnValue({
+                    uid: '123',
+                    name: 'Test User',
+                    email: 'testuser@example.com',
+                    mobileNumber: '1234567890',
+                }),
+            },
+        ],
+    });
+
+    render(
+        <Router>
+            <MyAccount />
+        </Router>
+    );
+
+    // Click the 'Show personal info' button
+    fireEvent.click(screen.getByText('Show personal info'));
+
+    // Wait for the user information to appear in the document
+    expect(await screen.findByText('Name: Test User')).toBeInTheDocument();
+    expect(screen.getByText('Email: testuser@example.com')).toBeInTheDocument();
+    expect(screen.getByText('Mobile Number: 1234567890')).toBeInTheDocument();
+});
