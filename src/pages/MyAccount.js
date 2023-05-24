@@ -21,6 +21,11 @@ const MyAccount = () => {
     const [showUserInfo, setShowUserInfo] = useState(false);
     // State to track if the user is logged in
     const [loggedIn, setLoggedIn] = useState(false);
+    // Add a new state variable to handle editing mode
+    const [isEditing, setIsEditing] = useState(false);
+
+// Form handling
+    const { register, handleSubmit, setValue } = useForm();
 
     const { userId, isSeller } = useUserAuth();
 
@@ -88,6 +93,8 @@ const MyAccount = () => {
         setShowUserInfo(!showUserInfo);
         setShowOrders(false);
         setShowReviews(false);
+        // Reset editing state whenever user info is toggled
+        setIsEditing(false);
     };
 
 
@@ -227,18 +234,81 @@ const MyAccount = () => {
                             {userInfo ? (
                                 <div>
                                     <h3>User Information</h3>
-                                    <p>Name: {isSeller ? `${userInfo.firstName} ${userInfo.lastName}` : userInfo.name}</p>
-                                    <p>Email: {isSeller ? userInfo.companyEmail : userInfo.email}</p>
-                                    <p>Mobile Number: {userInfo.mobileNumber}</p>
-                                    {isSeller && (
+                                    {isEditing ? (
+                                        <form
+                                            onSubmit={handleSubmit((data) => {
+                                                // Replace this with the function to update user data in Firebase
+                                                console.log(data);
+                                                setIsEditing(false);
+                                            })}
+                                            style={{ display: 'flex', flexDirection: 'column', gap: '10px' }} // Add this style
+                                        >
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
+                                                <label>
+                                                    Name: <input defaultValue={userInfo.name} {...register('name')} />
+                                                </label>
+                                                {/*<label>*/}
+                                                {/*    Email: <input defaultValue={userInfo.email} {...register('email')} />*/}
+                                                {/*</label>*/}
+                                            </div>
+                                            <label>
+                                                Mobile Number: <input defaultValue={userInfo.mobileNumber} {...register('mobileNumber')} />
+                                            </label>
+                                            {isSeller && (
+                                                <div style={{ display: 'flex', gap: '10px' }}>
+                                                    <label>
+                                                        Company Name: <input defaultValue={userInfo.companyName} {...register('companyName')} />
+                                                    </label>
+                                                    <label>
+                                                        Company Telephone: <input defaultValue={userInfo.companyTelephone} {...register('companyTelephone')} />
+                                                    </label>
+                                                </div>
+                                            )}
+                                            <input type="submit" value="Save" />
+                                        </form>
+                                    ) : (
                                         <>
-                                            <p>Company Name: {userInfo.companyName}</p>
-                                            <p>Company Telephone: {userInfo.companyTelephone}</p>
+                                            <p>Name: {isSeller ? `${userInfo.firstName} ${userInfo.lastName}` : userInfo.name}</p>
+                                            <p>Email: {isSeller ? userInfo.companyEmail : userInfo.email}</p>
+                                            <p>Mobile Number: {userInfo.mobileNumber}</p>
+
+                                            <div>
+                                                {isSeller && (
+                                                <>
+                                                    <p>Company Name: {userInfo.companyName}</p>
+                                                    <p>Company Telephone: {userInfo.companyTelephone}</p>
+                                                </>
+                                            )}</div>
+                                            <button className="button" onClick={() => setIsEditing(true)}>Update Profile</button>
                                         </>
                                     )}
                                 </div>
                             ) : (
                                 <p>No user information available.</p>
+                            )}
+                        </>
+                    )}
+                    {showWishlist && (
+                        <>
+                            {wishlist.length === 0 ? (
+                                <p>Your wishlist is empty.</p>
+                            ) : (
+                                <ul>
+                                    {wishlist.map((item, index) => (
+                                        <li key={index} className="wishlistItem">
+                                            <img className="wishlistItemImg" src={item.image} alt={item.name} />
+                                            <div className="wishlistItemDetails">
+                                                <h3>{item.name}</h3>
+                                                <p className="price" style={{ textDecoration: item.sale ? 'line-through' : 'none'}}>Price: R{item.price}</p>
+                                                {item.sale && <p className="sale-price">On Sale: R{item.sale}</p>}
+                                                <div className={item.stock > 0 ? "in-stock" : "out-of-stock"}>
+                                                    <p>{item.stock > 0 ? "In Stock" : "Out of Stock"}</p>
+                                                </div>
+                                            </div>
+                                            <button className="wishlistItemBtn button" disabled={item.stock <= 0} onClick={() => handleAddToCart(item)}>Add to Cart</button>
+                                        </li>
+                                    ))}
+                                </ul>
                             )}
                         </>
                     )}
