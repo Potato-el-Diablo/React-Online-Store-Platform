@@ -324,6 +324,8 @@ const MyAccount = () => {
                                             <p>Company Telephone: {userInfo.companyTelephone}</p>
                                         </>
                                     )}
+                                    <div className="button" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', maxWidth: '200px', width: '100%' }}>Update profile</div>
+
                                 </div>
                             ) : (
                                 <p>No user information available.</p>
@@ -354,7 +356,6 @@ const MyAccount = () => {
                             )}
                         </>
                     )}
-
                 </div>
             </div>
         </div>
