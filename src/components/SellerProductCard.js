@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from "react";
 import ReactStars from "react-rating-stars-component";
 import { Link, useLocation } from "react-router-dom";
-import { updateDoc, doc } from 'firebase/firestore';
+import { getDocs, query, where, collection, updateDoc, doc } from 'firebase/firestore';
 import {db} from "../pages/firebase";
+import emailjs from "@emailjs/browser";
 
 const SellerProductCard = ({
                                grid,
@@ -49,10 +50,34 @@ const SellerProductCard = ({
             });
             setCurrentSale(salePrice);
             setSalePrice(null);
+
+            // Send notifications to users who have the product in their wishlist
+            await notifyUsers(productId, salePrice);
         } else {
             setError('Sale Price cannot be more than the original price');
         }
     }
+    const notifyUsers = async (productId, salePrice) => {
+        // Get all wishlists
+        const wishlistsSnapshot = await getDocs(collection(db, 'Wishlist'));
+
+        for (let wishlistDoc of wishlistsSnapshot.docs) {
+            const wishlist = wishlistDoc.data();
+
+            // Check if the product is in the 'Notify' array
+            if (wishlist.products && wishlist.products.includes(productId)) {
+                //Send an email to the user
+                const userEmail = wishlist.email;
+                await emailjs.send('service_himaqlr', 'template_9fqngtr', {
+                    product_id: productId,
+                    sale_price: salePrice.toString(),
+                    to_email: userEmail,
+                }, '0tHoysH7w4GDDDWkS');
+
+                console.log(`Success! Email sent to ${userEmail}`);
+            }
+        }
+    };
 
     const removeSaleOnClick = async () => {
         const productRef = doc(db, 'Products', productId);
