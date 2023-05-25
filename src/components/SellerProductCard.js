@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import ReactStars from "react-rating-stars-component";
 import { Link, useLocation } from "react-router-dom";
-import { getDocs, query, where, collection, updateDoc, doc } from 'firebase/firestore';
+import {getDocs, query, where, collection, updateDoc, doc, getDoc} from 'firebase/firestore';
 import {db} from "../pages/firebase";
 import emailjs from "@emailjs/browser";
 
@@ -58,6 +58,16 @@ const SellerProductCard = ({
         }
     }
     const notifyUsers = async (productId, salePrice) => {
+        // Fetch product details
+        const productRef = doc(db, 'Products', productId);
+        const productSnap = await getDoc(productRef);
+
+        if (!productSnap.exists) {
+            console.error(`Product with id ${productId} does not exist.`);
+            return;
+        }
+
+        const productName = productSnap.data().name; // Fetch product name
         // Get all wishlists
         const wishlistsSnapshot = await getDocs(collection(db, 'Wishlist'));
 
@@ -69,7 +79,7 @@ const SellerProductCard = ({
                 //Send an email to the user
                 const userEmail = wishlist.email;
                 await emailjs.send('service_himaqlr', 'template_9fqngtr', {
-                    product_id: productId,
+                    product_name: productName,
                     sale_price: salePrice.toString(),
                     to_email: userEmail,
                 }, '0tHoysH7w4GDDDWkS');
