@@ -33,9 +33,11 @@ const Cart = () => {
         const allVouchersSnapshot = await getDocs(vouchersCol);
 
         let allVouchers = [];
-        allVouchersSnapshot.forEach((doc) => {
-            allVouchers.push({ id: doc.id, ...doc.data() });
-        });
+        if(allVouchersSnapshot){
+            allVouchersSnapshot.forEach((doc) => {
+                allVouchers.push({ id: doc.id, ...doc.data() });
+            });
+        }
 
         // Randomly select three vouchers
         let selectedVouchers = [];
@@ -236,6 +238,7 @@ const Cart = () => {
             console.log("Updated itemSubtotals:", updatedSubtotals); // Debugging line
             return updatedSubtotals;
         });
+
     };
 
 

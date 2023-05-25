@@ -137,6 +137,9 @@ const SingleProduct = () => {
 
   const handleAddToWishlist = async (productId) => {
     try {
+      const auth = getAuth();
+      const user = auth.currentUser;
+
       const userWishlistRef = doc(db, 'Wishlist', userId);
       const wishlistSnapshot = await getDoc(userWishlistRef);
 
@@ -148,7 +151,7 @@ const SingleProduct = () => {
           existingProducts.push(productId);
         }
 
-        await updateDoc(userWishlistRef, { products: existingProducts });
+        await updateDoc(userWishlistRef, { products: existingProducts, email: user.email });
       } else {
         // Create a new wishlist with the product ID
         await setDoc(userWishlistRef, {

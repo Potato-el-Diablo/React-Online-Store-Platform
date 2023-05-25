@@ -6,18 +6,12 @@ import { db } from "./firebase";
 import ProductCard from "../components/ProductCard";
 
 
-/*lastest commit*/
+//Defining array to contain all products,that will be filtered and displayed
 const CellphonesAndSmartwatchesCategoricalSearch = () => {
     const grid = 12;
     const [products, setProducts] = useState([]);
     
-    
-    // this is for tracking user clicks
-    // const history = useHistory();
-    // const handleClick = () =>{
-        // history.push('/product/{product.id}')
-    // };
-    
+ 
     useEffect(() => {
         const fetchData = async () => {
             const data = await getDocs(collection(db, 'Products'));
@@ -25,6 +19,7 @@ const CellphonesAndSmartwatchesCategoricalSearch = () => {
         };
         fetchData();
     }, []);
+    //defining the category we wish to filter on
     const searchQuery = "Cellphones and Smartwatches";
 
     // Filtering products to remove any that arent in the given category
@@ -33,10 +28,7 @@ const CellphonesAndSmartwatchesCategoricalSearch = () => {
         product.category.toLowerCase().includes(searchQuery.toLowerCase())) 
     );
 
-    console.log(filteredProducts)
-
     
-    // find how many products in stock
     
   return (
     <>
