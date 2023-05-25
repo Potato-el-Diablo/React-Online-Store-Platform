@@ -14,8 +14,7 @@ const BooksAndCoursesCategoricalSearch = () => {
     //running a query to return all the products in the database
     useEffect(() => {
         const fetchData = async () => {
-            const data = await getDocs(collection(db, 'Products'));
-            setProducts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+            const data = await getDocs(collection(db, 'Products')); setProducts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
         };
         fetchData();
     }, []);
@@ -24,8 +23,7 @@ const BooksAndCoursesCategoricalSearch = () => {
     const searchQuery = "Books and Courses";
 
     // Filtering products to remove any that arent in the given category
-    const filteredProducts = products.filter((product) =>
-        (product.category && product.category.toLowerCase().includes(searchQuery.toLowerCase())));
+    const filteredProducts = products.filter((product) => (product.category && product.category.toLowerCase().includes(searchQuery.toLowerCase())));
 
    
 
