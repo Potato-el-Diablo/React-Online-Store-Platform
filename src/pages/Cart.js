@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import Checkout from '../components/Checkout';
 import CartItem from '../components/CartItem';
 import { db, auth } from './firebase';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, updateDoc, query, getDocs } from 'firebase/firestore';
 import { loadStripe } from '@stripe/stripe-js';
 import { useHistory } from 'react-router-dom';
 import { useCart } from './CartContext';
@@ -16,9 +16,67 @@ const Cart = () => {
     // Use the useCart hook to access cartItems and setCartItems
     const { cartItems, setCartItems } = useCart();
 
-    const [subtotal, setSubtotal] = useState(0);
+    let [subtotal, setSubtotal] = useState(0);
 
     const [itemSubtotals, setItemSubtotals] = useState({});
+
+    const [selectedVoucher, setSelectedVoucher] = useState(null);
+    const [vouchers, setVouchers] = useState([]);
+
+    // Add new state for discount
+    const [discount, setDiscount] = useState(0);
+
+
+    // Fetches vouchers from the database and selects three randomly
+    const fetchVouchers = async () => {
+        const vouchersCol = collection(db, 'Vouchers');
+        const allVouchersSnapshot = await getDocs(vouchersCol);
+
+        let allVouchers = [];
+        if(allVouchersSnapshot){
+            allVouchersSnapshot.forEach((doc) => {
+                allVouchers.push({ id: doc.id, ...doc.data() });
+            });
+        }
+
+        // Randomly select three vouchers
+        let selectedVouchers = [];
+        for (let i = 0; i < 3; i++) {
+            let randomIndex = Math.floor(Math.random() * allVouchers.length);
+            selectedVouchers.push(allVouchers[randomIndex]);
+            allVouchers.splice(randomIndex, 1);
+        }
+
+        setVouchers(selectedVouchers);
+    };
+
+    useEffect(() => {
+        fetchVouchers();
+    }, []);
+
+    const handleVoucherSelect = (voucherId) => {
+        const selectedVoucher = vouchers.find((voucher) => voucher.id === voucherId);
+        setSelectedVoucher(selectedVoucher);
+
+        if (selectedVoucher) {
+            const discountPercent = selectedVoucher.Discount;
+            const updatedItems = cartItems.map(item => ({
+                ...item,
+                price: (item.originalPrice * (1 - discountPercent / 100)).toFixed(2),
+            }));
+            setCartItems(updatedItems);
+        } else {
+            // Reset the prices if no voucher is selected
+            const updatedItems = cartItems.map(item => ({
+                ...item,
+                price: item.originalPrice,
+            }));
+            setCartItems(updatedItems);
+        }
+    };
+
+
+
 
     // Updates subtotal in cart page
     const handleUpdateSubtotal = (itemId, amount) => {
@@ -28,7 +86,8 @@ const Cart = () => {
         }));
     };
     // updates a cart Item's quantity
-    const handleUpdateQuantity = async (itemId, newQuantity) => {
+    // Updates a cart Item's quantity
+    const handleUpdateQuantity = async (itemId, newQuantity, price) => {
         const userCartRef = doc(db, 'Carts', auth.currentUser.uid);
         const userCartSnapshot = await getDoc(userCartRef);
         const cartProducts = userCartSnapshot.data().products;
@@ -43,29 +102,35 @@ const Cart = () => {
         await updateDoc(userCartRef, {
             products: updatedProducts,
         });
+
+        // Update subtotal here after updating quantity
+        handleUpdateSubtotal(itemId, newQuantity * price);
     };
+
 
     useEffect(() => {
         // Convert the cartItems array to a JSON string and store it in localStorage
         localStorage.setItem('cartItems', JSON.stringify(cartItems));
     }, [cartItems]);
 
-    //Used to get each individual items subtotal
+    useEffect(() => {
+        const newSubtotal = cartItems.reduce(
+            (accumulator, item) => accumulator + (item.price * item.quantity),
+            0
+        );
+        setSubtotal(newSubtotal);
+    }, [cartItems, itemSubtotals]);
+
+
     useEffect(() => {
         const newSubtotal = Object.values(itemSubtotals).reduce(
-            (accumulator, currentValue) => accumulator + currentValue,
+            (accumulator, itemSubtotal) => accumulator + itemSubtotal,
             0
         );
         setSubtotal(newSubtotal);
     }, [itemSubtotals]);
 
-    useEffect(() => {
-        const newItemSubtotals = cartItems.reduce((accumulator, item) => {
-            accumulator[item.id] = item.price * item.quantity;
-            return accumulator;
-        }, {});
-        setItemSubtotals(newItemSubtotals);
-    }, [cartItems]);
+
 
     //Gets the cart from the database so that the items are displayed
     const fetchUserCartItems = async () => {
@@ -91,7 +156,14 @@ const Cart = () => {
             const productSnapshot = await getDoc(productRef);
 
             if (productSnapshot.exists()) {
-                return { id: productSnapshot.id, quantity: cartProduct.quantity, ...productSnapshot.data() };
+                const productData = productSnapshot.data();
+                return {
+                    id: productSnapshot.id,
+                    quantity: cartProduct.quantity,
+                    originalPrice: parseFloat(productData.price).toFixed(2),
+                    price: parseFloat(productData.price).toFixed(2),
+                    ...productData
+                };
             } else {
                 console.error(`Product not found for ID: ${cartProduct.productId}`);
                 return null;
@@ -102,14 +174,8 @@ const Cart = () => {
         const validItems = fetchedItems.filter((item) => item !== null);
         console.log(validItems);
         setCartItems(validItems);
-
-        // Update the itemSubtotals state with initial values for fetched items
-        const initialItemSubtotals = validItems.reduce((accumulator, item) => {
-            accumulator[item.id] = item.price * item.quantity;
-            return accumulator;
-        }, {});
-        setItemSubtotals(initialItemSubtotals);
     };
+
 
     useEffect(() => {
         let isMounted = true;
@@ -129,6 +195,13 @@ const Cart = () => {
             }
         };
     }, []);
+
+    const handleCheckout = () => {
+        // Save the selected voucher to localStorage
+        localStorage.setItem('selectedVoucher', JSON.stringify(selectedVoucher));
+
+        //... Proceed with checkout
+    };
 
     //Handles removing an item from cart
     const handleRemoveItem = async (itemId) => {
@@ -157,6 +230,7 @@ const Cart = () => {
             return newSubtotal;
         });
 
+
         // Remove the item from the itemSubtotals state
         setItemSubtotals((prevState) => {
             const updatedSubtotals = { ...prevState };
@@ -164,7 +238,11 @@ const Cart = () => {
             console.log("Updated itemSubtotals:", updatedSubtotals); // Debugging line
             return updatedSubtotals;
         });
+
     };
+
+
+
 
 
     return (
@@ -192,15 +270,36 @@ const Cart = () => {
                                 />
                             ))}
                         </div>
+
+
+
+                        <div className="voucher-dropdown" style={{ textAlign: "center", marginBottom: "20px" }}>
+                            <h4 >Available Vouchers:</h4>
+                            <select
+                                className="dropdownStyles"
+                                onChange={(e) => handleVoucherSelect(e.target.value)}
+                            >
+                                <option value="">Select a voucher</option>
+                                {vouchers.map((voucher) => (
+                                    <option key={voucher.id} value={voucher.id}>
+                                        {voucher.id.slice(0, 6)} - {voucher.Discount}%
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+
+
+
                         <div className="col-12 py-2 mt-4"></div>
                         <div className="d-flex justify-content-between align-items-baseline">
                             <Link to="/product" className="button">
                                 Continue Shopping
                             </Link>
                             <div className="d-flex flex-column align-items-end">
-                                <h4>Subtotal: R {subtotal}</h4>
+                                <h4>Subtotal: R {subtotal.toFixed(2)}</h4>
                                 <p>Taxes and Shipping Calculated at checkout</p>
-                                <Link to="/delivery" className="button">
+                                <Link to="/delivery" className="button" onClick={handleCheckout}>
                                     Checkout
                                 </Link>
                             </div>

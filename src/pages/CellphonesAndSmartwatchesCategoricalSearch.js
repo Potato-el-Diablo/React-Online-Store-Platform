@@ -6,20 +6,12 @@ import { db } from "./firebase";
 import ProductCard from "../components/ProductCard";
 
 
-/*lastest commit*/
-// added productSale
-
-const OurStore = () => {
+//Defining array to contain all products,that will be filtered and displayed
+const CellphonesAndSmartwatchesCategoricalSearch = () => {
     const grid = 12;
     const [products, setProducts] = useState([]);
     
-    
-    // this is for tracking user clicks
-    // const history = useHistory();
-    // const handleClick = () =>{
-        // history.push('/product/{product.id}')
-    // };
-    
+ 
     useEffect(() => {
         const fetchData = async () => {
             const data = await getDocs(collection(db, 'Products'));
@@ -27,11 +19,16 @@ const OurStore = () => {
         };
         fetchData();
     }, []);
+    //defining the category we wish to filter on
+    const searchQuery = "Cellphones and Smartwatches";
 
-    console.log(products);
+    // Filtering products to remove any that arent in the given category
+    const filteredProducts = products.filter((product) =>
+        (product.category &&
+        product.category.toLowerCase().includes(searchQuery.toLowerCase())) 
+    );
 
     
-    // find how many products in stock
     
   return (
     <>
@@ -62,7 +59,7 @@ const OurStore = () => {
                                 <input className="form-check-input" type="checkbox" value="checked" id="" />
                                 <label className="form-check-label" htmlfor="">
                                     
-                                    In Stock({products.length})
+                                    In Stock({filteredProducts.length})
 
                                 </label>
                             </div>
@@ -154,14 +151,14 @@ const OurStore = () => {
                             </select>
                         </div>
                             <div className="d-flex align-items-center gap-10">
-                                <p className="totalproducts">Total Products: {products.length}</p>
+                                <p className="totalproducts">Total Products: {filteredProducts.length}</p>
                             </div>
                         </div>
                     </div>
                     <div className="products-list ">
                         <div className="d-flex flex-wrap gap-20">
 
-                            {products.map((product) => (
+                            {filteredProducts.map((product) => (
                                 <ProductCard
                                     key={product.id}
                                     productId={product.id}
@@ -171,8 +168,9 @@ const OurStore = () => {
                                     productName={product.name}
                                     productDescription={product.description}
                                     productPrice={product.price}
-                                    productSale={product.sale || ''}
                                     productStock={product.stock || 'Not available'}
+                                    productSale={product.sale || ''}
+                                   // productStock={product.stock || 'Not available'}
                                     // editOnClick={() => handleEditOnClick(product)}
                                     // onClick={() => handleProductCardClick(product.id)}
                                     className="productCard"
@@ -189,4 +187,4 @@ const OurStore = () => {
   )
 }
 
-export default OurStore;
+export default CellphonesAndSmartwatchesCategoricalSearch;

@@ -9,6 +9,12 @@ import Login from "./pages/Login";
 import SignupBuyer from "./pages/SignupBuyer";
 import Home from "./pages/Home";
 import OurStore from "./pages/OurStore"
+import BooksAndCoursesCategorySearch from "./pages/BooksAndCoursesCategoricalSearch";
+import CellphonesAndSmartwatchesCategorySearch from "./pages/CellphonesAndSmartwatchesCategoricalSearch";
+import ComputersAndElectronincsCategorySearch from "./pages/ComputersAndElectronicsCategoricalSearch";
+import GamingCategorySearch from "./pages/GamingCategoricalSearch";
+import HomeAndAppliancesCategoricalSearch from "./pages/HomeAndAppliancesCategoricalSearch";
+import TvAudioAndMediaCategoricalSearch from "./pages/TvAudioAndMediaCategoricalSearch";
 import ForgotPassword from './pages/ForgotPassword';
 import Cart from './pages/Cart';
 import MyProducts from './pages/MyProducts';
@@ -26,6 +32,8 @@ import Checkout from "./components/Checkout";
 
 import OrderDetails from "./pages/OrderDetails";
 import DeliveryPage from "./pages/DeliveryPage";
+import Wishlist from "./pages/WishlistPage";
+import WishlistPage from "./pages/WishlistPage";
 
 const stripePromise = loadStripe('pk_test_51N4dpfECtnw33ZKc2BL6hUXmq8UzHP8oGpP71gWeNOHrLsuDfQWATvS64pJVrke4JIPvqAgZjps0IuxOqfFsE5VJ00HarVDp2R');
 
@@ -51,8 +59,15 @@ function App() {
                     <Route path="MyAccount" element ={<MyAccount/>}/>
                     <Route path="/success" element={<Success/>} />
                     <Route path="/MyAccount" component={MyAccount} />
+                    <Route path="/BooksAndCoursesCategorySearch" element={<BooksAndCoursesCategorySearch/>} />
+                    <Route path="/CellphonesAndSmartwatchesCategorySearch" element={<CellphonesAndSmartwatchesCategorySearch/>} />
+                    <Route path="/ComputersAndElectronincsCategorySearch" element={<ComputersAndElectronincsCategorySearch/>} />
+                    <Route path="/GamingCategorySearch" element={<GamingCategorySearch/>} />
+                    <Route path="/HomeAndAppliancesCategoricalSearch" element={<HomeAndAppliancesCategoricalSearch/>} />
+                    <Route path="/TvAudioAndMediaCategoricalSearch" element={<TvAudioAndMediaCategoricalSearch/>} />
                     <Route path="/OrderDetails/:orderNumber" element={<OrderDetails />} />
                     <Route path="delivery" element={<DeliveryPage/>}/>
+                    <Route path="wishlist" element={<WishlistPage/>}/>
                     <Route path="/Checkout" element={
                         <Elements stripe={stripePromise}>
                             <Checkout />

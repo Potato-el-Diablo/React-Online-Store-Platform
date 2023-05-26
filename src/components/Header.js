@@ -5,7 +5,9 @@ import React, { useState, useEffect } from "react";
 import { collection, query, where, getDocs } from "firebase/firestore";
 
 
+
 const Header = () => {
+
     const [searchQuery, setSearchQuery] = useState("");
     const navigate = useNavigate();
 
@@ -134,7 +136,7 @@ const Header = () => {
                                     </Link>
                                 </div>
                                 <div>
-                                    <Link className="d-flex align-items-center gap text-white">
+                                    <Link className="d-flex align-items-center gap text-white" to="/wishlist">
                                         <img src="images/wishlist.svg" alt="wishlist"/>
                                         <p className="mb-0">
                                             Favourite <br/> Wishlist
@@ -146,14 +148,17 @@ const Header = () => {
                                         <img src="images/user.svg" alt="user"/>
                                         <p className="mb-0">
                                             <NavLink className="text-white" to="login">
-                                            <span
-                                                dangerouslySetInnerHTML={{
-                                                    __html: loggedIn
-                                                        ? `Logged In. <br /> Welcome ${userName}`
-                                                        : "Login <br /> My Account",
-                                                }}
-                                            />
+                                                {loggedIn ? (
+                                                    <>
+                                                        Logged In. <br /> Welcome {userName}
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        Login <br /> My Account
+                                                    </>
+                                                )}
                                             </NavLink>
+
                                         </p>
                                     </Link>
                                 </div>
@@ -195,12 +200,12 @@ const Header = () => {
                                         </button>
                                         <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                             {/*Items under dropdown list*/}
-                                            <li><Link className="dropdown-item text-white" to="/product">Books and Courses</Link></li>
-                                        	<li><Link className="dropdown-item text-white" to="/product">Cellphones and Smartwatches</Link></li>
-                                        	<li><Link className="dropdown-item text-white" to="/product">Computers and Electronins</Link></li>
-                                        	<li><Link className="dropdown-item text-white" to="/product">Gaming</Link></li>
-                                        	<li><Link className="dropdown-item text-white" to="/product">Home and Appliances</Link></li>
-                                        	<li><Link className="dropdown-item text-white" to="/product">TV, Audio and Media</Link></li>
+                                            <li><Link className="dropdown-item text-white" to="/BooksAndCoursesCategorySearch">Books and Courses</Link></li>
+                                        	<li><Link className="dropdown-item text-white" to="/CellphonesAndSmartwatchesCategorySearch">Cellphones and Smartwatches</Link></li>
+                                        	<li><Link className="dropdown-item text-white" to="/ComputersAndElectronincsCategorySearch">Computers and Electronins</Link></li>
+                                        	<li><Link className="dropdown-item text-white" to="/GamingCategorySearch">Gaming</Link></li>
+                                        	<li><Link className="dropdown-item text-white" to="/HomeAndAppliancesCategoricalSearch">Home and Appliances</Link></li>
+                                        	<li><Link className="dropdown-item text-white" to="/TvAudioAndMediaCategoricalSearch">TV, Audio and Media</Link></li>
                                         </ul>
                                     </div>
                                     {/*End of Dropdown button*/}
@@ -213,7 +218,10 @@ const Header = () => {
                                         <NavLink className="text-white" to = "/contact">Contact</NavLink>
                                         {/* Conditionally renders the MyProducts button if you are a seller */}
                                         {isSeller && <NavLink className="text-white" to="/MyProducts">My Products</NavLink>}
-                                        <NavLink className="text-white" to="/MyAccount">My Account</NavLink>
+                                        <NavLink className="text-white" to={{
+                                            pathname: "/MyAccount",
+                                            state: { isSeller: {isSeller} }
+                                        }}>My Account</NavLink>
                                     </div>
                                 </div>
 

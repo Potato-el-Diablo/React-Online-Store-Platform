@@ -285,12 +285,107 @@ footer .input-group-text{
 /* Blog Card ends */
 
 /*product card*/
+/* inline price display  */
+.price-container {
+  display: flex;
+  align-items: baseline; /* Align elements vertically along the baseline */
+  margin-bottom: 10x;
+}
+
+
+
+/* displaying the discount */
+.discount-percentage  {
+  position: absolute;
+  top: 20px;
+  right: 50px;
+  width: 80px;
+  height: 50px;
+  background-color: #232f3e;
+  color: #febd69;
+  font-family: Impact, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: justify;
+  justify-content: center;
+}
+/* special effects */
+.discount-percentage::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0%; /* Adjust the initial position */
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.394) 0%,
+    rgba(255, 255, 255, 0.224) 25%,
+    rgba(255, 255, 255, 0) 50%
+  );
+  transform: rotate(0deg);
+  animation: shine 2s infinite linear;
+}
+
+@keyframes shine {
+  0% {
+    left: 0%; /* Start outside the element */
+  }
+  100% {
+    left: 100%; /* End inside the element */
+  }
+}
+
+
+
+
+
+
+
+.limited-offer {
+  position: absolute;
+  margin-top: 30px;
+  top: 50px;
+  right: 50px;
+  width: 80px;
+  height: 50px;
+  background-color: #232f3e;
+  color: #febd69;
+  font-family: Impact, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+ 
+}
+/* added anchoring to the button */
+
+.invisibleText {
+  visibility: hidden;
+  font-size: 1.5em;
+
+}
+
+.add-to-cart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: auto; /* Anchor the content to the bottom */
+  margin-bottom: 15px; /* Add margin at the bottom for spacing */
+}
+
+.add-to-cart label {
+  margin-top: 10px; /* Add top margin to create space between the button and label */
+}
+
 .product-card{
   padding: 5px;
   background-color: white;
   border-radius: 10px;
   width: 300px;
-  height: 330px;
+  height: 380px;
   
   
 }
@@ -443,6 +538,7 @@ inputcheckbox {
 .price{
   font-size: 16px;
   color: blue;
+  margin-right: 10px;
 }
 .product-card{
   padding: 15px;
@@ -479,6 +575,16 @@ inputcheckbox {
 
 
 /* Our Store */
+/* added strikethrough formatting phase 4*/
+.salePriceStrikethrough {
+  text-decoration: line-through;
+}
+/* to make the sale standout */
+
+.standout {
+  font-size: 1.5em; /* Increase the font size as desired */
+  color: #bf4800; /* Change the color to your preferred standout color */
+}
 .filter-card{
   background-color: white;
   border-radius: 10px;
@@ -816,7 +922,7 @@ color: var(--color-1c1c1b);
   left: 50%;
   transform: translate(-50%,-50%);
   width: 55%;
-  max-width: 600;
+  max-width: 600px;
   background-color: var(--color-ededed);
   padding: 10px;
   z-index: 1000;
@@ -824,8 +930,8 @@ color: var(--color-1c1c1b);
 }
 
 .product-modal img{
-  max-width: 150;
-  max-height: 150;
+  max-width: 150px;
+  max-height: 150px;
 }
 
 .product-overlay{
@@ -945,7 +1051,8 @@ z-index: 1000;
     color: var(--color-131921);
     
   }
-  
+
+
   
   .checkout-button {
     
@@ -991,3 +1098,129 @@ z-index: 1000;
 }
 
 /* Order history items end here */
+
+/*Keeps the footer in place */
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1 0 auto;
+}
+
+.footer {
+  flex-shrink: 0;
+}
+
+.voucher-dropdown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+
+.dropdownStyles {
+  width: 300px;
+  height: 50px;
+  fontSize: 18px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  borderRadius: 5px;
+  marginBottom: 20px;
+  textAlign: center;
+}
+
+/* Wishlist starts here */
+
+.wishlistItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #ddd;
+  border-color: grey;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  width: 70%; /* Adjust to your preferred size */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.in-stock {
+  position: absolute;
+  top: 10px;
+  right: 50px;
+  font-size: 18px;
+}
+
+.out-of-stock {
+  position: absolute;
+  top: 10px;
+  right: 30px;
+  font-size: 18px;
+}
+
+.wishlistItemImg {
+  width: 110px;
+  height: 110px;
+}
+
+.wishlistItemDetails {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 20px;
+}
+
+.wishlistItemBtn {
+  align-self: flex-end;
+  margin-left: auto;
+  font-size: 14px;
+  padding: 13px 33px;
+  border-radius: 25px;
+  margin-top: 10px;
+}
+
+.deleteItemBtn {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  border-radius:10px;
+  border: none;
+}
+
+.deleteItemBtn img {
+  width:  30px;
+  height: 30px;
+}
+.buttonContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.price {
+  color: black;
+}
+
+.sale-price {
+  color: black;
+}
+
+.button:disabled {
+  background: gray;
+}
+
+/* Wishlist ends here */

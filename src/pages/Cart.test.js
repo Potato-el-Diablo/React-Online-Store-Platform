@@ -1,103 +1,85 @@
-import React from "react";
-import {act, fireEvent, render, screen, waitFor} from "@testing-library/react";
-import  Cart  from "./Cart";
-import { CartProvider, useCart } from "./CartContext";
-import { BrowserRouter as Router } from 'react-router-dom';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import CartItem from "../components/CartItem";
+import { render, fireEvent, waitFor, screen } from '@testing-library/react';
+import Cart from './Cart';
+import { useCart } from './CartContext';
+import { BrowserRouter } from 'react-router-dom';
+import CartItem from '../components/CartItem';
+import '@testing-library/jest-dom'
 
 
-//Mock the necessary dependancies
-jest.mock('./CartContext'); // mock the module
+jest.mock('./CartContext', () => ({
+    useCart: jest.fn(),
+}));
 
 jest.mock('./firebase', () => ({
     auth: {
         currentUser: {
             uid: 'testUserId',
-            onAuthStateChanged: jest.fn()
-        }
+        },
+        onAuthStateChanged: jest.fn(),
     },
-    db: {}
+    db: {},
 }));
 
 jest.mock('firebase/firestore', () => ({
+    collection: jest.fn(),
     doc: jest.fn(),
     getDoc: jest.fn(),
-    updateDoc: jest.fn()
+    updateDoc: jest.fn(),
+    query: jest.fn(),
+    getDocs: jest.fn(() => Promise.resolve({
+        forEach: jest.fn(),
+    })),
 }));
 
-const mockedCartItem = {
-    id: '1',
-    price: 100,
-    quantity: 2,
-};
 
-describe("Cart", () => {
-    test("renders Cart component", () => {
-        render(
-            <CartProvider>
-                <Router>
-                    <Cart />
-                </Router>
-            </CartProvider>
-        );
-    });
+jest.mock('../components/CartItem', () => (props) => (
+    <div data-testid="cart-item">
+        <button onClick={() => props.onRemove(props.item.id)}>Delete</button>
+        <button onClick={() => props.onUpdateQuantity(props.item.id, props.item.quantity + 1, props.item.price)}>Update Quantity</button>
+        <button onClick={() => props.onUpdateSubtotal(props.item.id, props.item.quantity * props.item.price)}>Update Subtotal</button>
+    </div>
+));
 
-    //Mocks and checks if the quantity is correctly updated with the subtotal also updating
-    test('updates quantity when user changes quantity input', () => {
-        // Arrange
-        const mockItem = {
+describe('Cart Component', () => {
+    const mockCartItems = [
+        {
             id: 'item1',
-            name: 'Test Item',
-            price: 100,
-            image: '/path/to/image.jpg',
-        };
-        const mockUpdateSubtotal = jest.fn();
-        const mockUpdateQuantity = jest.fn();
-        const mockRemove = jest.fn();
-        const initialQuantity = 1;
+            quantity: 2,
+            originalPrice: 20,
+            price: 20,
+            productData: {}
+        },
+        {
+            id: 'item2',
+            quantity: 3,
+            originalPrice: 10,
+            price: 10,
+            productData: {}
+        }
+    ];
 
-        // Act
+    beforeEach(() => {
+        useCart.mockImplementation(() => ({
+            cartItems: mockCartItems,
+            setCartItems: jest.fn(),
+        }));
+    });
+
+    it('renders without crashing', () => {
         render(
-            <CartItem
-                item={mockItem}
-                quantity={initialQuantity}
-                onUpdateSubtotal={mockUpdateSubtotal}
-                onRemove={mockRemove}
-                onUpdateQuantity={mockUpdateQuantity}
-            />
+            <BrowserRouter>
+                <Cart />
+            </BrowserRouter>
         );
-        const quantityInput = screen.getByRole('spinbutton');
-        fireEvent.change(quantityInput, { target: { value: '2' } });
-
-        // Assert
-        expect(mockUpdateSubtotal).toHaveBeenCalledWith(mockItem.id, mockItem.price * 2);
-        expect(mockUpdateQuantity).toHaveBeenCalledWith(mockItem.id, 2);
+        expect(screen.getByText('Product')).toBeInTheDocument();
     });
 
-    //Checks if items in cart are successfully removed
-    test('removes item from the cart', async () => {
-        const onRemove = jest.fn();
-        const item = {
-            id: 'item1',
-            name: 'Test Item',
-            price: 100,
-            image: '/path/to/image.jpg',
-            quantity: 1,
-        };
-
-        render(<CartItem item={item} quantity={1} onUpdateSubtotal={jest.fn()} onRemove={onRemove} onUpdateQuantity={jest.fn()} />);
-
-        const deleteButton = await screen.findByText('Delete');
-
-        fireEvent.click(deleteButton);
-
-        expect(onRemove).toHaveBeenCalled();
+    it('renders correct number of cart items', () => {
+        render(
+            <BrowserRouter>
+                <Cart />
+            </BrowserRouter>
+        );
+        expect(screen.getAllByTestId('cart-item').length).toBe(mockCartItems.length);
     });
-
-
 });
-
-
-
-

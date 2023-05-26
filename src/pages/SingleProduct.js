@@ -15,6 +15,7 @@ import { Timestamp } from "firebase/firestore";
 
 
 import { useLocation  } from "react-router-dom";
+import {useCart} from "./useCart";
  const grid = 12;
 const SingleProduct = () => {
 
@@ -47,7 +48,7 @@ const SingleProduct = () => {
   const [averageRating, setAverageRating] = useState(null);
 
   let location = useLocation();
-  const { productImage, brand, productName, productDescription, productPrice, productStock, productId } = location.state;
+  const { productImage, brand, productName, productDescription, productPrice,productSale, productStock, productId } = location.state;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -86,56 +87,7 @@ const SingleProduct = () => {
     }
   }, [reviews]);
 
-  const handleAddToCart = async (productId, quantity) => {
-    try {
-      // Show toast messages
-    /*  toast.success(`User ID: ${userId}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
-      toast.success(`The product you are adding is: ${productId}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });  */
-
-      // Add the product to the user's cart
-      const userCartRef = doc(db, 'Carts', userId);
-      const cartSnapshot = await getDoc(userCartRef);
-
-      if (cartSnapshot.exists()) {
-        // Update the existing cart with the new product ID and quantity
-        const existingProducts = cartSnapshot.data().products;
-        const productIndex = existingProducts.findIndex(
-            (product) => product.productId === productId
-        );
-
-        if (productIndex !== -1) {
-          // The product already exists in the cart, update the quantity
-          existingProducts[productIndex].quantity += quantity;
-        } else {
-          // Add a new product to the cart with the specified quantity
-          existingProducts.push({ productId, quantity });
-        }
-
-        await updateDoc(userCartRef, { products: existingProducts });
-      } else {
-        // Create a new cart with the product ID and quantity
-        await setDoc(userCartRef, {
-          products: [{ productId, quantity }],
-        });
-      }
-
-
-      // Show success message
-      toast.success('Product added to cart successfully', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
-    } catch (error) {
-      // Show error message
-      toast.error('Failed to add product to cart', {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
-      console.error('Error adding product to cart:', error);
-    }
-  };
+  const { handleAddToCart } = useCart(userId);
   const addReview = async (e) => {
     e.preventDefault();
 
@@ -143,7 +95,6 @@ const SingleProduct = () => {
       alert('Please sign in to submit a review.');
       return;
     }
-
 
     try {
       // Create new review object
@@ -184,6 +135,43 @@ const SingleProduct = () => {
   };
   console.log("the average rating:", averageRating)
 
+  const handleAddToWishlist = async (productId) => {
+    try {
+      const auth = getAuth();
+      const user = auth.currentUser;
+
+      const userWishlistRef = doc(db, 'Wishlist', userId);
+      const wishlistSnapshot = await getDoc(userWishlistRef);
+
+      if (wishlistSnapshot.exists()) {
+        // Update the existing wishlist with the new product ID
+        const existingProducts = wishlistSnapshot.data().products;
+        if (!existingProducts.includes(productId)) {
+          // The product does not exist in the wishlist, add it
+          existingProducts.push(productId);
+        }
+
+        await updateDoc(userWishlistRef, { products: existingProducts, email: user.email });
+      } else {
+        // Create a new wishlist with the product ID
+        await setDoc(userWishlistRef, {
+          products: [productId],
+        });
+      }
+
+      // Show success message
+      toast.success('Product added to wishlist successfully', {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+    } catch (error) {
+      // Show error message
+      toast.error('Failed to add product to wishlist', {
+        position: toast.POSITION.BOTTOM_RIGHT,
+      });
+      console.error('Error adding product to wishlist:', error);
+    }
+  };
+
   //The reviews will render differently based on whether a user has made a review before or not
   return (
     <>
@@ -211,7 +199,13 @@ const SingleProduct = () => {
                <h3 className="title">{productName}</h3>
                </div>
                <div className="border-bottom py-3">
-                  <p className="price">R {productPrice}</p>
+               <p className={`price ${productSale !== '' ? 'salePriceStrikethrough' : ''}`}>R {productPrice}</p>
+                            {productSale !== '' ? (
+                            <p className="salePrice standout">R {productSale}</p>
+                            ) : (
+                            <p className="invisibleText">&nbsp;</p>
+                            )}
+
                   <div className="d-flex align-items-center gap-10">
                     {averageRating !== null && (
                         <ReactStars
@@ -280,7 +274,13 @@ const SingleProduct = () => {
                     
                   </div>
                   {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                  <div><a href=""><AiOutlineHeart className="fs-5 me-2"/>Add to Wishlist</a></div>
+                  <div>
+                    <button onClick={() => handleAddToWishlist(location.state.productId)}>
+                      <AiOutlineHeart className="fs-5 me-2"/>
+                      Add to Wishlist
+                    </button>
+                  </div>
+
                 </div>
               </div>
             </div>
@@ -404,6 +404,7 @@ const SingleProduct = () => {
                                 productName={product.name}
                                 productDescription={product.description}
                                 productPrice={product.price}
+                                productSale={product.sale}
                                 productStock={product.stock || 'Not available'}
                                 productId={product.id}
                                 // editOnClick={() => handleEditOnClick(product)}

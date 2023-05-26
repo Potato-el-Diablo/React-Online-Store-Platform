@@ -1,33 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import {getDocs, collection, query, where, updateDoc, doc} from 'firebase/firestore';
-import { db } from './firebase';
+import {getDocs, collection, query, where, updateDoc, doc, getDoc} from 'firebase/firestore';
+import {auth, db} from './firebase';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import ReactStars from 'react-rating-stars-component';
 import { NavLink } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
+import { useLocation } from "react-router-dom";
+import {useCart} from "./useCart";
+import useUserAuth from './useUserAuth';
+import '../App.js';
+
 
 const MyAccount = () => {
-    const [userId, setUserId] = useState('');
+    const location = useLocation();
     const [userReviews, setUserReviews] = useState([]);
     const [showReviews, setShowReviews] = useState(false);
     const [userOrders, setUserOrders] = useState([]);
     const [showOrders, setShowOrders] = useState(false);
+    const [userInfo, setUserInfo] = useState(null);
+    const [showUserInfo, setShowUserInfo] = useState(false);
+    // State to track if the user is logged in
+    const [loggedIn, setLoggedIn] = useState(false);
+    // Add a new state variable to handle editing mode
+    const [isEditing, setIsEditing] = useState(false);
 
-    //Authorizes that a user is logged in
-    useEffect(() => {
-        const auth = getAuth();
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (user) {
-                setUserId(user.uid);
-            } else {
-                setUserId('');
-            }
-        });
+// Form handling
+    const { register, handleSubmit, setValue } = useForm();
 
-        return () => {
-            unsubscribe();
-        };
-    }, []);
+    const { userId, isSeller } = useUserAuth();
+
     //Fetches and displays the users reviews
     const handleClick = async () => {
         if (!showReviews && userId) {
@@ -44,6 +45,7 @@ const MyAccount = () => {
         }
         setShowReviews(!showReviews);
         setShowOrders(false);
+        setShowUserInfo(false);
     };
     //Fetches and displays the users Order History
     const handleOrderClick = async () => {
@@ -61,7 +63,41 @@ const MyAccount = () => {
         }
         setShowOrders(!showOrders);
         setShowReviews(false);
+        setShowUserInfo(false);
     };
+    // When "show customer info" is clicked, this function will handle the request
+    const handleUserInfoClick = async () => {
+        if (!showUserInfo && userId) {
+            console.log("seller bool on my acc:", isSeller)
+            let userQuery;
+            if(isSeller) {
+                userQuery = query(
+                    collection(db, 'sellers'),
+                    where('uid', '==', userId)
+                );
+            } else {
+                userQuery = query(
+                    collection(db, 'buyers'),
+                    where('uid', '==', userId)
+                );
+            }
+
+            const querySnapshot = await getDocs(userQuery);
+            const fetchedUser = querySnapshot.docs.map((doc) => ({
+                ...doc.data(),
+                id: doc.id,
+            }));
+
+            setUserInfo(fetchedUser[0]);  // assuming one user will be returned
+        }
+        setShowUserInfo(!showUserInfo);
+        setShowOrders(false);
+        setShowReviews(false);
+        // Reset editing state whenever user info is toggled
+        setIsEditing(false);
+    };
+
+
     //Allows the user to edit reviews from My Account
     const EditableReview = ({ review, onEdit }) => {
         const [isEditing, setIsEditing] = useState(false);
@@ -88,7 +124,7 @@ const MyAccount = () => {
                     <button onClick={handleEdit}>Edit Review</button>
                 </div>
                 {isEditing ? (
-                    <form onSubmit={handleSubmit(onSubmit)}>
+                    <form onSubmit={handleSubmit(onSubmit)} data-testid="review-form">
                         <div>
                             <label>
                                 Rating:
@@ -143,8 +179,10 @@ const MyAccount = () => {
             <h2>My Account</h2>
             <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', marginRight: '20px' }}>
+                    <button className="button" onClick={handleUserInfoClick}>{showUserInfo ? 'Hide Personal Info' : 'Show personal info'}</button>
                     <button className="button" onClick={handleOrderClick}>{showOrders ? 'Hide order history' : 'View order history'}</button>
                     <button className="button" onClick={handleClick}>{showReviews ? 'Hide reviews' : 'Show your reviews'}</button>
+
                 </div>
                 <div style={{ border: '1px solid #ddd', padding: '10px', borderRadius: '5px', width: '80%' }}>
                     {showOrders && (
@@ -188,6 +226,65 @@ const MyAccount = () => {
                                         />
                                     ))}
                                 </ul>
+                            )}
+                        </>
+                    )}
+                    {showUserInfo && (
+                        <>
+                            {userInfo ? (
+                                <div>
+                                    <h3>User Information</h3>
+                                    {isEditing ? (
+                                        <form
+                                            onSubmit={handleSubmit((data) => {
+                                                // Replace this with the function to update user data in Firebase
+                                                console.log(data);
+                                                setIsEditing(false);
+                                            })}
+                                            style={{ display: 'flex', flexDirection: 'column', gap: '10px' }} // Add this style
+                                        >
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
+                                                <label>
+                                                    Name: <input defaultValue={userInfo.name} {...register('name')} />
+                                                </label>
+                                                {/*<label>*/}
+                                                {/*    Email: <input defaultValue={userInfo.email} {...register('email')} />*/}
+                                                {/*</label>*/}
+                                            </div>
+                                            <label>
+                                                Mobile Number: <input defaultValue={userInfo.mobileNumber} {...register('mobileNumber')} />
+                                            </label>
+                                            {isSeller && (
+                                                <div style={{ display: 'flex', gap: '10px' }}>
+                                                    <label>
+                                                        Company Name: <input defaultValue={userInfo.companyName} {...register('companyName')} />
+                                                    </label>
+                                                    <label>
+                                                        Company Telephone: <input defaultValue={userInfo.companyTelephone} {...register('companyTelephone')} />
+                                                    </label>
+                                                </div>
+                                            )}
+                                            <input type="submit" value="Save" />
+                                        </form>
+                                    ) : (
+                                        <>
+                                            <p>Name: {isSeller ? `${userInfo.firstName} ${userInfo.lastName}` : userInfo.name}</p>
+                                            <p>Email: {isSeller ? userInfo.companyEmail : userInfo.email}</p>
+                                            <p>Mobile Number: {userInfo.mobileNumber}</p>
+
+                                            <div>
+                                                {isSeller && (
+                                                <>
+                                                    <p>Company Name: {userInfo.companyName}</p>
+                                                    <p>Company Telephone: {userInfo.companyTelephone}</p>
+                                                </>
+                                            )}</div>
+                                            <button className="button" onClick={() => setIsEditing(true)}>Update Profile</button>
+                                        </>
+                                    )}
+                                </div>
+                            ) : (
+                                <p>No user information available.</p>
                             )}
                         </>
                     )}

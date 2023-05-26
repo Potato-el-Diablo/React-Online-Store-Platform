@@ -105,33 +105,35 @@ const DeliveryPage = () => {
 
 
     // submits the user delivery details to the database
-  
-    const handleFormSubmit = async (event) => {
-      // event.preventDefault();
-      if (!deliveryAddress.collection||(!deliveryAddress.houseNumber && !deliveryAddress.streetName && !deliveryAddress.suburb && !deliveryAddress.city && !deliveryAddress.postalCode)) {
-        console.log('Please fill out all fields!');
-        return;
-      }
-  
-      try {
-        const docRef = await addDoc(collection(db, 'AddressDetails'), {
-          deliveryAddress: {
-            houseNumber: deliveryAddress.houseNumber,
-            streetName: deliveryAddress.streetName,
-            suburb: deliveryAddress.suburb,
-            city: deliveryAddress.city,
-            postalCode: deliveryAddress.postalCode,
-            collection: deliveryAddress.collection,
-          },
-          // other fields for the order
-        });
-        console.log('Order submitted successfully!', docRef.id);
-        console.log('Order submitted successfully!');
-      } catch (error) {
-        console.error('Error writing order to Firestore: ', error);
-        console.log('Error submitting order. Please try again later.');
-      }
-    };
+
+  const handleFormSubmit = async (event) => {
+    // event.preventDefault();
+    if (!deliveryAddress.collection||(!deliveryAddress.houseNumber && !deliveryAddress.streetName && !deliveryAddress.suburb && !deliveryAddress.city && !deliveryAddress.postalCode)) {
+      console.log('Please fill out all fields!');
+      return;
+    }
+
+    try {
+      const docRef = await addDoc(collection(db, 'AddressDetails'), {
+        deliveryAddress: {
+          houseNumber: deliveryAddress.houseNumber,
+          streetName: deliveryAddress.streetName,
+          suburb: deliveryAddress.suburb,
+          city: deliveryAddress.city,
+          postalCode: deliveryAddress.postalCode,
+          collection: deliveryAddress.collection,
+        },
+        // also store the selected delivery method
+        deliveryMethod: deliveryOption,
+        // other fields for the order
+      });
+      console.log('Order submitted successfully!', docRef.id);
+      console.log('Order submitted successfully!');
+    } catch (error) {
+      console.error('Error writing order to Firestore: ', error);
+      console.log('Error submitting order. Please try again later.');
+    }
+  };
   
   
 
@@ -207,7 +209,7 @@ const DeliveryPage = () => {
 
 {/* onClick={handleProceedToCheckout} */}
     </div>
-    
+
     
   );
 };
