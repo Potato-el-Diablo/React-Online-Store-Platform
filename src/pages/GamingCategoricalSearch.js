@@ -179,6 +179,7 @@ const GamingCategoricalSearch = () => {
                                     productDescription={product.description}
                                     productPrice={product.price}
                                     productStock={product.stock || 'Not available'}
+                                    productSale={product.sale || ''}
                                     // editOnClick={() => handleEditOnClick(product)}
                                     // onClick={() => handleProductCardClick(product.id)}
                                     className="productCard"
