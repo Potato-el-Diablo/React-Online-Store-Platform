@@ -7,6 +7,8 @@ import ProductCard from "../components/ProductCard";
 
 
 /*lastest commit*/
+// added productSale
+
 const OurStore = () => {
     const grid = 12;
     const [products, setProducts] = useState([]);
@@ -169,6 +171,7 @@ const OurStore = () => {
                                     productName={product.name}
                                     productDescription={product.description}
                                     productPrice={product.price}
+                                    productSale={product.sale || ''}
                                     productStock={product.stock || 'Not available'}
                                     // editOnClick={() => handleEditOnClick(product)}
                                     // onClick={() => handleProductCardClick(product.id)}

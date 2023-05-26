@@ -54,6 +54,7 @@ const Searched = () => {
                         productDescription={product.description}
                         productPrice={product.price}
                         productStock={product.stock}
+                        productSale={product.sale || ''}
                     />
                 ))}
             </div>
