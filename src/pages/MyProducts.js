@@ -9,11 +9,20 @@ import { Link } from 'react-router-dom';
 import { db } from "./firebase";
 import AddProductModal from '../components/AddProductModal';
 import UpdateProductModal from '../components/UpdateProductModal';
+import ViewRevenueModal from '../components/ViewRevenueModal';
+import ViewProductRevenueModal from '../components/ViewProductRevenueModal';
 
 const MyProducts = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isUpdateOpen, setIsUpdateOpen] = useState(false);
-    const [selectedProduct, setSelectedProduct] = useState(null); 
+    const [isProductRevenueOpen, setIsProductRevenueOpen] = useState(false);
+    const [isRevenueOpen, setIsRevenueOpen] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [seller, setSeller] = useState([]);
+    const [analytics, setAnalytics] = useState([]);
+    const [revenueData, setRevenueData] = useState([]); 
+    const [totalRevenue, setTotalRevenue] = useState([]);
+    const [timePeriod, setTimePeriod] = useState(new Map());
     const grid = 12; //Static Grid size for viewing products
 
     const [products, setProducts] = useState([]);
@@ -55,6 +64,130 @@ const MyProducts = () => {
         setProducts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
 
+    //Get analytics for User
+    const getAnalytics = async () =>{
+        const email = auth.currentUser.email;
+        const sellerRef = collection(db, 'sellers');
+        const sellerQuery = where('companyEmail', '==', email);
+        const sellerData = await getDocs(query(sellerRef,sellerQuery,));
+    
+        setSeller(sellerData.docs.map((doc)=> ({...doc.data(), id: doc.id})));
+    
+        const analyticsCollectionRef = collection(sellerRef,seller[0].id+"/analytics");
+
+        const handleAnalytics = async () =>{
+            const analyticsData = await getDocs(analyticsCollectionRef);
+                
+            setAnalytics(analyticsData.docs.map((doc)=> ({...doc.data(), id:doc.id})));
+        }
+
+        handleAnalytics();
+    }
+
+    //Handle pressing Global Revenue
+    const viewGlobalRevenue = () =>{
+        getAnalytics();
+        setIsRevenueOpen(true);
+        totalMonthlyRevenue();
+    }
+
+
+    //Handle Total revenue of user
+    const totalMonthlyRevenue = () =>{
+
+        const months = {1:"Jan",2:"Feb",3:"Mar",4:"Apr",5:"May",6:"Jun",7:"Jul",8:"Aug",9:"Sep",10:"Oct",11:"Nov",12:"Dec"}
+
+        let tempTime = [];
+        let tempRevenue = [0,0,0,0,0,0,0,0,0,0,0,0];
+        const currDate = new Date();
+        const currMonth = currDate.getMonth()+1;
+        let tempTotal = 0;
+        
+        for(let i=0;i<12;i++){
+            let temp = currMonth-i; 
+            if(temp<1){
+                temp+=12;
+            } 
+            tempTime.push(months[temp]);
+        }
+
+        analytics.forEach((object) => {
+            const [day, month, year] = object.id.split("-");
+
+            const date = new Date(`${year}-${month}-${day}`);
+
+            const monthDiff = (currDate.getFullYear() - date.getFullYear())*12+(currMonth - parseInt(month,10));
+            
+            if((monthDiff<12)&&(monthDiff >=0)){
+                tempRevenue[monthDiff]+=object.TotalRevenue;
+                tempTotal += object.TotalRevenue;
+            } 
+        })
+
+        tempTime.reverse();
+        tempRevenue.reverse();
+
+        setTimePeriod(tempTime);
+        setRevenueData(tempRevenue);
+        setTotalRevenue(tempTotal);
+    }
+
+    //Handle individual product Revenue
+    const totalMonthlyProductRevenue = () =>{
+
+        const months = {1:"Jan",2:"Feb",3:"Mar",4:"Apr",5:"May",6:"Jun",7:"Jul",8:"Aug",9:"Sep",10:"Oct",11:"Nov",12:"Dec"}
+
+        let tempTime = [];
+        let tempRevenue = [0,0,0,0,0,0,0,0,0,0,0,0];
+        const currDate = new Date();
+        const currMonth = currDate.getMonth()+1;
+        let tempTotal = 0;
+        
+        for(let i=0;i<12;i++){
+            let temp = currMonth-i; 
+            if(temp<1){
+                temp+=12;
+            } 
+            tempTime.push(months[temp]);
+        }
+
+        analytics.forEach((object) => {
+            const [day, month, year] = object.id.split("-");
+
+            const date = new Date(`${year}-${month}-${day}`);
+
+            const monthDiff = (currDate.getFullYear() - date.getFullYear())*12+(currMonth - parseInt(month,10));
+            
+            const mockObject = new Map(Object.entries(object));
+            if((monthDiff<12)&&(monthDiff >=0)&&(mockObject.has(selectedProduct.id))){
+                tempRevenue[monthDiff]+=mockObject.get(selectedProduct.id).revenue;
+                tempTotal += mockObject.get(selectedProduct.id).revenue;
+            } 
+        })
+
+        tempTime.reverse();
+        tempRevenue.reverse();
+
+        setTimePeriod(tempTime);
+        setRevenueData(tempRevenue);
+        setTotalRevenue(tempTotal);
+    }
+
+    const viewProductRevenue = async (product) =>{
+        setSelectedProduct(product); 
+        await getAnalytics();
+        totalMonthlyProductRevenue();
+        setIsProductRevenueOpen(true);
+    }
+
+    const viewProductRevenueRefresh = () =>{
+        setIsProductRevenueOpen(true);
+        getAnalytics();
+        totalMonthlyProductRevenue();
+    }
+
+
+
     return (
         <>
             <Meta title={'My Products'} />
@@ -83,6 +216,7 @@ const MyProducts = () => {
                                 </div>
                                 <div className="d-flex align-items-center gap-5">
                                     <Link className="button" onClick={() =>setIsOpen(true)}>Add Product</Link>
+                                    <Link className="button" onClick={() => viewGlobalRevenue(true)}>View Revenue</Link>
                                 </div>
                                 <div className="d-flex align-items-center gap-10">
                                     <p className="totalproducts">21 products</p>
@@ -103,6 +237,7 @@ const MyProducts = () => {
                                         productPrice={product.price}
                                         productStock={product.stock || 'Not available'}
                                         editOnClick={() => handleEditOnClick(product)}
+                                        viewOnClick={() => viewProductRevenue(product)}
                                     />
                                 ))}
                             </div>
@@ -125,7 +260,28 @@ const MyProducts = () => {
                     productStock={selectedProduct.stock || 'Not available'}
                     onProductUpdate={refreshProducts}
                 />
+                
             )}
+            {selectedProduct && (
+                <ViewProductRevenueModal
+                    open={isProductRevenueOpen}
+                    onClose={() => setIsProductRevenueOpen(false)}
+                    onRefresh={() => viewProductRevenueRefresh()}
+                    productName={selectedProduct.name}
+                    dataset={revenueData}
+                    totalRev={totalRevenue}
+                    myLabels={timePeriod}
+                />
+            )}
+
+            <ViewRevenueModal 
+                open={isRevenueOpen}
+                onClose={() => setIsRevenueOpen(false)}
+                onRefresh={() => viewGlobalRevenue()}
+                myLabels={timePeriod}
+                dataset={revenueData}
+                totalRev={totalRevenue}
+                />
         </>
     );
 };
