@@ -5,7 +5,7 @@ import {doc, getDoc, updateDoc, addDoc, collection, setDoc, query, where, getDoc
 import { useCart } from './CartContext';
 import emailjs from '@emailjs/browser'
 
-const Success = async () => {
+const Success = () => {
     // Get cartItems from the context
     const {setCartItems} = useCart();
     const [orderNumber, setOrderNumber] = useState(1);
@@ -49,9 +49,23 @@ const Success = async () => {
             }
 
             if (item.id in dateData) {
-                dateData[item.id] += item.quantity;
+                dateData[item.id].quantity += item.quantity;
             } else {
-                dateData[item.id] = item.quantity;
+                dateData[item.id] = {
+                    quantity: item.quantity,
+                    revenue: 0  // Initialize revenue for new items
+                };
+            }
+            // calculate revenue and add to dateData
+            const revenue = item.price * item.quantity;
+            dateData[item.id].revenue += revenue;
+
+            // This calculates the total revenue (from all products together)
+            const TotalRevenue = item.price * item.quantity;
+            if ('TotalRevenue' in dateData) {
+                dateData['TotalRevenue'] += TotalRevenue;
+            } else {
+                dateData['TotalRevenue'] = TotalRevenue;
             }
         }
 
