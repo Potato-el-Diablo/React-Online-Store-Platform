@@ -3,7 +3,7 @@ import { BsSearch } from "react-icons/bs";
 import { auth, db } from "../pages/firebase";
 import React, { useState, useEffect } from "react";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import { useCartInfo } from './cartHooks';
+import { useCartInfo } from '../pages/UseCartInfo';
 
 
 const Header = () => {
