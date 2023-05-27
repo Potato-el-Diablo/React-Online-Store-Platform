@@ -58,7 +58,6 @@ const OrderDetails = () => {
                 return "Order status unknown";
         }
     }
-
     //Displays the ordered details
     return (
         <>
