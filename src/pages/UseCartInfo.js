@@ -18,7 +18,7 @@ export const useCartInfo = () => {
             console.log('No cart data found for the user');
             return;
         }
-
+        console.log("cart data found")
         const cartProducts = userCartSnapshot.data().products;
 
         const validCartProducts = cartProducts.filter(
