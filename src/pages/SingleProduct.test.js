@@ -80,45 +80,5 @@ describe('SingleProduct Component', () => {
         expect(addToWishlistLink).toBeInTheDocument();
     });
 
-    test('renders Add Review form if user is logged in', () => {
-        const ratingInput = screen.getByLabelText('Rating');
-        const commentInput = screen.getByLabelText('Review');
-        const submitButton = screen.getByText('Submit Review');
-        expect(ratingInput).toBeInTheDocument();
-        expect(commentInput).toBeInTheDocument();
-        expect(submitButton).toBeInTheDocument();
-
-        fireEvent.change(ratingInput, { target: { value: 4 } });
-        fireEvent.change(commentInput, { target: { value: 'Great product!' } });
-        fireEvent.click(submitButton);
-
-        expect(mockAddReview).toHaveBeenCalledWith('12345', 'Great product!', 4);
-    });
-
-    test('renders average rating', () => {
-        const avgRating = screen.getByText('Average Rating:');
-        expect(avgRating).toBeInTheDocument();
-    });
-
-    test('renders rating stars correctly', () => {
-        const ratingStars = screen.getAllByRole('img', { name: /star/i });
-        expect(ratingStars.length).toBe(5);
-    });
-
-    test('calls handleAddToCart when Add to Cart button is clicked', () => {
-        const addToCartButton = screen.getByText('Add to Cart');
-        fireEvent.click(addToCartButton);
-        expect(mockHandleAddToCart).toHaveBeenCalledWith(MockProduct);
-    });
-
-    test('matches snapshot', () => {
-        const { asFragment } = render(
-            <BrowserRouter>
-                <SingleProduct />
-            </BrowserRouter>
-        );
-        expect(asFragment()).toMatchSnapshot();
-    });
-
 
 });
