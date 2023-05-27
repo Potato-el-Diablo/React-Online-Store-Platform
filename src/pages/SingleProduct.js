@@ -117,7 +117,7 @@ const SingleProduct = () => {
         docRef = await addDoc(collection(db, 'reviews'), newReview);
       }
 
-      // Add the new review to the local state, and include the id from Firestore
+      // After review is added or updated
       const newReviewWithId = { ...newReview, id: docRef.id };
       setReviews([...reviews.filter(review => review.id !== userReview?.id), newReviewWithId]);
 
@@ -128,12 +128,28 @@ const SingleProduct = () => {
       setReviewComment('');
       setReviewRating(0);
 
+      // Calculate and set the new average rating
+      const newAverageRating = reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length;
+      setAverageRating(newAverageRating);
+
       alert(userReview ? 'Review updated successfully.' : 'Review submitted successfully.');
     } catch (error) {
       console.error('Error adding review: ', error);
     }
   };
   console.log("the average rating:", averageRating)
+
+  useEffect(() => {
+    const updateProductAverageRating = async () => {
+      if (averageRating !== null) {
+        const productRef = doc(db, 'Products', productId);
+        await updateDoc(productRef, { averageRating });
+      }
+    };
+
+    updateProductAverageRating();
+  }, [averageRating, productId]);
+
 
   const handleAddToWishlist = async (productId) => {
     try {

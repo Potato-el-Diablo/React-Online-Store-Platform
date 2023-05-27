@@ -18,6 +18,7 @@ const ProductCard = ({
                          productStock,
                          productId,
                          productSale,
+                         averageRating,
                          editOnClick,
                          removeOnClick,
                          viewOnClick,
@@ -56,6 +57,7 @@ const ProductCard = ({
                     productStock,
                     productId,
                     productSale,
+                    averageRating,
                 }}>
                     <div className="product-image">
                         <img src={productImage} alt={productName} width="150" height="150"/>
@@ -80,7 +82,7 @@ const ProductCard = ({
                         )}
                         <ReactStars
                             count={5}
-                            value={3}
+                            value={averageRating}
                             edit = {false}
                             size={24}
                             activeColor="#ffd700"
