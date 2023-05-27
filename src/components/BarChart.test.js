@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import BarChart from './BarChart';
 
@@ -27,9 +27,9 @@ const mockChartData = {
 
 describe('BarChart', () => {
     it('renders correctly', () => {
-        const { getByTestId } = render(<BarChart chartData={mockChartData} />);
+        render(<BarChart chartData={mockChartData} />);
 
-        expect(getByTestId('mock-Bar')).toBeInTheDocument();
+        expect(screen.getByTestId('mock-Bar')).toBeInTheDocument();
     });
 
     it('passes correct data to Bar component', () => {
