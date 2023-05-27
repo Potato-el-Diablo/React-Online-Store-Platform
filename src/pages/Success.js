@@ -9,6 +9,7 @@ const Success = () => {
     // Get cartItems from the context
     const {setCartItems} = useCart();
     const [orderNumber, setOrderNumber] = useState(1);
+    const deliveryOption = JSON.parse(localStorage.getItem('deliveryOption'));
 
 
 
@@ -174,6 +175,7 @@ const Success = () => {
                 subtotal: subtotal,
                 userId: auth.currentUser.uid,
                 orderNumber: currentOrderNumber,
+                deliveryOption: deliveryOption,
             });
             setOrderNumber(currentOrderNumber);
             await addToSellerAnalytics(itemDetails);
