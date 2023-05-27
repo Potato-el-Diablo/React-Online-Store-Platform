@@ -18,6 +18,7 @@ const ProductCard = ({
                          productStock,
                          productId,
                          productSale,
+                         productCategory,
                          averageRating,
                          editOnClick,
                          removeOnClick,
@@ -57,6 +58,7 @@ const ProductCard = ({
                     productStock,
                     productId,
                     productSale,
+                    productCategory,
                     averageRating,
                 }}>
                     <div className="product-image">

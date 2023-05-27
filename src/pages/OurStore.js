@@ -172,6 +172,7 @@ const OurStore = () => {
                                     productDescription={product.description}
                                     productPrice={product.price}
                                     productSale={product.sale || ''}
+                                    productCategory={product.category}
                                     productStock={product.stock || 'Not available'}
                                     averageRating={product.averageRating || 0}
                                     // editOnClick={() => handleEditOnClick(product)}
