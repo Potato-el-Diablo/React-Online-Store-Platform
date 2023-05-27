@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="210705c5-207a-4957-8740-df7ac1b18442" name="Changes" comment="Update MyAccount.js">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.cache/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/.eslintcache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.cache/default-development/0.pack" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/default-development/0.pack" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.cache/default-development/1.pack" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/default-development/1.pack" afterDir="false" />
@@ -13,8 +12,6 @@
       <change beforePath="$PROJECT_DIR$/node_modules/.cache/default-development/3.pack" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/default-development/3.pack" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.cache/default-development/index.pack.old" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/default-development/index.pack.old" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,6 +64,7 @@
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.web.browsers&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Applications/WebStorm.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -130,7 +128,11 @@
       <workItem from="1683814790949" duration="5833000" />
       <workItem from="1683830022737" duration="13536000" />
       <workItem from="1684917526083" duration="76000" />
-      <workItem from="1684939448252" duration="5865000" />
+      <workItem from="1684939448252" duration="10205000" />
+      <workItem from="1685009630526" duration="2379000" />
+      <workItem from="1685039088499" duration="749000" />
+      <workItem from="1685133192465" duration="606000" />
+      <workItem from="1685175549965" duration="11724000" />
     </task>
     <task id="LOCAL-00001" summary="Added Cart">
       <created>1680239162000</created>
@@ -321,7 +323,105 @@
       <option name="project" value="LOCAL" />
       <updated>1684946873724</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Update MyAccount.js">
+      <created>1684947803178</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1684947803178</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Update MyAccount.js">
+      <created>1684948152099</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1684948152099</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Update MyAccount.js">
+      <created>1684950596684</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1684950596684</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Update MyAccount.js">
+      <created>1684950599194</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1684950599194</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Update MyAccount.js">
+      <created>1684951178942</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1684951178942</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Update MyAccount.js">
+      <created>1684951181542</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1684951181542</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Update MyAccount.js">
+      <created>1684951579299</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1684951579299</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Update MyAccount.js">
+      <created>1684951582337</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1684951582337</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Update MyAccount.js">
+      <created>1685189073354</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1685189073354</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Update MyAccount.js">
+      <created>1685189076444</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1685189076444</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Update MyAccount.js">
+      <created>1685189097045</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1685189097045</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Update MyAccount.js">
+      <created>1685193358813</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1685193358813</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Update MyAccount.js">
+      <created>1685194180477</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1685194180477</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Update MyAccount.js">
+      <created>1685194239812</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1685194239812</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
