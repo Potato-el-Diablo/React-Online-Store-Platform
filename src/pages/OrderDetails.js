@@ -70,7 +70,6 @@ const OrderDetails = () => {
                         <h2 style={{textAlign: "center"}}>Order Details</h2>
                         <h3 style={{textAlign: "center"}}>Order Number: {orderDetails.orderNumber}</h3>
                         <p style={{textAlign: "center", marginBottom: '50px'}}>Order Date: {orderDetails.createdAt.toDate().toLocaleDateString()}</p>
-
                         <h3
                             style={{
                                 textAlign: "center",
