@@ -3,13 +3,15 @@ import { BsSearch } from "react-icons/bs";
 import { auth, db } from "../pages/firebase";
 import React, { useState, useEffect } from "react";
 import { collection, query, where, getDocs } from "firebase/firestore";
-
+import { useCartInfo } from '../pages/UseCartInfo';
 
 
 const Header = () => {
 
     const [searchQuery, setSearchQuery] = useState("");
     const navigate = useNavigate();
+    const { cartItems, subtotal } = useCartInfo();
+
 
     // Function to handle search form submission
     const handleSearch = (e) => {
@@ -167,9 +169,9 @@ const Header = () => {
                                     <Link className="d-flex align-items-center gap text-white">
                                         <img src="images/cart.svg" alt="cart"/>
                                         <div className="d-flex flex-column">
-                                            <span className="badge bg-white text-dark">0</span>
+                                            <span className="badge bg-white text-dark">{cartItems.length}</span>
                                             <p className="mb-0">
-                                                <NavLink className="text-white" to = "cart">R650</NavLink>
+                                                <NavLink className="text-white" to = "cart">R{subtotal.toFixed(2)}</NavLink>
                                             </p> {/* CART TOTAL DISPLAYED ON HEADER*/}
                                         </div>
                                     </Link>
