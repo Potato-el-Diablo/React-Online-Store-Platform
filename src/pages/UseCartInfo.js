@@ -35,6 +35,7 @@ export const useCartInfo = () => {
             0
         );
         setSubtotal(newSubtotal);
+        console.log("Subtotal:", newSubtotal)
     }, [cartItems]);
 
     // This effect fetches the user's cart items when the component is mounted
