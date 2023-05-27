@@ -69,6 +69,8 @@ const OrderDetails = () => {
                     <div className="col-9">
                         <h2 style={{textAlign: "center"}}>Order Details</h2>
                         <h3 style={{textAlign: "center"}}>Order Number: {orderDetails.orderNumber}</h3>
+                        <p style={{textAlign: "center", marginBottom: '50px'}}>Order Date: {orderDetails.createdAt.toDate().toLocaleDateString()}</p>
+
                         <h3
                             style={{
                                 textAlign: "center",
@@ -82,7 +84,7 @@ const OrderDetails = () => {
                             }}
                         >
                             Order Status: {calculateOrderStatus(orderDetails.createdAt, orderDetails.deliveryOption)}
-                        </h3>                        <p style={{textAlign: "center", marginBottom: '50px'}}>Order Date: {orderDetails.createdAt.toDate().toLocaleDateString()}</p>
+                        </h3>
                         <div className="orderItems justify-content-center">
                             <div className="d-flex gap-10 flex-wrap">
                                 {orderDetails.items.map((item) => (
