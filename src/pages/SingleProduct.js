@@ -48,7 +48,7 @@ const SingleProduct = () => {
   const [averageRating, setAverageRating] = useState(null);
 
   let location = useLocation();
-  const { productImage, brand, productName, productDescription, productPrice,productSale, productStock, productId } = location.state;
+  const { productImage, brand, productName, productDescription, productPrice,productSale, productStock, productId, productCategory } = location.state;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,7 +58,15 @@ const SingleProduct = () => {
     fetchData();
   }, []);
 
-  console.log(products);
+  //console.log(products);
+
+  const searchQuery = productCategory;
+
+    // Filtering products to remove any that arent in the given category
+    const filteredProducts = products.filter((product) =>
+        (product.category &&
+        product.category.toLowerCase().includes(searchQuery.toLowerCase()) && product.name != productName) 
+    );
   // const history = useHistory();
 
   // In the fetchReviews useEffect, check for and store the current user's review
@@ -407,11 +415,11 @@ const SingleProduct = () => {
         <div className="container-xxl"> 
           <div className="row">
             <div className="col-12"> 
-              <h3 className="section-heading"> Our Popular Products </h3>
+              <h3 className="section-heading"> Related Products </h3>
             </div>
           </div>
           <div className="row"> 
-          {products.slice(0,4).map((product) => (
+          {filteredProducts.slice(0,4).map((product) => (
                                 <ProductCard 
                                 key={product.id}
                                 grid={grid}
@@ -420,9 +428,10 @@ const SingleProduct = () => {
                                 productName={product.name}
                                 productDescription={product.description}
                                 productPrice={product.price}
-                                productSale={product.sale}
+                                productSale={product.sale || ''}
                                 productStock={product.stock || 'Not available'}
                                 productId={product.id}
+                                productCategory={product.category}
                                 averageRating={product.averageRating}
                                 // editOnClick={() => handleEditOnClick(product)}
                                 // onClick={() => handleProductCardClick(product.id)}
