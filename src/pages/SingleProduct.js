@@ -423,6 +423,7 @@ const SingleProduct = () => {
                                 productSale={product.sale}
                                 productStock={product.stock || 'Not available'}
                                 productId={product.id}
+                                averageRating={product.averageRating}
                                 // editOnClick={() => handleEditOnClick(product)}
                                 // onClick={() => handleProductCardClick(product.id)}
                                 
