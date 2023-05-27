@@ -18,19 +18,6 @@ const MockLocation = {
     state: MockProduct,
 };
 
-const mockUserId = '12345';
-const mockHandleAddToCart = jest.fn();
-const mockAddReview = jest.fn();
-
-jest.mock('./useCart', () => ({
-    useCart: () => ({ handleAddToCart: mockHandleAddToCart }),
-}));
-
-jest.mock('@firebase/auth', () => ({
-    getAuth: () => ({
-        currentUser: { uid: mockUserId },
-    }),
-}));
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
