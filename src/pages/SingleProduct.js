@@ -48,7 +48,7 @@ const SingleProduct = () => {
   const [averageRating, setAverageRating] = useState(null);
 
   let location = useLocation();
-  const { productImage, brand, productName, productDescription, productPrice, productStock, productId } = location.state;
+  const { productImage, brand, productName, productDescription, productPrice,productSale, productStock, productId } = location.state;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -199,7 +199,13 @@ const SingleProduct = () => {
                <h3 className="title">{productName}</h3>
                </div>
                <div className="border-bottom py-3">
-                  <p className="price">R {productPrice}</p>
+               <p className={`price ${productSale !== '' ? 'salePriceStrikethrough' : ''}`}>R {productPrice}</p>
+                            {productSale !== '' ? (
+                            <p className="salePrice standout">R {productSale}</p>
+                            ) : (
+                            <p className="invisibleText">&nbsp;</p>
+                            )}
+
                   <div className="d-flex align-items-center gap-10">
                     {averageRating !== null && (
                         <ReactStars
@@ -398,6 +404,7 @@ const SingleProduct = () => {
                                 productName={product.name}
                                 productDescription={product.description}
                                 productPrice={product.price}
+                                productSale={product.sale}
                                 productStock={product.stock || 'Not available'}
                                 productId={product.id}
                                 // editOnClick={() => handleEditOnClick(product)}

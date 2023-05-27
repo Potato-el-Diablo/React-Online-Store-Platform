@@ -3,6 +3,11 @@
 import ReactStars from "react-rating-stars-component";
 import { Link, useLocation } from "react-router-dom";
 
+// Added product Sale to latest update for spint 4 check line 69, 
+// need to add formatting for font colour and size
+// readjust the width since sale price pushes the buttons out of order
+// wishlist
+
 const ProductCard = ({
                          grid,
                          productImage,
@@ -12,12 +17,22 @@ const ProductCard = ({
                          productPrice,
                          productStock,
                          productId,
+                         productSale,
                          editOnClick,
                          removeOnClick,
                          viewOnClick,
                      }) => {
 
     let location = useLocation();
+    // function to calculate discount percentage
+    const calculateDiscountPercentage = () => {
+        if (productSale !== '') {
+          const discount = productPrice - productSale;
+          const percentage = (discount / productPrice) * 100;
+          return Math.round(percentage);
+        }
+        return 0;
+      };
 
     // const handleClick = () =>{
     // history.push('/product/${product.id}')
@@ -39,10 +54,18 @@ const ProductCard = ({
                     productDescription,
                     productPrice,
                     productStock,
-                    productId
+                    productId,
+                    productSale,
                 }}>
                     <div className="product-image">
                         <img src={productImage} alt={productName} width="150" height="150"/>
+                        {/* display the discount percentage */}
+                        {productSale !== '' && (
+                            <>
+                    <div className="discount-percentage">{calculateDiscountPercentage()}% <br/>OFF!</div>
+                    {/* <div className="limited-offer">Limited Offer!</div> */}
+                        </>
+                    )}
                     </div>
                     <div className="product-details">
                         <h6 className="brand">{brand} </h6>
@@ -62,11 +85,24 @@ const ProductCard = ({
                             size={24}
                             activeColor="#ffd700"
                         />
-                        <p className="price">R {productPrice}</p>
+
+                        {/* added this div to fix formattinng issues */}
+                        {/* invisible text to help with button alignment */}
+                        <div className="price-container">
+                        <p className={`price ${productSale !== '' ? 'salePriceStrikethrough' : ''}`}>R {productPrice}</p>
+                            {productSale !== '' ? (
+                            <p className="salePrice standout">R {productSale}</p>
+                            ) : (
+                            <p className="invisibleText">&nbsp;</p>
+                            )}
+
+                            
+                        </div>
+
                         <div className="add-to-cart">
                             <Link><img src="/images/add-cart.svg" alt="addcart"/>
                             </Link>
-                            <label> Add to Cart </label>
+                            <label> View Product </label>
                         </div>
 
                     </div>

@@ -285,12 +285,107 @@ footer .input-group-text{
 /* Blog Card ends */
 
 /*product card*/
+/* inline price display  */
+.price-container {
+  display: flex;
+  align-items: baseline; /* Align elements vertically along the baseline */
+  margin-bottom: 10x;
+}
+
+
+
+/* displaying the discount */
+.discount-percentage  {
+  position: absolute;
+  top: 20px;
+  right: 50px;
+  width: 80px;
+  height: 50px;
+  background-color: #232f3e;
+  color: #febd69;
+  font-family: Impact, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: justify;
+  justify-content: center;
+}
+/* special effects */
+.discount-percentage::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0%; /* Adjust the initial position */
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.394) 0%,
+    rgba(255, 255, 255, 0.224) 25%,
+    rgba(255, 255, 255, 0) 50%
+  );
+  transform: rotate(0deg);
+  animation: shine 2s infinite linear;
+}
+
+@keyframes shine {
+  0% {
+    left: 0%; /* Start outside the element */
+  }
+  100% {
+    left: 100%; /* End inside the element */
+  }
+}
+
+
+
+
+
+
+
+.limited-offer {
+  position: absolute;
+  margin-top: 30px;
+  top: 50px;
+  right: 50px;
+  width: 80px;
+  height: 50px;
+  background-color: #232f3e;
+  color: #febd69;
+  font-family: Impact, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+ 
+}
+/* added anchoring to the button */
+
+.invisibleText {
+  visibility: hidden;
+  font-size: 1.5em;
+
+}
+
+.add-to-cart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: auto; /* Anchor the content to the bottom */
+  margin-bottom: 15px; /* Add margin at the bottom for spacing */
+}
+
+.add-to-cart label {
+  margin-top: 10px; /* Add top margin to create space between the button and label */
+}
+
 .product-card{
   padding: 5px;
   background-color: white;
   border-radius: 10px;
   width: 300px;
-  height: 330px;
+  height: 380px;
   
   
 }
@@ -443,6 +538,7 @@ inputcheckbox {
 .price{
   font-size: 16px;
   color: blue;
+  margin-right: 10px;
 }
 .product-card{
   padding: 15px;
@@ -479,6 +575,16 @@ inputcheckbox {
 
 
 /* Our Store */
+/* added strikethrough formatting phase 4*/
+.salePriceStrikethrough {
+  text-decoration: line-through;
+}
+/* to make the sale standout */
+
+.standout {
+  font-size: 1.5em; /* Increase the font size as desired */
+  color: #bf4800; /* Change the color to your preferred standout color */
+}
 .filter-card{
   background-color: white;
   border-radius: 10px;

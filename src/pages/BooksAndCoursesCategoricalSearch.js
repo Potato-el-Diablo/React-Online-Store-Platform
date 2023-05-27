@@ -129,6 +129,7 @@ const BooksAndCoursesCategoricalSearch = () => {
                                     productDescription={product.description}
                                     productPrice={product.price}
                                     productStock={product.stock || 'Not available'}
+                                    productSale={product.sale || ''}
                                     className="productCard"
                                 />
                             ))}
