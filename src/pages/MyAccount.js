@@ -104,34 +104,49 @@ const MyAccount = () => {
     };
 
     const updateUserDetails = async (data) => {
-        const userRef = doc(db, isSeller ? "sellers" : "buyers", userInfo.uid);
+        const db = getFirestore();
+        const collectionRef = collection(db, isSeller ? "sellers" : "buyers");
 
-        // Prepare update data.
+        // Prepare the update data.
         const updateData = {
-            mobileNumber: data.mobileNumber,
+            name: data.name || '',
+            mobileNumber: data.mobileNumber || '',
+            companyName: data.companyName || '',
+            companyTelephone: data.companyTelephone || ''
         };
 
-        if (isSeller) {
-            updateData.firstName = data.firstName;
-            updateData.lastName = data.lastName;
-            updateData.companyName = data.companyName;
-            updateData.companyTelephone = data.companyTelephone;
-        } else {
-            updateData.name = data.name;
+        // If this is not a seller, remove seller-specific fields.
+        if (!isSeller) {
+            delete updateData.companyName;
+            delete updateData.companyTelephone;
         }
-        setUserInfo(prevState => ({ ...prevState, ...updateData }));
-        try {
-            await updateDoc(userRef, updateData);
-            console.log('Document successfully updated');
-        } catch (error) {
-            if (error.code === 'not-found') {
-                console.error('No document found to update at the specified path:', error);
-            } else {
-                console.error('Error updating document:', error);
-            }
+        else{
+            delete updateData.name;
+            updateData.firstName= data.firstName;
+            updateData.lastName= data.lastName;
         }
 
+        // Query for the document that has the 'uid' field equal to 'userInfo.uid'.
+        const q = query(collectionRef, where("uid", "==", userInfo.uid));
+
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((document) => {
+            // document.data() is never undefined for query doc snapshots
+            const docRef = doc(db, isSeller ? "sellers" : "buyers", document.id);
+            updateDoc(docRef, updateData)
+                .then(() => {
+                    console.log('Document successfully updated');
+                })
+                .catch((error) => {
+                    console.error('Error updating document: ', error);
+                });
+        });
+
+        setUserInfo(prevState => ({ ...prevState, ...updateData }));
     };
+
+
+
 
 
     //Allows the user to edit reviews from My Account
