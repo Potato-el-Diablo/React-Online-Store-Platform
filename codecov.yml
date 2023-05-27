@@ -5,3 +5,4 @@ ignore:
   - "src/index.js"
   - "src/pages/Success.js"
   - "src/components/Checkout.js"
+  - "src/pages/MyProducts.js"
