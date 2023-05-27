@@ -29,7 +29,7 @@ const ComputersAndElectronicsCategoricalSearch = () => {
   
     const searchQuery = "Computers and Electronics";
 
-    // Filtering products to remove any that arent in the given category
+    // Filtering products to remove any that aren't in the given category
     const filteredProducts = products.filter((product) =>
         (product.category &&
         product.category.toLowerCase().includes(searchQuery.toLowerCase())) 
