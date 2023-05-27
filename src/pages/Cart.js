@@ -291,6 +291,7 @@ const Cart = () => {
                                         ))}
                                     </select>
                                 </div>
+
                                 <div>
                                     <h4>Subtotal: R {subtotal.toFixed(2)}</h4>
                                     <p>Taxes and Shipping Calculated at checkout</p>

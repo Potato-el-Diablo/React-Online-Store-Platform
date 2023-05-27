@@ -64,6 +64,7 @@ npm run dev
 ```
 Local API server should successfully deploy and run.
 
+
 ## NPM INSTALLATIONS FOR THE ANALYTICS
 ```
 npm install --save react-chartjs-2 chart.js
