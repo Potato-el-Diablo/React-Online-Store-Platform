@@ -9,6 +9,9 @@ import { useLocation } from "react-router-dom";
 import {useCart} from "./useCart";
 import useUserAuth from './useUserAuth';
 import '../App.js';
+import { getFirestore, setDoc } from "firebase/firestore";
+
+
 
 
 const MyAccount = () => {
@@ -23,6 +26,8 @@ const MyAccount = () => {
     const [loggedIn, setLoggedIn] = useState(false);
     // Add a new state variable to handle editing mode
     const [isEditing, setIsEditing] = useState(false);
+    const db = getFirestore();
+
 
 // Form handling
     const { register, handleSubmit, setValue } = useForm();
@@ -96,6 +101,36 @@ const MyAccount = () => {
         setShowReviews(false);
         // Reset editing state whenever user info is toggled
         setIsEditing(false);
+    };
+
+    const updateUserDetails = async (data) => {
+        const userRef = doc(db, isSeller ? "sellers" : "buyers", userInfo.uid);
+
+        // Prepare update data.
+        const updateData = {
+            mobileNumber: data.mobileNumber,
+        };
+
+        if (isSeller) {
+            updateData.firstName = data.firstName;
+            updateData.lastName = data.lastName;
+            updateData.companyName = data.companyName;
+            updateData.companyTelephone = data.companyTelephone;
+        } else {
+            updateData.name = data.name;
+        }
+        setUserInfo(prevState => ({ ...prevState, ...updateData }));
+        try {
+            await updateDoc(userRef, updateData);
+            console.log('Document successfully updated');
+        } catch (error) {
+            if (error.code === 'not-found') {
+                console.error('No document found to update at the specified path:', error);
+            } else {
+                console.error('Error updating document:', error);
+            }
+        }
+
     };
 
 
@@ -239,18 +274,38 @@ const MyAccount = () => {
                                     {isEditing ? (
                                         <form
                                             onSubmit={handleSubmit((data) => {
-                                                // Replace this with the function to update user data in Firebase
-                                                console.log('Data:', data);
+                                                updateUserDetails(data);
                                                 setIsEditing(false);
                                             })}
                                             style={{ display: 'flex', flexDirection: 'column', gap: '10px' }} // Add this style
                                         >
-                                            <label>
-                                                Name: <input className="form-control" defaultValue={userInfo.name} {...register('name')} />
-                                            </label>
-                                            <label>
-                                                Email: <input className="form-control" defaultValue={userInfo.email} disabled />
-                                            </label>
+                                            {isSeller && (
+                                                <>
+                                                    <label>
+                                                        First Name: <input className='form-control'
+                                                        {...register('firstName', { required: true })}
+                                                        placeholder="First Name"
+                                                        defaultValue={userInfo.firstName}
+                                                    />
+                                                    </label>
+                                                    <label>
+                                                        Last Name: <input className='form-control'
+                                                        {...register('lastName', { required: true })}
+                                                        placeholder="Last Name"
+                                                        defaultValue={userInfo.lastName}
+                                                    />
+                                                    </label>
+                                                </>
+                                            )}
+                                            {!isSeller && (
+                                                <label>
+                                                    Name: <input className='form-control'
+                                                    {...register('name', { required: true })}
+                                                    placeholder="Name"
+                                                    defaultValue={userInfo.name}
+                                                />
+                                                </label>
+                                            )}
                                             <label>
                                                 Mobile Number: <input className="form-control" defaultValue={userInfo.mobileNumber} {...register('mobileNumber')} />
                                             </label>
