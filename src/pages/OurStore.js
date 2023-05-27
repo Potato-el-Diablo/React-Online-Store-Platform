@@ -173,6 +173,7 @@ const OurStore = () => {
                                     productPrice={product.price}
                                     productSale={product.sale || ''}
                                     productStock={product.stock || 'Not available'}
+                                    averageRating={product.averageRating || 0}
                                     // editOnClick={() => handleEditOnClick(product)}
                                     // onClick={() => handleProductCardClick(product.id)}
                                     className="productCard"

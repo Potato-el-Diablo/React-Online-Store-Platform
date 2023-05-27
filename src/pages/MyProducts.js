@@ -42,7 +42,9 @@ const MyProducts = () => {
         });
 
         return () => {
-            unsubscribe();
+            if(typeof unsubscribe === "function"){
+                unsubscribe();
+            }
         };
     }, []);
 
