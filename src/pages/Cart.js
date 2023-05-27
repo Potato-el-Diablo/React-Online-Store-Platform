@@ -271,37 +271,33 @@ const Cart = () => {
                             ))}
                         </div>
 
-
-
-                        <div className="voucher-dropdown" style={{ textAlign: "center", marginBottom: "20px" }}>
-                            <h4 >Available Vouchers:</h4>
-                            <select
-                                className="dropdownStyles"
-                                onChange={(e) => handleVoucherSelect(e.target.value)}
-                            >
-                                <option value="">Select a voucher</option>
-                                {vouchers.map((voucher) => (
-                                    <option key={voucher.id} value={voucher.id}>
-                                        {voucher.id.slice(0, 6)} - {voucher.Discount}%
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-
-
-
-
                         <div className="col-12 py-2 mt-4"></div>
                         <div className="d-flex justify-content-between align-items-baseline">
                             <Link to="/product" className="button">
                                 Continue Shopping
                             </Link>
                             <div className="d-flex flex-column align-items-end">
-                                <h4>Subtotal: R {subtotal.toFixed(2)}</h4>
-                                <p>Taxes and Shipping Calculated at checkout</p>
-                                <Link to="/delivery" className="button" onClick={handleCheckout}>
-                                    Checkout
-                                </Link>
+                                <div className="voucher-dropdown" style={{ textAlign: "center", marginBottom: "20px" }}>
+                                    <h4 >Available Vouchers:</h4>
+                                    <select
+                                        className="dropdownStyles"
+                                        onChange={(e) => handleVoucherSelect(e.target.value)}
+                                    >
+                                        <option value="">Select a voucher</option>
+                                        {vouchers.map((voucher) => (
+                                            <option key={voucher.id} value={voucher.id}>
+                                                {voucher.id.slice(0, 6)} - {voucher.Discount}%
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div>
+                                    <h4>Subtotal: R {subtotal.toFixed(2)}</h4>
+                                    <p>Taxes and Shipping Calculated at checkout</p>
+                                    <Link to="/delivery" className="button" onClick={handleCheckout}>
+                                        Checkout
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -309,6 +305,7 @@ const Cart = () => {
             </section>
         </>
     );
+
 };
 
 export default Cart;
