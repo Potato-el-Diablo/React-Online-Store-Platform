@@ -1,66 +1,65 @@
 import { renderHook } from '@testing-library/react-hooks';
 import useUserAuth from './useUserAuth';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { auth } from './firebase';
 
-jest.mock('firebase/auth', () => ({
-    getAuth: jest.fn(() => ({})),
-    onAuthStateChanged: jest.fn(),
-}));
-
-jest.mock('firebase/firestore', () => ({
-    collection: jest.fn(),
-    query: jest.fn(),
-    where: jest.fn(),
-    getDocs: jest.fn(),
+jest.mock('./firebase', () => ({
+    auth: {
+        onAuthStateChanged: jest.fn(),
+    },
 }));
 
 describe('useUserAuth hook', () => {
-    afterEach(() => {
-        jest.clearAllMocks();
+    beforeEach(() => {
+        auth.onAuthStateChanged.mockClear();
     });
 
-    it('sets userId and isSeller when the user is logged in and a seller', async () => {
-        getAuth.mockImplementation(() => ({ uid: '12345' }));
-        onAuthStateChanged.mockImplementation((auth, callback) => {
-            callback({ uid: '12345' });
-            return jest.fn(); // Mock unsubscribe function
-        });
-        getDocs.mockResolvedValue({ empty: false });
+    it('should set userId if a user is authenticated', () => {
+        auth.onAuthStateChanged.mockImplementationOnce((callback) =>
+            callback({ uid: 'testUserId' })
+        );
 
-        const { result, waitForNextUpdate } = renderHook(() => useUserAuth());
-        await waitForNextUpdate();
+        const { result } = renderHook(() => useUserAuth());
+        expect(result.current.userId).toBe('testUserId');
+    });
 
-        expect(result.current.userId).toBe('12345');
+    it('should clear userId if a user is not authenticated', () => {
+        auth.onAuthStateChanged.mockImplementationOnce((callback) => callback(null));
+
+        const { result } = renderHook(() => useUserAuth());
+        expect(result.current.userId).toBe('');
+    });
+
+    it('should set isSeller if user is a seller', () => {
+        // Mock the implementation of onAuthStateChanged to return a user object.
+        // Then, simulate a Firestore query by immediately resolving the Promise with a non-empty snapshot.
+        auth.onAuthStateChanged.mockImplementationOnce((callback) =>
+            callback({ uid: 'testUserId' })
+        );
+        // Mock the Firestore functions to simulate a user being a seller.
+        jest.mock('firebase/firestore', () => ({
+            getDocs: jest.fn().mockResolvedValue({ empty: false }),
+        }));
+
+        const { result } = renderHook(() => useUserAuth());
         expect(result.current.isSeller).toBe(true);
     });
 
-    it('resets userId and isSeller when the user is not logged in', async () => {
-        getAuth.mockImplementation(() => ({}));
-        onAuthStateChanged.mockImplementation((auth, callback) => {
-            callback(null);
-            return jest.fn(); // Mock unsubscribe function
-        });
+    it('should clear isSeller if user is not a seller', () => {
+        auth.onAuthStateChanged.mockImplementationOnce((callback) =>
+            callback({ uid: 'testUserId' })
+        );
+        jest.mock('firebase/firestore', () => ({
+            getDocs: jest.fn().mockResolvedValue({ empty: true }),
+        }));
 
-        const { result, waitForNextUpdate } = renderHook(() => useUserAuth());
-        await waitForNextUpdate();
-
-        expect(result.current.userId).toBe('');
+        const { result } = renderHook(() => useUserAuth());
         expect(result.current.isSeller).toBe(false);
     });
 
-    it('sets userId and resets isSeller when the user is logged in but not a seller', async () => {
-        getAuth.mockImplementation(() => ({ uid: '12345' }));
-        onAuthStateChanged.mockImplementation((auth, callback) => {
-            callback({ uid: '12345' });
-            return jest.fn(); // Mock unsubscribe function
-        });
-        getDocs.mockResolvedValue({ empty: true });
+    it('should clear isSeller if a user is not authenticated', () => {
+        auth.onAuthStateChanged.mockImplementationOnce((callback) => callback(null));
 
-        const { result, waitForNextUpdate } = renderHook(() => useUserAuth());
-        await waitForNextUpdate();
-
-        expect(result.current.userId).toBe('12345');
+        const { result } = renderHook(() => useUserAuth());
         expect(result.current.isSeller).toBe(false);
     });
 });
