@@ -37,6 +37,28 @@ const OrderDetails = () => {
     if (!orderDetails) {
         return <p>Loading...</p>;
     }
+    const calculateOrderStatus = (createdAt, deliveryOption) => {
+        const orderDate = createdAt.toDate();
+        const currentDate = new Date();
+
+        // Reset hours for accurate comparison
+        orderDate.setHours(0, 0, 0, 0);
+        currentDate.setHours(0, 0, 0, 0);
+
+        const diffInDays = Math.floor((currentDate - orderDate) / (1000 * 60 * 60 * 24));
+
+        switch(diffInDays) {
+            case 0:
+                return "Processing order";
+            case 1:
+                return "Order in transit";
+            case 2:
+                return deliveryOption === "delivery" ? "Delivered" : "Collected";
+            default:
+                return "Order status unknown";
+        }
+    }
+
     //Displays the ordered details
     return (
         <>
@@ -48,6 +70,20 @@ const OrderDetails = () => {
                         <h2 style={{textAlign: "center"}}>Order Details</h2>
                         <h3 style={{textAlign: "center"}}>Order Number: {orderDetails.orderNumber}</h3>
                         <p style={{textAlign: "center", marginBottom: '50px'}}>Order Date: {orderDetails.createdAt.toDate().toLocaleDateString()}</p>
+                        <h3
+                            style={{
+                                textAlign: "center",
+                                marginTop: '30px',
+                                color:
+                                    calculateOrderStatus(orderDetails.createdAt, orderDetails.deliveryOption) === 'Processing order'
+                                        ? 'orange'
+                                        : calculateOrderStatus(orderDetails.createdAt, orderDetails.deliveryOption) === 'Order in transit'
+                                            ? 'yellow'
+                                            : 'green'
+                            }}
+                        >
+                            Order Status: {calculateOrderStatus(orderDetails.createdAt, orderDetails.deliveryOption)}
+                        </h3>
                         <div className="orderItems justify-content-center">
                             <div className="d-flex gap-10 flex-wrap">
                                 {orderDetails.items.map((item) => (

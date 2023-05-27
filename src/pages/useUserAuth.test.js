@@ -1,34 +1,79 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook, act } from '@testing-library/react-hooks';
 import useUserAuth from './useUserAuth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import {getDocs, collection, query, where, getFirestore} from 'firebase/firestore';
+import {initializeApp} from "firebase/app";
 
-describe('useUserAuth hook', () => {
-    // In order to mock and replace the actual implementation,
-    // we'll need to modify the useUserAuth hook to accept the auth object as a parameter.
-    // This way, we can pass a mock object during testing.
-    const mockAuth = {
-        onAuthStateChanged: jest.fn(),
-    };
+jest.mock('firebase/app', () => ({
+    initializeApp: jest.fn().mockReturnValue({}),
+}));
 
-    beforeEach(() => {
-        mockAuth.onAuthStateChanged.mockClear();
-    });
+jest.mock('firebase/auth', () => ({
+    getAuth: jest.fn(),
+    onAuthStateChanged: jest.fn(),
+}));
 
+jest.mock('firebase/firestore', () => ({
+    getFirestore: jest.fn().mockReturnValue({}),
+    getDocs: jest.fn(),
+    collection: jest.fn(),
+    query: jest.fn(),
+    where: jest.fn(),
+}));
+
+beforeEach(() => {
+    // Reset all mocks before each test
+    initializeApp.mockClear().mockReturnValue({});
+    getAuth.mockClear();
+    onAuthStateChanged.mockClear();
+    getFirestore.mockClear().mockReturnValue({});
+    getDocs.mockClear();
+    collection.mockClear();
+    query.mockClear();
+    where.mockClear();
+});
+
+describe('useUserAuth', () => {
     it('should set userId if a user is authenticated', () => {
-        mockAuth.onAuthStateChanged.mockImplementationOnce((callback) =>
+        onAuthStateChanged.mockImplementationOnce((callback) =>
             callback({ uid: 'testUserId' })
         );
-
-        const { result } = renderHook(() => useUserAuth(mockAuth));
+        const { result } = renderHook(() => useUserAuth());
         expect(result.current.userId).toBe('testUserId');
     });
 
     it('should clear userId if a user is not authenticated', () => {
-        mockAuth.onAuthStateChanged.mockImplementationOnce((callback) => callback(null));
-
-        const { result } = renderHook(() => useUserAuth(mockAuth));
+        onAuthStateChanged.mockImplementationOnce((callback) => callback(null));
+        const { result } = renderHook(() => useUserAuth());
         expect(result.current.userId).toBe('');
     });
 
-    // Given the absence of Firestore in the testing context, the `isSeller` flag cannot be accurately tested.
-    // The tests for isSeller have been removed for now.
+    it('should set isSeller if user is a seller', () => {
+        // Mock the implementation of onAuthStateChanged to return a user object.
+        // Then, simulate a Firestore query by immediately resolving the Promise with a non-empty snapshot.
+        onAuthStateChanged.mockImplementationOnce((callback) =>
+            callback({ uid: 'testUserId' })
+        );
+        // Mock the Firestore functions to simulate a user being a seller.
+        getDocs.mockResolvedValue({ empty: false });
+
+        const { result } = renderHook(() => useUserAuth());
+        expect(result.current.isSeller).toBe(true);
+    });
+
+    it('should clear isSeller if user is not a seller', () => {
+        onAuthStateChanged.mockImplementationOnce((callback) =>
+            callback({ uid: 'testUserId' })
+        );
+        getDocs.mockResolvedValue({ empty: true });
+
+        const { result } = renderHook(() => useUserAuth());
+        expect(result.current.isSeller).toBe(false);
+    });
+
+    it('should clear isSeller if a user is not authenticated', () => {
+        onAuthStateChanged.mockImplementationOnce((callback) => callback(null));
+        const { result } = renderHook(() => useUserAuth());
+        expect(result.current.isSeller).toBe(false);
+    });
 });
