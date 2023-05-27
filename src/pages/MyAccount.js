@@ -9,6 +9,9 @@ import { useLocation } from "react-router-dom";
 import {useCart} from "./useCart";
 import useUserAuth from './useUserAuth';
 import '../App.js';
+import { getFirestore, setDoc } from "firebase/firestore";
+
+
 
 
 const MyAccount = () => {
@@ -23,6 +26,8 @@ const MyAccount = () => {
     const [loggedIn, setLoggedIn] = useState(false);
     // Add a new state variable to handle editing mode
     const [isEditing, setIsEditing] = useState(false);
+    const db = getFirestore();
+
 
 // Form handling
     const { register, handleSubmit, setValue } = useForm();
@@ -90,12 +95,58 @@ const MyAccount = () => {
 
             setUserInfo(fetchedUser[0]);  // assuming one user will be returned
         }
+
         setShowUserInfo(!showUserInfo);
         setShowOrders(false);
         setShowReviews(false);
         // Reset editing state whenever user info is toggled
         setIsEditing(false);
     };
+
+    const updateUserDetails = async (data) => {
+        const db = getFirestore();
+        const collectionRef = collection(db, isSeller ? "sellers" : "buyers");
+
+        // Prepare the update data.
+        const updateData = {
+            name: data.name || '',
+            mobileNumber: data.mobileNumber || '',
+            companyName: data.companyName || '',
+            companyTelephone: data.companyTelephone || ''
+        };
+
+        // If this is not a seller, remove seller-specific fields.
+        if (!isSeller) {
+            delete updateData.companyName;
+            delete updateData.companyTelephone;
+        }
+        else{
+            delete updateData.name;
+            updateData.firstName= data.firstName;
+            updateData.lastName= data.lastName;
+        }
+
+        // Query for the document that has the 'uid' field equal to 'userInfo.uid'.
+        const q = query(collectionRef, where("uid", "==", userInfo.uid));
+
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((document) => {
+            // document.data() is never undefined for query doc snapshots
+            const docRef = doc(db, isSeller ? "sellers" : "buyers", document.id);
+            updateDoc(docRef, updateData)
+                .then(() => {
+                    console.log('Document successfully updated');
+                })
+                .catch((error) => {
+                    console.error('Error updating document: ', error);
+                });
+        });
+
+        setUserInfo(prevState => ({ ...prevState, ...updateData }));
+    };
+
+
+
 
 
     //Allows the user to edit reviews from My Account
@@ -106,6 +157,7 @@ const MyAccount = () => {
         const handleEdit = () => {
             setIsEditing(!isEditing);
         };
+
 
         const onSubmit = async (data) => {
             const reviewRef = doc(db, 'reviews', review.id);
@@ -237,34 +289,56 @@ const MyAccount = () => {
                                     {isEditing ? (
                                         <form
                                             onSubmit={handleSubmit((data) => {
-                                                // Replace this with the function to update user data in Firebase
-                                                console.log(data);
+                                                updateUserDetails(data);
                                                 setIsEditing(false);
                                             })}
                                             style={{ display: 'flex', flexDirection: 'column', gap: '10px' }} // Add this style
                                         >
-                                            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
+                                            {isSeller && (
+                                                <>
+                                                    <label>
+                                                        First Name: <input className='form-control'
+                                                        {...register('firstName', { required: true })}
+                                                        placeholder="First Name"
+                                                        defaultValue={userInfo.firstName}
+                                                    />
+                                                    </label>
+                                                    <label>
+                                                        Last Name: <input className='form-control'
+                                                        {...register('lastName', { required: true })}
+                                                        placeholder="Last Name"
+                                                        defaultValue={userInfo.lastName}
+                                                    />
+                                                    </label>
+                                                </>
+                                            )}
+                                            {!isSeller && (
                                                 <label>
-                                                    Name: <input defaultValue={userInfo.name} {...register('name')} />
+                                                    Name: <input className='form-control'
+                                                    {...register('name', { required: true })}
+                                                    placeholder="Name"
+                                                    defaultValue={userInfo.name}
+                                                />
                                                 </label>
-                                                {/*<label>*/}
-                                                {/*    Email: <input defaultValue={userInfo.email} {...register('email')} />*/}
-                                                {/*</label>*/}
-                                            </div>
+                                            )}
                                             <label>
-                                                Mobile Number: <input defaultValue={userInfo.mobileNumber} {...register('mobileNumber')} />
+                                                Mobile Number: <input className="form-control" defaultValue={userInfo.mobileNumber} {...register('mobileNumber')} />
                                             </label>
                                             {isSeller && (
-                                                <div style={{ display: 'flex', gap: '10px' }}>
+                                                <>
                                                     <label>
-                                                        Company Name: <input defaultValue={userInfo.companyName} {...register('companyName')} />
+                                                        Company Name: <input className="form-control" defaultValue={userInfo.companyName} {...register('companyName')} />
                                                     </label>
                                                     <label>
-                                                        Company Telephone: <input defaultValue={userInfo.companyTelephone} {...register('companyTelephone')} />
+                                                        Company Telephone: <input className="form-control" defaultValue={userInfo.companyTelephone} {...register('companyTelephone')} />
                                                     </label>
-                                                </div>
+                                                </>
                                             )}
-                                            <input type="submit" value="Save" />
+                                            <input className="button"
+                                                   type="submit"
+                                                   value="Save"
+                                                   style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', maxWidth: '200px', width: '100%' }}
+                                            />
                                         </form>
                                     ) : (
                                         <>
@@ -274,12 +348,13 @@ const MyAccount = () => {
 
                                             <div>
                                                 {isSeller && (
-                                                <>
-                                                    <p>Company Name: {userInfo.companyName}</p>
-                                                    <p>Company Telephone: {userInfo.companyTelephone}</p>
-                                                </>
-                                            )}</div>
-                                            <button className="button" onClick={() => setIsEditing(true)}>Update Profile</button>
+                                                    <>
+                                                        <p>Company Name: {userInfo.companyName}</p>
+                                                        <p>Company Telephone: {userInfo.companyTelephone}</p>
+                                                    </>
+                                                )}
+                                            </div>
+                                            <button className="button"  onClick={() => setIsEditing(true)}>Update Profile</button>
                                         </>
                                     )}
                                 </div>

@@ -83,6 +83,7 @@ const DeliveryPage = () => {
   const [estimatedTime, setEstimatedTime] = useState('2-3 days');
 
   const handleCollectionCenterChange = (value) => {
+    // update estimated time
     if (value === 'wits') {
       setEstimatedTime('1-2 days');
     } else if (value === 'field') {
@@ -90,6 +91,9 @@ const DeliveryPage = () => {
     } else if (value === 'orange') {
       setEstimatedTime('2-5 days');
     }
+
+    // update collection center
+    setDeliveryAddress(prevState => ({ ...prevState, collection: value }));
   };
 
   //If there are issues with proceeding to checkout, uncomment this to look at the console logs
@@ -108,7 +112,8 @@ const DeliveryPage = () => {
 
   const handleFormSubmit = async (event) => {
     // event.preventDefault();
-    if (!deliveryAddress.collection||(!deliveryAddress.houseNumber && !deliveryAddress.streetName && !deliveryAddress.suburb && !deliveryAddress.city && !deliveryAddress.postalCode)) {
+    if ((deliveryOption === 'delivery' && (!deliveryAddress.houseNumber || !deliveryAddress.streetName || !deliveryAddress.suburb || !deliveryAddress.city || !deliveryAddress.postalCode))
+        || (deliveryOption === 'collection' && !deliveryAddress.collection)) {
       console.log('Please fill out all fields!');
       return;
     }
@@ -129,6 +134,8 @@ const DeliveryPage = () => {
       });
       console.log('Order submitted successfully!', docRef.id);
       console.log('Order submitted successfully!');
+      localStorage.setItem('deliveryOption', JSON.stringify(deliveryOption));
+      console.log("The delivery option is: ", deliveryOption)
     } catch (error) {
       console.error('Error writing order to Firestore: ', error);
       console.log('Error submitting order. Please try again later.');
