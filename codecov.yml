@@ -1,7 +1,6 @@
 ignore:
   - "src/components/TagsForm.js"
   - "src/components/Header.js"
-  - "src/pages/MyProducts.js"
   - "src/features/counter/counterAPI.js"
   - "src/index.js"
   - "src/pages/Success.js"
