@@ -82,4 +82,55 @@ describe('Cart Component', () => {
         );
         expect(screen.getAllByTestId('cart-item').length).toBe(mockCartItems.length);
     });
+
+    it('updates subtotal when quantity is updated', async () => {
+        render(
+            <BrowserRouter>
+                <Cart />
+            </BrowserRouter>
+        );
+        const updateButtons = screen.getAllByText('Update Quantity');
+        fireEvent.click(updateButtons[0]);
+
+        await waitFor(() => {
+            expect(screen.getByText(`Subtotal: R ${(mockCartItems[0].price * (mockCartItems[0].quantity + 1) + mockCartItems[1].price * mockCartItems[1].quantity).toFixed(2)}`)).toBeInTheDocument();
+        });
+    });
+
+    it('displays correct subtotal', () => {
+        render(
+            <BrowserRouter>
+                <Cart />
+            </BrowserRouter>
+        );
+        expect(screen.getByText(`Subtotal: R ${(mockCartItems[0].price * mockCartItems[0].quantity + mockCartItems[1].price * mockCartItems[1].quantity).toFixed(2)}`)).toBeInTheDocument();
+    });
+
+    it('deletes a cart item when delete button is clicked', async () => {
+        render(
+            <BrowserRouter>
+                <Cart />
+            </BrowserRouter>
+        );
+        const deleteButtons = screen.getAllByText('Delete');
+        fireEvent.click(deleteButtons[0]);
+
+        await waitFor(() => {
+            expect(screen.getAllByTestId('cart-item').length).toBe(mockCartItems.length - 1);
+        });
+    });
+
+    it('displays the voucher dropdown and handles voucher selection', () => {
+        render(
+            <BrowserRouter>
+                <Cart />
+            </BrowserRouter>
+        );
+        expect(screen.getByText('Select a voucher')).toBeInTheDocument();
+
+        // assuming you have a mock voucher with id 'voucher1' and discount 10%
+        fireEvent.change(screen.getByText('Select a voucher'), { target: { value: 'voucher1' } });
+
+        expect(screen.getByText('voucher1 - 10%')).toBeInTheDocument();
+    });
 });
