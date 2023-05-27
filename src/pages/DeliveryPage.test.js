@@ -73,7 +73,54 @@ describe('DeliveryPage', () => {
             fireEvent.change(screen.getByTestId('collection'), { target: { value: 'orange' } });
             expect(screen.getByTestId('estimated-time')).toHaveTextContent('2-5 days');
         });
+
+
     });
+
+    // continue the tests from above
+
+    describe('DeliveryPage - handleFormSubmit', () => {
+        test('should log an error when fields are not filled', () => {
+            console.log = jest.fn();
+            render(<DeliveryPage />);
+            fireEvent.click(screen.getByLabelText('Delivery'));
+            fireEvent.click(screen.getByTestId('checkout-btn'));
+            expect(console.log).toHaveBeenCalledWith('Please fill out all fields!');
+        });
+
+        test('should log an error when fields are not filled for collection', () => {
+            console.log = jest.fn();
+            render(<DeliveryPage />);
+            fireEvent.click(screen.getByLabelText('Collection'));
+            fireEvent.click(screen.getByTestId('checkout-btn'));
+            expect(console.log).toHaveBeenCalledWith('Please fill out all fields!');
+        });
+
+        test('should log success when delivery fields are filled', () => {
+            console.log = jest.fn();
+            render(<DeliveryPage />);
+            fireEvent.click(screen.getByLabelText('Delivery'));
+            fireEvent.change(screen.getByLabelText('House/Apartment Number:'), { target: { value: '123' } });
+            fireEvent.change(screen.getByLabelText('Street Name:'), { target: { value: 'Main' } });
+            fireEvent.change(screen.getByLabelText('Suburb:'), { target: { value: 'Riverside' } });
+            fireEvent.change(screen.getByLabelText('City:'), { target: { value: 'Towsville' } });
+            fireEvent.change(screen.getByLabelText('Postal Code:'), { target: { value: '4567' } });
+            fireEvent.click(screen.getByTestId('checkout-btn'));
+            expect(console.log).toHaveBeenCalledWith('Order submitted successfully!');
+        });
+
+        test('should log success when collection fields are filled', () => {
+            console.log = jest.fn();
+            render(<DeliveryPage />);
+            fireEvent.click(screen.getByLabelText('Collection'));
+            fireEvent.change(screen.getByTestId('collection'), { target: { value: 'wits' } });
+            fireEvent.click(screen.getByTestId('checkout-btn'));
+            expect(console.log).toHaveBeenCalledWith('Order submitted successfully!');
+        });
+    });
+
+
+
 
 });
 
