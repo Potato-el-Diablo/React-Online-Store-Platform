@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
 const CartItem = ({ item, quantity: initialQuantity, onUpdateSubtotal, onRemove, onUpdateQuantity }) => {
+
+    const actualPrice = item.sale ? parseFloat(item.sale).toFixed(2) : parseFloat(item.price).toFixed(2); // Determine the actual price
+
     const [quantity, setQuantity] = useState(initialQuantity);
 
     useEffect(() => {
-        onUpdateSubtotal(item.id, item.price * quantity);
+        onUpdateSubtotal(item.id, actualPrice * quantity);
     }, [item, quantity, onUpdateSubtotal]);
 
     const handleChange = (event) => {
@@ -15,7 +18,7 @@ const CartItem = ({ item, quantity: initialQuantity, onUpdateSubtotal, onRemove,
         }
 
         setQuantity(newQuantity);
-        const newSubtotal = newQuantity * item.price;
+        const newSubtotal = newQuantity * actualPrice;
         onUpdateSubtotal(item.id, newSubtotal);
         onUpdateQuantity(item.id, newQuantity); // Add this line here
     };
@@ -24,7 +27,7 @@ const CartItem = ({ item, quantity: initialQuantity, onUpdateSubtotal, onRemove,
         onRemove(item.id);
     };
 
-    const totalPrice = item.price * quantity;
+    const totalPrice = actualPrice * quantity;
 
     return (
         <div className="card-data py-3 mb-2 d-flex justify-content-between align-items-center">
@@ -40,7 +43,7 @@ const CartItem = ({ item, quantity: initialQuantity, onUpdateSubtotal, onRemove,
                 </div>
             </div>
             <div className="cart-col-2">
-                <h5 className="price">R{item.price}</h5>
+                <h5 className="price">R{actualPrice}</h5>
             </div>
             <div className="cart-col-3 d-flex align-items-center gap-50">
                 <div>

@@ -93,9 +93,9 @@ const ProductCard = ({
                         {/* added this div to fix formattinng issues */}
                         {/* invisible text to help with button alignment */}
                         <div className="price-container">
-                        <p className={`price ${productSale !== '' ? 'salePriceStrikethrough' : ''}`}>R {productPrice}</p>
+                        <p className={`price ${productSale !== '' ? 'salePriceStrikethrough' : ''}`}>R {parseFloat(productPrice).toFixed(2)}</p>
                             {productSale !== '' ? (
-                            <p className="salePrice standout">R {productSale}</p>
+                            <p className="salePrice standout">R {parseFloat(productSale).toFixed(2)}</p>
                             ) : (
                             <p className="invisibleText">&nbsp;</p>
                             )}

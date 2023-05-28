@@ -427,7 +427,7 @@ const SingleProduct = () => {
                                 brand={product.brand}
                                 productName={product.name}
                                 productDescription={product.description}
-                                productPrice={product.price}
+                                productPrice={parseFloat(product.price).toFixed(2)}
                                 productSale={product.sale || ''}
                                 productStock={product.stock || 'Not available'}
                                 productId={product.id}

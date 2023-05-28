@@ -157,13 +157,18 @@ const Cart = () => {
 
             if (productSnapshot.exists()) {
                 const productData = productSnapshot.data();
+
+                const price = productData.sale ? parseFloat(productData.sale).toFixed(2) : parseFloat(productData.price).toFixed(2);
+                console.log("The price is",price);
+
                 return {
                     id: productSnapshot.id,
                     quantity: cartProduct.quantity,
                     originalPrice: parseFloat(productData.price).toFixed(2),
-                    price: parseFloat(productData.price).toFixed(2),
+                    price: price,
                     ...productData
                 };
+
             } else {
                 console.error(`Product not found for ID: ${cartProduct.productId}`);
                 return null;
@@ -173,8 +178,9 @@ const Cart = () => {
         const fetchedItems = await Promise.all(fetchedItemsPromises);
         const validItems = fetchedItems.filter((item) => item !== null);
         console.log(validItems);
-        setCartItems(validItems);
+        setCartItems(validItems);  // Set cartItems only once
     };
+
 
 
     useEffect(() => {
