@@ -28,42 +28,32 @@ const mockChartData = {
 describe('BarChart', () => {
   it('renders correctly', () => {
     render(<BarChart chartData={mockChartData} />);
+
     expect(screen.getByTestId('mock-Bar')).toBeInTheDocument();
   });
 
   it('passes correct data to Bar component', () => {
     const { Bar } = require('react-chartjs-2');
+
     render(<BarChart chartData={mockChartData} />);
+
     expect(Bar).toHaveBeenCalledWith({ data: mockChartData }, {});
   });
 
-  it('displays the correct number of bars', () => {
-    const { Bar } = require('react-chartjs-2');
-    render(<BarChart chartData={mockChartData} />);
-    expect(Bar).toHaveBeenCalledWith(
-      expect.objectContaining({
-        data: expect.objectContaining({
-          datasets: expect.arrayContaining([
-            expect.objectContaining({
-              data: expect.arrayContaining([12, 19, 3, 5, 2, 3]),
-            }),
-          ]),
-        }),
-      }),
-      {}
-    );
+  it('renders alternative UI when data is empty', () => {
+    render(<BarChart chartData={{ labels: [], datasets: [] }} />);
+
+    // Add assertions for the alternative UI, such as checking for specific elements or texts
+    expect(screen.getByText('No data available')).toBeInTheDocument();
   });
 
-  it('displays the correct labels on the x-axis', () => {
-    const { Bar } = require('react-chartjs-2');
-    render(<BarChart chartData={mockChartData} />);
-    expect(Bar).toHaveBeenCalledWith(
-      expect.objectContaining({
-        data: expect.objectContaining({
-          labels: expect.arrayContaining(['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange']),
-        }),
-      }),
-      {}
-    );
+  it('renders alternative UI when data is null', () => {
+    render(<BarChart chartData={null} />);
+
+    // Add assertions for the alternative UI, such as checking for specific elements or texts
+    expect(screen.getByText('No data available')).toBeInTheDocument();
   });
+
+  // Add more test cases to cover different scenarios or edge cases
+
 });
