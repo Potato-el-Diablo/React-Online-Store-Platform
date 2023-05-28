@@ -363,3 +363,56 @@ test('Checks that fields are correctly updated for a seller', async () => {
 });
 
 
+test('Checks that Review is correctly updated', async () => {
+    const mockReviewRef = {}; // create a separate mock for reviews
+
+    doc.mockReturnValueOnce(mockReviewRef);
+
+    // Mock the review data for the user
+    getDocs.mockResolvedValueOnce({
+        docs: [
+            {
+                id: '1',
+                data: jest.fn().mockReturnValue({
+                    userId: '123',
+                    rating: 5,
+                    comment: 'Initial Comment',
+                    productName: 'Test Product'
+                }),
+            },
+        ],
+    });
+
+    render(
+        <Router>
+            <MyAccount />
+        </Router>
+    );
+
+    // Click the 'Show Reviews' button
+    fireEvent.click(screen.getByText('Show your reviews'));
+
+    // Wait for the review to appear in the document
+    expect(await screen.findByText('Review for Test Product')).toBeInTheDocument();
+    expect(screen.getByText('Initial Comment')).toBeInTheDocument();
+
+    // Click the 'Edit Review' button
+    fireEvent.click(screen.getByText('Edit Review'));
+
+    // Find the comment textarea and change its value
+    fireEvent.change(screen.getByLabelText('Comment:'), { target: { value: 'Updated Comment' } });
+
+    // Submit the updated review
+    fireEvent.submit(screen.getByTestId('review-form'));
+
+    // Wait for potential async operations
+    await waitFor(() => expect(updateDoc).toHaveBeenCalled());
+
+    // Then check if `updateDoc` was called with the correct arguments
+    expect(updateDoc).toHaveBeenCalledWith(
+        mockReviewRef,
+        { rating: 5, comment: 'Updated Comment' }
+    );
+});
+
+
