@@ -8,13 +8,16 @@ export default function ViewRevenueModal({
     open,
     onClose,
     onRefresh,
+    onChangeView,
+    currentView,
+    timePeriodDisplay,
     myLabels,
     dataset,
     totalRev}){
         
     const [chartData, setChartData] = useState({labels: [], datasets:[{label:"",data:[]}]})
         
-    useEffect(() => {
+     useEffect(() => {
         if(dataset.length==0){
             return;
         }else{
@@ -33,7 +36,18 @@ export default function ViewRevenueModal({
             </div>
 
             <div classname="analytic-details">
-                <label for="exampleFormControlTextarea1" class="form-label">Total revenue over last year: R{totalRev} </label>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                    <label for="exampleFormControlTextarea1" class="form-label">Total revenue over last {timePeriodDisplay}: R{totalRev} </label>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">{currentView}</button>
+                        <ul class="dropdown-menu">
+                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                            <li><a class="dropdown-item" href="#" onClick={onChangeView()}>Weekly View</a></li>
+                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                            <li><a class="dropdown-item" href="#" onClick={onChangeView()}>Monthly View</a></li>
+                        </ul>
+                    </div>
+                </div>     
                 <BarChart chartData={chartData}/> 
             </div>
 

@@ -23,6 +23,8 @@ const MyProducts = () => {
     const [revenueData, setRevenueData] = useState([]); 
     const [totalRevenue, setTotalRevenue] = useState([]);
     const [timePeriod, setTimePeriod] = useState(new Map());
+    const [analyticView, setAnalyticView] = useState("Monthly View");
+    const [timePeriodDisplay, setTimePeriodDisplay] = useState("year");
     const grid = 12; //Static Grid size for viewing products
 
     const [products, setProducts] = useState([]);
@@ -66,6 +68,11 @@ const MyProducts = () => {
         setProducts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
 
+    //Handle the change in analytic View
+    const handleAnalyticView = (view) => {
+        setAnalyticView(view.target.text);
+    }
+    
     //Get analytics for User
     const getAnalytics = async () =>{
         const email = auth.currentUser.email;
@@ -90,7 +97,14 @@ const MyProducts = () => {
     const viewGlobalRevenue = () =>{
         getAnalytics();
         setIsRevenueOpen(true);
-        totalMonthlyRevenue();
+        if(analyticView==="Monthly View"){   
+            setTimePeriodDisplay("year");
+            totalMonthlyRevenue();
+        }else{
+            setTimePeriodDisplay("month");
+            totalWeeklyRevenue();
+        }
+        
     }
 
 
@@ -134,6 +148,45 @@ const MyProducts = () => {
         setTotalRevenue(tempTotal);
     }
 
+    const totalWeeklyRevenue = () =>{
+
+        let tempRevenue = [0,0,0,0];
+        let tempTotal = 0;
+        
+        const today = new Date();
+    
+        const oneWeek = 7 * 24 * 60 * 60 * 1000; 
+        const currentDayOfWeek = today.getDay();
+        const daysToSubtract = currentDayOfWeek > 1 ? currentDayOfWeek - 1 : 6;
+        
+        analytics.forEach((object) => {
+            const dateParts = object.id.split('-');
+            const inputDate = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
+            const currentMonday = new Date(inputDate.getTime() - (daysToSubtract * 24 * 60 * 60 * 1000));
+
+            const timeDiff = today.getTime() - currentMonday.getTime();
+            
+            const weeksAgo = Math.floor(timeDiff / oneWeek);
+
+            if((weeksAgo<4)&&(weeksAgo >=0)){
+                tempRevenue[weeksAgo]+=object.TotalRevenue;
+                tempTotal += object.TotalRevenue;
+            } 
+        })
+
+        tempRevenue.reverse();
+
+        setTimePeriod(["3 Weeks Ago","2 Weeks Ago","Last Week","This Week"]);
+        setRevenueData(tempRevenue);
+        setTotalRevenue(tempTotal);
+
+    }
+
+    //Handle product change in analytic View
+    const handleProductAnalyticView = (view) => {
+        setAnalyticView(view.target.text);
+    }
+
     //Handle individual product Revenue
     const totalMonthlyProductRevenue = () =>{
 
@@ -175,17 +228,67 @@ const MyProducts = () => {
         setTotalRevenue(tempTotal);
     }
 
+    //Handle single product weekly revenue
+    const totalWeeklyProductRevenue = () =>{
+
+        let tempRevenue = [0,0,0,0];
+        let tempTotal = 0;
+        
+        const today = new Date();
+    
+        const oneWeek = 7 * 24 * 60 * 60 * 1000; 
+        const currentDayOfWeek = today.getDay();
+        const daysToSubtract = currentDayOfWeek > 1 ? currentDayOfWeek - 1 : 6;
+        
+        analytics.forEach((object) => {
+            const dateParts = object.id.split('-');
+            const inputDate = new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
+            const currentMonday = new Date(inputDate.getTime() - (daysToSubtract * 24 * 60 * 60 * 1000));
+
+            const timeDiff = today.getTime() - currentMonday.getTime();
+            
+            const weeksAgo = Math.floor(timeDiff / oneWeek);
+
+            const mockObject = new Map(Object.entries(object));
+            if((weeksAgo<4)&&(weeksAgo >=0)&&(mockObject.has(selectedProduct.id))){
+                tempRevenue[weeksAgo]+=mockObject.get(selectedProduct.id).revenue;
+                tempTotal += mockObject.get(selectedProduct.id).revenue;
+            } 
+        })
+
+        tempRevenue.reverse();
+
+        setTimePeriod(["3 Weeks Ago","2 Weeks Ago","Last Week","This Week"]);
+        setRevenueData(tempRevenue);
+        setTotalRevenue(tempTotal);
+
+    }
+
     const viewProductRevenue = async (product) =>{
         setSelectedProduct(product); 
         await getAnalytics();
-        totalMonthlyProductRevenue();
         setIsProductRevenueOpen(true);
+
+        if(analyticView==="Monthly View"){   
+            setTimePeriodDisplay("year");
+            totalMonthlyProductRevenue();
+        }else{
+            setTimePeriodDisplay("month");
+            totalWeeklyProductRevenue();
+        }
+        
     }
 
     const viewProductRevenueRefresh = () =>{
         setIsProductRevenueOpen(true);
         getAnalytics();
-        totalMonthlyProductRevenue();
+        if(analyticView==="Monthly View"){   
+            setTimePeriodDisplay("year");
+            totalMonthlyProductRevenue();
+        }else{
+            setTimePeriodDisplay("month");
+            totalWeeklyProductRevenue();
+        }
     }
 
 
@@ -270,6 +373,9 @@ const MyProducts = () => {
                     open={isProductRevenueOpen}
                     onClose={() => setIsProductRevenueOpen(false)}
                     onRefresh={() => viewProductRevenueRefresh()}
+                    onChangeView={() => handleProductAnalyticView}
+                    currentView={analyticView}
+                    timePeriodDisplay={timePeriodDisplay}
                     productName={selectedProduct.name}
                     dataset={revenueData}
                     totalRev={totalRevenue}
@@ -281,6 +387,9 @@ const MyProducts = () => {
                 open={isRevenueOpen}
                 onClose={() => setIsRevenueOpen(false)}
                 onRefresh={() => viewGlobalRevenue()}
+                onChangeView={() => handleAnalyticView}
+                currentView={analyticView}
+                timePeriodDisplay={timePeriodDisplay}
                 myLabels={timePeriod}
                 dataset={revenueData}
                 totalRev={totalRevenue}
