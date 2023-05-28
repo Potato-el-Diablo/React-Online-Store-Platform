@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="210705c5-207a-4957-8740-df7ac1b18442" name="Changes" comment="Update OrderDetails.js">
-      <change afterPath="$PROJECT_DIR$/src/pages/UseCartInfo.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.cache/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/.eslintcache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.cache/default-development/0.pack" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/default-development/0.pack" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.cache/default-development/1.pack" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/default-development/1.pack" afterDir="false" />
@@ -13,7 +13,6 @@
       <change beforePath="$PROJECT_DIR$/node_modules/.cache/default-development/3.pack" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/default-development/3.pack" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.cache/default-development/index.pack.old" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/default-development/index.pack.old" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Header.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Header.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,42 +135,7 @@
       <workItem from="1685133192465" duration="606000" />
       <workItem from="1685175549965" duration="11924000" />
       <workItem from="1685195293336" duration="761000" />
-      <workItem from="1685205799178" duration="2601000" />
-    </task>
-    <task id="LOCAL-00002" summary="Updated Cart">
-      <created>1680253964130</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1680253964130</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Edited Home Text">
-      <created>1680326741185</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1680326741185</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Edited App.css (found errors)">
-      <created>1680458805013</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1680458805013</updated>
-    </task>
-    <task id="LOCAL-00005" summary="removed console log from home page">
-      <created>1682023930564</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1682023930564</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Updated OrderDetails.js">
-      <created>1683878838737</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1683878838737</updated>
+      <workItem from="1685205799178" duration="4454000" />
     </task>
     <task id="LOCAL-00007" summary="Updated OrderDetails.js">
       <created>1683886834026</created>
@@ -481,7 +445,42 @@
       <option name="project" value="LOCAL" />
       <updated>1685208065612</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="Update OrderDetails.js">
+      <created>1685208997356</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1685208997356</updated>
+    </task>
+    <task id="LOCAL-00052" summary="Update OrderDetails.js">
+      <created>1685209001008</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1685209001008</updated>
+    </task>
+    <task id="LOCAL-00053" summary="Update OrderDetails.js">
+      <created>1685209021526</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1685209021526</updated>
+    </task>
+    <task id="LOCAL-00054" summary="Update OrderDetails.js">
+      <created>1685209406804</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1685209406804</updated>
+    </task>
+    <task id="LOCAL-00055" summary="Update OrderDetails.js">
+      <created>1685209598223</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1685209598223</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
