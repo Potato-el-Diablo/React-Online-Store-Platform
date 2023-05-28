@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="210705c5-207a-4957-8740-df7ac1b18442" name="Changes" comment="Updated searched.test.js">
-      <change afterPath="$PROJECT_DIR$/src/pages/useCart.test.js" afterDir="false" />
+    <list default="true" id="210705c5-207a-4957-8740-df7ac1b18442" name="Changes" comment="Updated UseCart.test.js">
+      <change beforePath="$PROJECT_DIR$/node_modules/.bin/tsc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/.bin/tsserver" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.cache/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/.eslintcache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.cache/default-development/0.pack" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/default-development/0.pack" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.cache/default-development/1.pack" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/default-development/1.pack" afterDir="false" />
@@ -306,20 +307,6 @@
       <workItem from="1685175549965" duration="11924000" />
       <workItem from="1685195293336" duration="761000" />
       <workItem from="1685205799178" duration="4454000" />
-    </task>
-    <task id="LOCAL-00019" summary="Removed &quot;dangerouslySetInnerText&quot; in Header.js">
-      <created>1684870894869</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1684870894869</updated>
-    </task>
-    <task id="LOCAL-00020" summary="Update MyAccount.js">
-      <created>1684871399621</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1684871399621</updated>
     </task>
     <task id="LOCAL-00021" summary="Update MyAccount.js">
       <created>1684871959364</created>
@@ -650,7 +637,21 @@
       <option name="project" value="LOCAL" />
       <updated>1685310101191</updated>
     </task>
-    <option name="localTasksCounter" value="68" />
+    <task id="LOCAL-00068" summary="Updated UseCart.test.js">
+      <created>1685310721277</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1685310721277</updated>
+    </task>
+    <task id="LOCAL-00069" summary="Updated UseCart.test.js">
+      <created>1685311807910</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1685311807910</updated>
+    </task>
+    <option name="localTasksCounter" value="70" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -685,7 +686,8 @@
     <MESSAGE value="Updated counterSlice.spec.js" />
     <MESSAGE value="Updated counter.test.js" />
     <MESSAGE value="Updated searched.test.js" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated searched.test.js" />
+    <MESSAGE value="Updated UseCart.test.js" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated UseCart.test.js" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
