@@ -89,20 +89,7 @@
       <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
-  <component name="RunManager" selected="Jest.counter reducer.should handle incrementAsync">
-    <configuration name="Firestore Functions" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
-      <working-dir value="$PROJECT_DIR$" />
-      <envs />
-      <scope-kind value="SUITE" />
-      <test-file value="$PROJECT_DIR$/src/functions/firestoreFunctions.test.js" />
-      <test-names>
-        <test-name value="Firestore Functions" />
-      </test-names>
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Jest.renders the count value from state">
     <configuration name="counter reducer" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
@@ -160,13 +147,26 @@
       </test-names>
       <method v="2" />
     </configuration>
+    <configuration name="renders the count value from state" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/src/features/counter/Counter.test.js" />
+      <test-names>
+        <test-name value="renders the count value from state" />
+      </test-names>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Jest.renders the count value from state" />
         <item itemvalue="Jest.counter reducer.should handle incrementAsync" />
         <item itemvalue="Jest.counter reducer.should handle initial state" />
         <item itemvalue="Jest.counter reducer" />
         <item itemvalue="Jest.counter reducer.counter reducer.counter reducer.should not increment if even" />
-        <item itemvalue="Jest.Firestore Functions" />
       </list>
     </recent_temporary>
   </component>
@@ -202,20 +202,6 @@
       <workItem from="1685175549965" duration="11924000" />
       <workItem from="1685195293336" duration="761000" />
       <workItem from="1685205799178" duration="4454000" />
-    </task>
-    <task id="LOCAL-00013" summary="Updated MyAccount.js">
-      <created>1684863705914</created>
-      <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1684863705914</updated>
-    </task>
-    <task id="LOCAL-00014" summary="Updated MyAccount.js">
-      <created>1684867970024</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1684867970024</updated>
     </task>
     <task id="LOCAL-00015" summary="Updated MyAccount.js">
       <created>1684868062160</created>
@@ -546,7 +532,21 @@
       <option name="project" value="LOCAL" />
       <updated>1685308191218</updated>
     </task>
-    <option name="localTasksCounter" value="62" />
+    <task id="LOCAL-00062" summary="Updated counterSlice.spec.js">
+      <created>1685308220974</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1685308220975</updated>
+    </task>
+    <task id="LOCAL-00063" summary="Updated counterSlice.spec.js">
+      <created>1685308662490</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1685308662490</updated>
+    </task>
+    <option name="localTasksCounter" value="64" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
