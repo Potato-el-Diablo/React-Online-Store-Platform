@@ -35,7 +35,59 @@ describe('OurStore Component', () => {
         expect(selectElement).toBeInTheDocument();
         expect(totalProductsText).toBeInTheDocument();
     });
-
+    test('renders filter cards', () => {
+        render(
+            <BrowserRouter>
+                <OurStore />
+            </BrowserRouter>
+        );
+    
+        const filterByTitle = screen.getByText('Filter By');
+        const availabilityTitle = screen.getByText('Availability');
+        const priceTitle = screen.getByText('Price');
+        const productTagsTitle = screen.getByText('Product Tags');
+    
+        expect(filterByTitle).toBeInTheDocument();
+        expect(availabilityTitle).toBeInTheDocument();
+        expect(priceTitle).toBeInTheDocument();
+        expect(productTagsTitle).toBeInTheDocument();
+    });
+    
+    test('handles sorting option change', () => {
+        render(
+            <BrowserRouter>
+                <OurStore />
+            </BrowserRouter>
+        );
+    
+        const selectElement = screen.getByRole('combobox');
+    
+        fireEvent.change(selectElement, { target: { value: 'price-ascending' } });
+    
+        expect(selectElement.value).toBe('price-ascending');
+        // Add more assertions to check if the sorting option has been successfully updated
+    });
+    test('renders product tags', () => {
+        render(
+            <BrowserRouter>
+                <OurStore />
+            </BrowserRouter>
+        );
+    
+        const headphoneTag = screen.getByText('Headphone');
+        const watchesTag = screen.getByText('Watches');
+        const laptopTag = screen.getByText('Laptop');
+        const mobileTag = screen.getByText('Mobile');
+        const appleTag = screen.getByText('Apple');
+    
+        expect(headphoneTag).toBeInTheDocument();
+        expect(watchesTag).toBeInTheDocument();
+        expect(laptopTag).toBeInTheDocument();
+        expect(mobileTag).toBeInTheDocument();
+        expect(appleTag).toBeInTheDocument();
+    });
+    
+    
     test('renders product cards with correct data', () => {
         // Mock the data for product cards
         const products = [

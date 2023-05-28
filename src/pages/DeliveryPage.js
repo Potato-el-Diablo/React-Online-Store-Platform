@@ -28,7 +28,9 @@ const DeliveryPage = () => {
       body: JSON.stringify({
         items: cartItems.map((item) => ({
           id: item.id,
-          priceInCents: item.price * 100,
+          // Check if sale field exists and is not null
+          // If so, use sale as price. Otherwise, use price
+          priceInCents: (item.sale !== null && item.sale !== undefined) ? item.sale * 100 : item.price * 100,
           name: item.name,
           quantity: item.quantity,
         })),
