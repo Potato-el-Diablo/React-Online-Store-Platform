@@ -63,10 +63,14 @@ const SingleProduct = () => {
   const searchQuery = productCategory;
 
     // Filtering products to remove any that arent in the given category
-    const filteredProducts = products.filter((product) =>
+    let filteredProducts = products.filter((product) =>
         (product.category &&
         product.category.toLowerCase().includes(searchQuery.toLowerCase()) && product.name != productName) 
     );
+
+    if(filteredProducts.length == 0){
+      filteredProducts = products;
+    }
   // const history = useHistory();
 
   // In the fetchReviews useEffect, check for and store the current user's review
