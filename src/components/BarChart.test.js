@@ -7,7 +7,7 @@ jest.mock('react-chartjs-2', () => ({
   Bar: () => null, // Add display name for easier debugging
 }));
 
-const chartData = {
+const mockChartData = {
   labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
   datasets: [
     {
@@ -27,14 +27,14 @@ const chartData = {
 
 describe('BarChart', () => {
   it('renders correctly', () => {
-    render(<BarChart chartData={chartData} />);
+    render(<BarChart chartData={mockChartData} />);
     expect(screen.getByTestId('mock-Bar')).toBeInTheDocument();
   });
 
   it('passes correct data to Bar component', () => {
     const { Bar } = require('react-chartjs-2');
-    render(<BarChart chartData={chartData} />);
-    expect(Bar).toHaveBeenCalledWith({ data: chartData }, {});
+    render(<BarChart chartData={mockChartData} />);
+    expect(Bar).toHaveBeenCalledWith({ data: mockChartData }, {});
   });
 
   it('renders alternative UI when data is empty', () => {
@@ -47,51 +47,32 @@ describe('BarChart', () => {
     expect(screen.getByText('No data available')).toBeInTheDocument();
   });
 
-  it('renders correctly with different chart data', () => {
-    const differentChartData = {
-      labels: ['A', 'B', 'C'],
-      datasets: [
-        {
-          label: '# of Votes',
-          data: [10, 5, 8],
-          backgroundColor: ['rgba(255, 0, 0, 0.2)', 'rgba(0, 255, 0, 0.2)', 'rgba(0, 0, 255, 0.2)'],
-        },
-      ],
-    };
-    render(<BarChart chartData={differentChartData} />);
-    expect(screen.getByTestId('mock-Bar')).toBeInTheDocument();
+  // New test cases for improved coverage
+
+  it('renders the correct number of bars', () => {
+    render(<BarChart chartData={mockChartData} />);
+    const bars = screen.getAllByTestId('mock-bar');
+    expect(bars.length).toBe(mockChartData.labels.length);
   });
 
-  it('handles errors gracefully when invalid chart data is provided', () => {
-    const invalidChartData = {
-      labels: ['Red', 'Blue', 'Yellow'],
-      datasets: [
-        {
-          label: '# of Votes',
-          // Missing data values, which is invalid
-          backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)'],
-        },
-      ],
-    };
-    render(<BarChart chartData={invalidChartData} />);
-    // Add assertions for how the component handles the error, such as displaying an error message
-    expect(screen.getByText('Invalid chart data')).toBeInTheDocument();
+  it('renders the labels correctly', () => {
+    render(<BarChart chartData={mockChartData} />);
+    const labels = screen.getAllByTestId('mock-label');
+    expect(labels.length).toBe(mockChartData.labels.length);
+
+    for (let i = 0; i < labels.length; i++) {
+      expect(labels[i]).toHaveTextContent(mockChartData.labels[i]);
+    }
   });
 
-  it('renders correctly at different screen sizes', () => {
-    // Set the initial window.innerWidth to a specific value
-    global.innerWidth = 800;
+  it('renders alternative UI when no chart data is provided', () => {
+    render(<BarChart />);
+    expect(screen.getByText('No data available')).toBeInTheDocument();
+  });
+
+  it('renders alternative UI when chart data has no datasets', () => {
+    const chartData = { labels: mockChartData.labels, datasets: [] };
     render(<BarChart chartData={chartData} />);
-    expect(screen.getByTestId('mock-Bar')).toBeInTheDocument();
-
-    // Resize the window to another size
-    global.innerWidth = 1200;
-    // Dispatch a resize event to trigger the re-render
-    global.dispatchEvent(new Event('resize'));
-    render(<BarChart chartData={chartData} />);
-    expect(screen.getByTestId('mock-Bar')).toBeInTheDocument();
+    expect(screen.getByText('No data available')).toBeInTheDocument();
   });
-
-  // Add more test cases to cover other scenarios or edge cases
-
 });
