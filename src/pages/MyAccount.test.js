@@ -251,7 +251,7 @@ test('should show appropriate message when there is no user information', async 
     expect(await screen.findByText('No user information available.')).toBeInTheDocument();
 });
 
-test('Checks that Name is correctly updated', async () => {
+test('Checks that fields are correctly updated for buyer', async () => {
     // Mock getDocs for user info
     getDocs.mockResolvedValueOnce({
         docs: [
@@ -282,6 +282,7 @@ test('Checks that Name is correctly updated', async () => {
     expect(screen.getByText('Email: testuser@example.com')).toBeInTheDocument();
     expect(screen.getByText('Mobile Number: 1234567890')).toBeInTheDocument();
 
+
     // Click the 'Edit personal info' button
     fireEvent.click(screen.getByText('Update Profile'));
 
@@ -302,3 +303,63 @@ test('Checks that Name is correctly updated', async () => {
 
 
 });
+
+test('Checks that fields are correctly updated for a seller', async () => {
+    // Adjust the mock to return the required isSeller value
+    useUserAuth.mockReturnValue({
+        userId: '123',
+        isSeller: true,
+    });
+
+    // Mock getDocs for user info
+    getDocs.mockResolvedValueOnce({
+        docs: [
+            {
+                id: '1',
+                data: jest.fn().mockReturnValue({
+                    uid: '123',
+                    firstName: 'Test',
+                    lastName: 'User',
+                    email: 'testuser@example.com',
+                    mobileNumber: '1234567890',
+                    companyName:'TestCompany',
+                    companyTelephone:'1111111111',
+                }),
+            },
+        ],
+    });
+
+    render(
+        <Router>
+            <MyAccount />
+        </Router>
+    );
+
+    // Click the 'Show seller info' button
+    fireEvent.click(screen.getByText('Show personal info'));
+
+    // Wait for the user information to appear in the document
+    expect(await screen.findByText('Name: Test User')).toBeInTheDocument();
+
+
+    // Click the 'Edit seller info' button
+    fireEvent.click(screen.getByText('Update Profile'));
+
+    // Find the first and last name input fields and change their values
+    fireEvent.change(screen.getByPlaceholderText('First Name'), { target: { value: 'Updated First Name' } });
+    fireEvent.change(screen.getByPlaceholderText('Last Name'), { target: { value: 'Updated Last Name' } });
+
+    // In your test, after you click the 'Save' button
+    fireEvent.click(screen.getByText('Save'));
+
+    // Wait for potential async operations
+    await waitFor(() => expect(updateDoc).toHaveBeenCalled());
+
+    // Then check if `updateDoc` was called with the correct arguments
+    expect(updateDoc).toHaveBeenCalledWith(
+        mockDocRef, // expect the exact mock document reference
+        { firstName: 'Updated First Name', lastName: 'Updated Last Name', mobileNumber: '1234567890', companyName:'TestCompany', companyTelephone: '1111111111'  }
+    );
+});
+
+
