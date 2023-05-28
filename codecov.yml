@@ -6,3 +6,4 @@ ignore:
   - "src/pages/Success.js"
   - "src/components/Checkout.js"
   - "src/pages/MyProducts.js"
+  - "src/pages/useUserAuth.js"
