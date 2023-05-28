@@ -42,17 +42,7 @@ const OurStore = () => {
             <div className="row" style={{"width":"1500px"}}>
                 <div className="col-2">
                     {/* removed this since redundancy can add back if necessary */}
-                    {/* <div className="filter-card mb-3">
-                        <h3 className="filter-title">Shop By Catergory</h3>
-                        <div >
-                            <ul ps-0>
-                                <li>Watch</li>
-                                <li>TV</li>
-                                <li>Camera</li>
-                                <li>Laptop</li>
-                            </ul>
-                        </div>
-                    </div> */}
+                    
                     <div className="filter-card mb-3">
                         <h3 className="filter-title">Filter By</h3>
                         <div> 
@@ -84,44 +74,7 @@ const OurStore = () => {
                                     <label htmlfor="floatingInput">To</label>
                                 </div>
                             </div>
-                            {/* removed for convenience for now */}
-                            {/* <h5 className="sub-title">Colours</h5> */}
-                            {/* <div> */}
-                                {/* <ul className="colors ps-0"> */}
-                                    {/* <li className="color1"></li> */}
-                                    {/* <li className="color2"></li> */}
-                                    {/* <li className="color3"></li> */}
-                                    {/* <li className="color4"></li> */}
-                                    {/* <li className="color5"></li> */}
-                                    {/* <li className="color6"></li> */}
-                                    {/* <li className="color7"></li> */}
-                                    {/* <li className="color8"></li> */}
-                                    {/* <li className="color9"></li> */}
-                                    {/*  */}
-                                {/* </ul> */}
-
-                            {/* </div> */}
-                            {/* <h5 className="sub-title">Sizes</h5> */}
-                            {/* <div> */}
-                            {/* <div class="form-check"> */}
-                                {/* <input className="form-check-input" type="checkbox" value="checked" id="color-1" /> */}
-                                {/* <label className="form-check-label" htmlfor=""> */}
-                                    {/* S (2) */}
-                                {/* </label> */}
-                            {/* </div> */}
-                            {/* <div class="form-check"> */}
-                                {/* <input className="form-check-input" type="checkbox" value="checked" id="color-2" /> */}
-                                {/* <label className="form-check-label" htmlfor=""> */}
-                                    {/* M (2) */}
-                                {/* </label> */}
-                            {/* </div> */}
-                            {/* <div class="form-check"> */}
-                                {/* <input className="form-check-input" type="checkbox" value="checked" id="color-3" /> */}
-                                {/* <label className="form-check-label" htmlfor=""> */}
-                                    {/* L (2) */}
-                                {/* </label> */}
-                            {/* </div> */}
-                            {/* </div> */}
+                            
                         </div>
                     </div>
                     <div className="filter-card mb-3">
