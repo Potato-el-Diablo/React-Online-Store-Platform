@@ -1,6 +1,7 @@
 import React from "react";
 import {fireEvent, render, screen} from "@testing-library/react";
 import "@testing-library/jest-dom";
+import {doc, updateDoc} from 'firebase/firestore';
 import { MemoryRouter } from "react-router-dom";
 import SellerProductCard from "./SellerProductCard";
 
@@ -24,6 +25,34 @@ describe("SellerProductCard Component", () => {
                 <SellerProductCard {...defaultProps} />
             </MemoryRouter>
         );
+    });
+
+    it("handles sale creation and removal", async () => {
+        render(
+            <MemoryRouter>
+                <SellerProductCard {...defaultProps} />
+            </MemoryRouter>
+        );
+
+        // try to create a sale
+        const createSaleButton = screen.getByText("Create Sale");
+        fireEvent.click(createSaleButton);
+
+        const salePriceInput = screen.getByPlaceholderText("Sale price:");
+        fireEvent.change(salePriceInput, { target: { value: '50' } });
+
+        const submitSaleButton = screen.getByText("Submit Sale");
+        fireEvent.click(submitSaleButton);
+
+        // Check if the Firestore updateDoc method was called correctly
+        expect(updateDoc).toHaveBeenCalledWith(doc(), { sale: '50' });
+
+        // Now, remove the sale
+        const removeSaleButton = screen.getByText("Remove Sale");
+        fireEvent.click(removeSaleButton);
+
+        // Check if the Firestore updateDoc method was called correctly
+        expect(updateDoc).toHaveBeenCalledWith(doc(), { sale: '' });
     });
 
     //Tests for rendering all the correct items
