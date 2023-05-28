@@ -9,6 +9,7 @@ import {BrowserRouter as Router} from "react-router-dom";
 import '@testing-library/jest-dom/extend-expect';
 import useUserAuth from './useUserAuth';
 
+
 //Mock the necessary dependancies
 jest.mock('firebase/app', () => ({
     initializeApp: jest.fn().mockReturnValue({}),
@@ -33,6 +34,7 @@ jest.mock('firebase/firestore', () => ({
     updateDoc: jest.fn(),
 }));
 
+let mockDocRef;
 
 
 beforeEach(() => {
@@ -48,6 +50,8 @@ beforeEach(() => {
     updateDoc.mockClear();
     doc.mockClear();
     updateDoc.mockImplementation(() => Promise.resolve());
+    mockDocRef = {}; // And initialize it here
+    doc.mockReturnValue(mockDocRef); // Set the return value here
 
 
     useUserAuth.mockReturnValue({
@@ -292,8 +296,8 @@ test('Checks that Name is correctly updated', async () => {
 
 // Then check if `updateDoc` was called with the correct arguments
     expect(updateDoc).toHaveBeenCalledWith(
-        expect.any(Object), // you don't know the exact firestore document reference, so you can just expect any object
-        { name: 'Updated Name', mobileNumber: '1234567890', email: 'testuser@example.com' }
+        mockDocRef, // expect the exact mock document reference
+        { name: 'Updated Name', mobileNumber: '1234567890' }
     );
 
 

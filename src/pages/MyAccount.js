@@ -33,6 +33,7 @@ const MyAccount = () => {
     const { register, handleSubmit, setValue } = useForm();
 
     const { userId, isSeller } = useUserAuth();
+    console.log("userId is", userId);
 
     //Fetches and displays the users reviews
     const handleClick = async () => {
@@ -130,12 +131,12 @@ const MyAccount = () => {
         const q = query(collectionRef, where("uid", "==", userInfo.uid));
 
         const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((document) => {
+        querySnapshot.docs.forEach((document) => {
             // document.data() is never undefined for query doc snapshots
             const docRef = doc(db, isSeller ? "sellers" : "buyers", document.id);
             updateDoc(docRef, updateData)
                 .then(() => {
-                    console.log('Document successfully updated');
+                    console.log('Document successfully updated for user',userId);
                 })
                 .catch((error) => {
                     console.error('Error updating document: ', error);
