@@ -296,7 +296,7 @@ const MyAccount = () => {
                                         >
                                             {isSeller && (
                                                 <>
-                                                    <label>
+                                                    <label htmlFor="firstName">
                                                         First Name: <input className='form-control'
                                                         {...register('firstName', { required: true })}
                                                         placeholder="First Name"
@@ -313,7 +313,7 @@ const MyAccount = () => {
                                                 </>
                                             )}
                                             {!isSeller && (
-                                                <label>
+                                                <label htmlFor="Name">
                                                     Name: <input className='form-control'
                                                     {...register('name', { required: true })}
                                                     placeholder="Name"

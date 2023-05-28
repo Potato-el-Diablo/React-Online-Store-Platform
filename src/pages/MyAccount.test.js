@@ -1,6 +1,6 @@
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import {getDocs, collection, query, where, getFirestore} from 'firebase/firestore';
+import {getDocs, collection, query, where, getFirestore, updateDoc, doc} from 'firebase/firestore';
 import MyAccount from './MyAccount';
 import {useEffect, useState} from "react";
 import { act } from '@testing-library/react';
@@ -29,6 +29,8 @@ jest.mock('firebase/firestore', () => ({
     collection: jest.fn(),
     query: jest.fn(),
     where: jest.fn(),
+    doc: jest.fn(),
+    updateDoc: jest.fn(),
 }));
 
 
@@ -43,6 +45,9 @@ beforeEach(() => {
     collection.mockClear();
     query.mockClear();
     where.mockClear();
+    updateDoc.mockClear();
+    doc.mockClear();
+    updateDoc.mockImplementation(() => Promise.resolve());
 
 
     useUserAuth.mockReturnValue({
@@ -240,4 +245,56 @@ test('should show appropriate message when there is no user information', async 
     fireEvent.click(screen.getByText('Show personal info'));
 
     expect(await screen.findByText('No user information available.')).toBeInTheDocument();
+});
+
+test('Checks that Name is correctly updated', async () => {
+    // Mock getDocs for user info
+    getDocs.mockResolvedValueOnce({
+        docs: [
+            {
+                id: '1',
+                data: jest.fn().mockReturnValue({
+                    uid: '123',
+                    name: 'Test User',
+                    firstName:'Test',
+                    email: 'testuser@example.com',
+                    mobileNumber: '1234567890',
+                }),
+            },
+        ],
+    });
+
+    render(
+        <Router>
+            <MyAccount />
+        </Router>
+    );
+
+    // Click the 'Show personal info' button
+    fireEvent.click(screen.getByText('Show personal info'));
+
+    // Wait for the user information to appear in the document
+    expect(await screen.findByText('Name: Test User')).toBeInTheDocument();
+    expect(screen.getByText('Email: testuser@example.com')).toBeInTheDocument();
+    expect(screen.getByText('Mobile Number: 1234567890')).toBeInTheDocument();
+
+    // Click the 'Edit personal info' button
+    fireEvent.click(screen.getByText('Update Profile'));
+
+    // Find the first name input field and change its value
+    fireEvent.change(screen.getByPlaceholderText('Name'), { target: { value: 'Updated Name' } });
+
+    // In your test, after you click the 'Save' button
+    fireEvent.click(screen.getByText('Save'));
+
+// Wait for potential async operations
+    await waitFor(() => expect(updateDoc).toHaveBeenCalled());
+
+// Then check if `updateDoc` was called with the correct arguments
+    expect(updateDoc).toHaveBeenCalledWith(
+        expect.any(Object), // you don't know the exact firestore document reference, so you can just expect any object
+        { name: 'Updated Name', mobileNumber: '1234567890', email: 'testuser@example.com' }
+    );
+
+
 });
