@@ -93,9 +93,12 @@ describe('Cart Component', () => {
         fireEvent.click(updateButtons[0]);
 
         await waitFor(() => {
-            expect(screen.getByText(`Subtotal: R ${(mockCartItems[0].price * (mockCartItems[0].quantity + 1) + mockCartItems[1].price * mockCartItems[1].quantity).toFixed(2)}`)).toBeInTheDocument();
+            const updatedSubtotal = (mockCartItems[0].price * (mockCartItems[0].quantity + 1) + mockCartItems[1].price * mockCartItems[1].quantity).toFixed(2);
+            expect(screen.getByText(`Subtotal: R ${updatedSubtotal}`)).toHaveTextContent(`Subtotal: R ${updatedSubtotal}`);
         });
     });
+
+
 
     it('displays correct subtotal', () => {
         render(

@@ -88,8 +88,14 @@ const Cart = () => {
     // updates a cart Item's quantity
     // Updates a cart Item's quantity
     const handleUpdateQuantity = async (itemId, newQuantity, price) => {
+
+        console.log('auth.currentUser.uid:', auth.currentUser.uid);
+
         const userCartRef = doc(db, 'Carts', auth.currentUser.uid);
         const userCartSnapshot = await getDoc(userCartRef);
+        console.log('userCartRef:', userCartRef);
+        console.log('userCartSnapshot:', userCartSnapshot);
+
         const cartProducts = userCartSnapshot.data().products;
 
         const updatedProducts = cartProducts.map((cartProduct) => {
