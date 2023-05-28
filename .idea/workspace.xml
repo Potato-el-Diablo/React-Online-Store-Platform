@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="210705c5-207a-4957-8740-df7ac1b18442" name="Changes" comment="Updated counterSlice.spec.js">
+    <list default="true" id="210705c5-207a-4957-8740-df7ac1b18442" name="Changes" comment="Updated searched.test.js">
+      <change afterPath="$PROJECT_DIR$/src/pages/useCart.test.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.cache/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/.eslintcache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.cache/default-development/0.pack" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/default-development/0.pack" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.cache/default-development/1.pack" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/default-development/1.pack" afterDir="false" />
@@ -12,6 +13,114 @@
       <change beforePath="$PROJECT_DIR$/node_modules/.cache/default-development/3.pack" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/default-development/3.pack" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.cache/default-development/index.pack.old" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.cache/default-development/index.pack.old" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/.package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/LICENSE.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/SECURITY.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/ThirdPartyNoticeText.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/bin/tsc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/bin/tsserver" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/cancellationToken.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/cs/diagnosticMessages.generated.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/de/diagnosticMessages.generated.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/dynamicImportCompat.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/es/diagnosticMessages.generated.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/fr/diagnosticMessages.generated.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/it/diagnosticMessages.generated.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/ja/diagnosticMessages.generated.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/ko/diagnosticMessages.generated.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.dom.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.dom.iterable.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2015.collection.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2015.core.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2015.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2015.generator.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2015.iterable.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2015.promise.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2015.proxy.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2015.reflect.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2015.symbol.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2016.array.include.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2016.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2016.full.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2017.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2017.full.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2017.intl.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2017.object.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2017.string.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2017.typedarrays.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2018.asyncgenerator.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2018.asynciterable.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2018.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2018.full.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2018.intl.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2018.promise.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2018.regexp.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2019.array.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2019.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2019.full.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2019.intl.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2019.object.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2019.string.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2019.symbol.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2020.bigint.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2020.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2020.date.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2020.full.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2020.intl.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2020.number.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2020.promise.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2020.sharedmemory.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2020.string.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2020.symbol.wellknown.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2021.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2021.full.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2021.intl.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2021.promise.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2021.string.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2021.weakref.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2022.array.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2022.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2022.error.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2022.full.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2022.intl.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2022.object.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2022.sharedmemory.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es2022.string.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es5.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.es6.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.esnext.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.esnext.full.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.esnext.intl.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.esnext.promise.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.esnext.string.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.esnext.weakref.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.scripthost.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.webworker.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.webworker.importscripts.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/lib.webworker.iterable.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/pl/diagnosticMessages.generated.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/protocol.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/pt-br/diagnosticMessages.generated.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/ru/diagnosticMessages.generated.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/tr/diagnosticMessages.generated.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/tsc.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/tsserver.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/tsserverlibrary.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/tsserverlibrary.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/typesMap.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/typescript.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/typescript.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/typescriptServices.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/typescriptServices.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/typingsInstaller.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/watchGuard.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/zh-cn/diagnosticMessages.generated.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/lib/zh-tw/diagnosticMessages.generated.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/typescript/package.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
@@ -89,61 +198,43 @@
       <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
-  <component name="RunManager" selected="Jest.renders the count value from state">
-    <configuration name="counter reducer" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Jest.useCart">
+    <configuration name="ProductCard Component" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
       <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
       <working-dir value="$PROJECT_DIR$" />
       <envs />
       <scope-kind value="SUITE" />
-      <test-file value="$PROJECT_DIR$/src/features/counter/counterSlice.spec.js" />
+      <test-file value="$PROJECT_DIR$/src/pages/Searched.test.js" />
       <test-names>
-        <test-name value="counter reducer" />
+        <test-name value="ProductCard Component" />
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="counter reducer.counter reducer.counter reducer.should not increment if even" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+    <configuration name="Searched" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="SUITE" />
+      <test-file value="$PROJECT_DIR$/src/pages/Searched.test.js" />
+      <test-names>
+        <test-name value="Searched" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="can increment the value" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
       <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
       <working-dir value="$PROJECT_DIR$" />
       <envs />
       <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/src/features/counter/counterSlice.spec.js" />
+      <test-file value="$PROJECT_DIR$/src/features/counter/Counter.test.js" />
       <test-names>
-        <test-name value="counter reducer" />
-        <test-name value="counter reducer" />
-        <test-name value="counter reducer" />
-        <test-name value="should not increment if even" />
-      </test-names>
-      <method v="2" />
-    </configuration>
-    <configuration name="counter reducer.should handle incrementAsync" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
-      <working-dir value="$PROJECT_DIR$" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/src/features/counter/counterSlice.spec.js" />
-      <test-names>
-        <test-name value="counter reducer" />
-        <test-name value="should handle incrementAsync" />
-      </test-names>
-      <method v="2" />
-    </configuration>
-    <configuration name="counter reducer.should handle initial state" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
-      <working-dir value="$PROJECT_DIR$" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/src/features/counter/counterSlice.spec.js" />
-      <test-names>
-        <test-name value="counter reducer" />
-        <test-name value="should handle initial state" />
+        <test-name value="can increment the value" />
       </test-names>
       <method v="2" />
     </configuration>
@@ -160,13 +251,26 @@
       </test-names>
       <method v="2" />
     </configuration>
+    <configuration name="useCart" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/react-scripts" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="SUITE" />
+      <test-file value="$PROJECT_DIR$/src/pages/useCart.test.js" />
+      <test-names>
+        <test-name value="useCart" />
+      </test-names>
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Jest.useCart" />
+        <item itemvalue="Jest.Searched" />
+        <item itemvalue="Jest.ProductCard Component" />
+        <item itemvalue="Jest.can increment the value" />
         <item itemvalue="Jest.renders the count value from state" />
-        <item itemvalue="Jest.counter reducer.should handle incrementAsync" />
-        <item itemvalue="Jest.counter reducer.should handle initial state" />
-        <item itemvalue="Jest.counter reducer" />
-        <item itemvalue="Jest.counter reducer.counter reducer.counter reducer.should not increment if even" />
       </list>
     </recent_temporary>
   </component>
@@ -202,34 +306,6 @@
       <workItem from="1685175549965" duration="11924000" />
       <workItem from="1685195293336" duration="761000" />
       <workItem from="1685205799178" duration="4454000" />
-    </task>
-    <task id="LOCAL-00015" summary="Updated MyAccount.js">
-      <created>1684868062160</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1684868062160</updated>
-    </task>
-    <task id="LOCAL-00016" summary="Updated MyAccount.js (viewing user info)">
-      <created>1684869345401</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1684869345401</updated>
-    </task>
-    <task id="LOCAL-00017" summary="Removed &quot;dangerouslySetInnerText&quot; in Header.js">
-      <created>1684869788943</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1684869788943</updated>
-    </task>
-    <task id="LOCAL-00018" summary="Removed &quot;dangerouslySetInnerText&quot; in Header.js">
-      <created>1684870296279</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1684870296279</updated>
     </task>
     <task id="LOCAL-00019" summary="Removed &quot;dangerouslySetInnerText&quot; in Header.js">
       <created>1684870894869</created>
@@ -546,7 +622,35 @@
       <option name="project" value="LOCAL" />
       <updated>1685308662490</updated>
     </task>
-    <option name="localTasksCounter" value="64" />
+    <task id="LOCAL-00064" summary="Updated counter.test.js">
+      <created>1685308697008</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1685308697009</updated>
+    </task>
+    <task id="LOCAL-00065" summary="Updated counter.test.js">
+      <created>1685308965999</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1685308965999</updated>
+    </task>
+    <task id="LOCAL-00066" summary="Updated searched.test.js">
+      <created>1685309935349</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1685309935349</updated>
+    </task>
+    <task id="LOCAL-00067" summary="Updated searched.test.js">
+      <created>1685310101191</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1685310101191</updated>
+    </task>
+    <option name="localTasksCounter" value="68" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -579,7 +683,9 @@
     <MESSAGE value="Update OrderDetails.js" />
     <MESSAGE value="Updated firestore functions unit test file" />
     <MESSAGE value="Updated counterSlice.spec.js" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated counterSlice.spec.js" />
+    <MESSAGE value="Updated counter.test.js" />
+    <MESSAGE value="Updated searched.test.js" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated searched.test.js" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
