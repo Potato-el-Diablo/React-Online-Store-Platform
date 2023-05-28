@@ -12,6 +12,7 @@ const defaultProps = {
     productDescription: "Test Description",
     productPrice: "100.00",
     productStock: "10",
+    productSale: "50.00",
 };
 
 describe("ProductCard Component", () => {
@@ -25,6 +26,7 @@ describe("ProductCard Component", () => {
         expect(screen.getByText(defaultProps.brand)).toBeInTheDocument();
         expect(screen.getByText(defaultProps.productName)).toBeInTheDocument();
         expect(screen.getByText(`R ${parseFloat(defaultProps.productPrice).toFixed(2)}`)).toBeInTheDocument();
+        expect(screen.getByText(`R ${parseFloat(defaultProps.productSale).toFixed(2)}`)).toBeInTheDocument();
     });
 
     it("renders the product image with correct src and alt attributes", () => {

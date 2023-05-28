@@ -20,9 +20,8 @@ const ProductCard = ({
                          productSale,
                          productCategory,
                          averageRating,
-                         editOnClick,
-                         removeOnClick,
-                         viewOnClick,
+
+                      
                      }) => {
 
     let location = useLocation();
