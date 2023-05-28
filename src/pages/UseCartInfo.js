@@ -43,5 +43,5 @@ export const useCartInfo = () => {
         fetchUserCartItems();
     }, []);
 
-    return { cartItems, subtotal };
+    return { cartItems, subtotal, setCartItems };
 };
