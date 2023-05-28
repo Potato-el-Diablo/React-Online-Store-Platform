@@ -23,6 +23,31 @@ jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useLocation: () => (MockLocation),
 }));
+describe('SingleProduct', () => {
+    test('should redirect to login page when trying to submit a review without being logged in', () => {
+      // Mock the useState hook to return an empty userId (not logged in)
+      useState.mockImplementationOnce(() => ['', jest.fn()]);
+  
+      render(<SingleProduct />);
+  
+      // Simulate form submission
+      fireEvent.click(screen.getByText('Submit Review'));
+  
+      // Assert that the login alert is shown
+      expect(screen.getByText('Please sign in to submit a review.')).toBeInTheDocument();
+    });
+    test('should calculate the average rating correctly', () => {
+        // Mock the useState hook to return dummy data
+        useState.mockImplementationOnce(() => ['123', jest.fn()]); // Mock the userId
+        useState.mockImplementationOnce(() => [[{ id: 1, rating: 4 }, { id: 2, rating: 5 }], jest.fn()]); // Mock the reviews array
+        useState.mockImplementationOnce(() => [null, jest.fn()]); // Mock the userReview
+    
+        render(<SingleProduct />);
+    
+        // Assert that the average rating is displayed correctly
+        expect(screen.getByText('4.5')).toBeInTheDocument();
+      });
+  });
 
 describe('SingleProduct Component', () => {
     beforeEach(() => {
@@ -67,5 +92,7 @@ describe('SingleProduct Component', () => {
         expect(addToWishlistLink).toBeInTheDocument();
     });
 
+
+      
 
 });
