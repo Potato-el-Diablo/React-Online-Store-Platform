@@ -10,7 +10,7 @@ const defaultProps = {
     brand: "Test Brand",
     productName: "Test Product",
     productDescription: "Test Description",
-    productPrice: "100",
+    productPrice: "100.00",
     productStock: "10",
 };
 
@@ -24,7 +24,7 @@ describe("ProductCard Component", () => {
 
         expect(screen.getByText(defaultProps.brand)).toBeInTheDocument();
         expect(screen.getByText(defaultProps.productName)).toBeInTheDocument();
-        expect(screen.getByText(`R ${defaultProps.productPrice}`)).toBeInTheDocument();
+        expect(screen.getByText(`R ${parseFloat(defaultProps.productPrice).toFixed(2)}`)).toBeInTheDocument();
     });
 
     it("renders the product image with correct src and alt attributes", () => {
@@ -55,7 +55,7 @@ describe("ProductCard Component", () => {
             </MemoryRouter>
         );
 
-        expect(screen.getByText("Add to Cart")).toBeInTheDocument();
+        expect(screen.getByText("View Product")).toBeInTheDocument();
     });
 
     it("renders the wishlist icon", () => {
