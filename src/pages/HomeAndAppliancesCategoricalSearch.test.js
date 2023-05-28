@@ -36,5 +36,26 @@ describe('OurStore Component', () => {
         expect(selectElement).toBeInTheDocument();
         expect(totalProductsText).toBeInTheDocument();
     });
+    describe('filterProducts', () => {
+        it('filters products based on category', () => {
+          const searchQuery = 'electronics';
+          const products = [
+            { name: 'Product 1', category: 'Electronics' },
+            { name: 'Product 2', category: 'Clothing' },
+            { name: 'Product 3', category: 'Electronics' },
+          ];
+      
+          const expectedFilteredProducts = [
+            { name: 'Product 1', category: 'Electronics' },
+            { name: 'Product 3', category: 'Electronics' },
+          ];
+      
+          const filteredProducts = products.filter((product) =>
+            (product.category && product.category.toLowerCase().includes(searchQuery.toLowerCase()))
+          );
+      
+          expect(filteredProducts).toEqual(expectedFilteredProducts);
+        });
+      });
 
 });

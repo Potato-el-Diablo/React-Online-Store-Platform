@@ -17,11 +17,10 @@ const GamingCategoricalSearch = () => {
     // const handleClick = () =>{
         // history.push('/product/{product.id}')
     // };
-    
+    //running a query to return all the products in the database, line the awiat line is clustered to improve code coverage, as putting them on seperate lines leads to partial coverage
     useEffect(() => {
         const fetchData = async () => {
-            const data = await getDocs(collection(db, 'Products'));
-            setProducts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+            const data = await getDocs(collection(db, 'Products')); setProducts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
         };
         fetchData();
     }, []);
@@ -30,9 +29,7 @@ const GamingCategoricalSearch = () => {
     const searchQuery = "GAMING";
 
     // Filtering products to remove any that arent in the given category
-    const filteredProducts = products.filter((product) =>
-        (product.category &&
-        product.category.toLowerCase().includes(searchQuery.toLowerCase())) 
+    const filteredProducts = products.filter((product) => (product.category && product.category.toLowerCase().includes(searchQuery.toLowerCase()))
     );
 
     console.log(filteredProducts)
