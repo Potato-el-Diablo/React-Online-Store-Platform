@@ -11,6 +11,7 @@ const MockProduct = {
     productDescription: 'Test Description',
     productPrice: 100,
     productStock: 'In Stock',
+    productSale: 'sale',
 };
 
 const MockLocation = {
@@ -65,6 +66,7 @@ describe('SingleProduct Component', () => {
         expect(screen.getByText(`R ${MockProduct.productPrice}`)).toBeInTheDocument();
         expect(screen.getByText(MockProduct.productStock)).toBeInTheDocument();
         expect(screen.getByText(MockProduct.productDescription)).toBeInTheDocument();
+        expect(screen.getByText(MockProduct.productSale)).toBeInTheDocument();
     });
 
     test('renders product image correctly', () => {
