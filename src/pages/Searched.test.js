@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { render, waitFor, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { collection } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import '@testing-library/jest-dom/extend-expect';
 import { db } from './firebase';
-import { getDocs } from 'firebase/firestore';
 import Searched from './Searched';
 
 jest.mock('firebase/firestore', () => ({
@@ -42,47 +41,54 @@ describe('ProductCard Component', () => {
 });
 
 describe('Searched', () => {
-  
-    it('should fetch products on mount', async () => {
-        const mockData = {
-            getDocs : () =>{
-                return docs;
+    it('should fetch products on mount and filter based on the search query', async () => {
+        const mockData = [
+            {
+                data: () => ({
+                    id: '1',
+                    name: 'Product 1',
+                    brand: 'Brand 1',
+                    image: 'https://example.com/product1.png',
+                    description: 'Product 1 description',
+                    price: 9.99,
+                    stock: 10,
+                }),
+                id: '1',
             },
-            docs: [
-           {
-             data: () => ({
-               id: '1',
-               name: 'Product 1',
-               brand: 'Brand 1',
-               image: 'https://example.com/product1.png',
-               description: 'Product 1 description',
-               price: 9.99,
-               stock: 10,
-             }),
-             id: '1',
-           },
-           {
-             data: () => ({
-               id: '2',
-               name: 'Product 2',
-               brand: 'Brand 2',
-               image: 'https://example.com/product2.png',
-               description: 'Product 2 description',
-               price: 19.99,
-               stock: 5,
-             }),
-             id: '2',
-           },
-         ],
-       };
+            {
+                data: () => ({
+                    id: '2',
+                    name: 'Product 2',
+                    brand: 'Brand 2',
+                    image: 'https://example.com/product2.png',
+                    description: 'Product 2 description',
+                    price: 19.99,
+                    stock: 5,
+                }),
+                id: '2',
+            },
+        ];
 
-        const getDocsSpy = jest.spyOn(mockData,'getDocs');
-        getDocsSpy.mockResolvedValueOnce(mockData);
-  
-    render(<Searched />);
-  
-    expect(collection).toHaveBeenCalledWith(db, 'Products');
-    expect(getDocs).toHaveBeenCalledWith(collection(db, 'Products'));
-    expect(useEffect).toBeCalled();
+        getDocs.mockResolvedValueOnce(mockData);
+
+        jest.doMock('react-router-dom', () => ({
+            ...jest.requireActual('react-router-dom'),
+            useLocation: () => ({
+                search: '?q=Product 1',
+            }),
+        }));
+
+        const { Searched } = require('./Searched'); // import the component here after mocking
+
+        render(
+            <MemoryRouter>
+                <Searched />
+            </MemoryRouter>
+        );
+
+        await waitFor(() => {
+            expect(screen.getByText('Product 1')).toBeInTheDocument();
+        });
     });
 });
+

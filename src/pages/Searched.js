@@ -33,9 +33,13 @@ const Searched = () => {
     // Filter the products based on the search query in the productName
     const filteredProducts = products.filter((product) =>
         (product.name &&
-        product.name.toLowerCase().includes(searchQuery.toLowerCase())) || (product.brand &&
-        product.brand.toLowerCase().includes(searchQuery.toLowerCase()))
+            searchQuery &&
+            product.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (product.brand &&
+            searchQuery &&
+            product.brand.toLowerCase().includes(searchQuery.toLowerCase()))
     );
+
 
     console.log(filteredProducts)
 
