@@ -78,7 +78,7 @@ const OrderDetails = () => {
                                     calculateOrderStatus(orderDetails.createdAt, orderDetails.deliveryOption) === 'Processing order'
                                         ? 'orange'
                                         : calculateOrderStatus(orderDetails.createdAt, orderDetails.deliveryOption) === 'Order in transit'
-                                            ? 'yellow'
+                                            ? 'orange'
                                             : 'green'
                             }}
                         >

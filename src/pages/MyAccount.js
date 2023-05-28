@@ -292,7 +292,7 @@ const MyAccount = () => {
                                                 updateUserDetails(data);
                                                 setIsEditing(false);
                                             })}
-                                            style={{ display: 'flex', flexDirection: 'column', gap: '10px' }} // Add this style
+                                            style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
                                         >
                                             {isSeller && (
                                                 <>
