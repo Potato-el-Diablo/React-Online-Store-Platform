@@ -11,12 +11,14 @@ import AddProductModal from '../components/AddProductModal';
 import UpdateProductModal from '../components/UpdateProductModal';
 import ViewRevenueModal from '../components/ViewRevenueModal';
 import ViewProductRevenueModal from '../components/ViewProductRevenueModal';
+import RemoveProductModal from '../components/RemoveProductModal';
 
 const MyProducts = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isUpdateOpen, setIsUpdateOpen] = useState(false);
     const [isProductRevenueOpen, setIsProductRevenueOpen] = useState(false);
     const [isRevenueOpen, setIsRevenueOpen] = useState(false);
+    const [isRemoveOpen, setIsRemoveOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [seller, setSeller] = useState([]);
     const [analytics, setAnalytics] = useState([]);
@@ -67,6 +69,14 @@ const MyProducts = () => {
 
         setProducts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
+
+    //Manages view of removing products 
+    const handleRemoveOnClick = (product) => {
+        setSelectedProduct(product);
+        setIsRemoveOpen(true);
+    };
+
+    
 
     //Handle the change in analytic View
     const handleAnalyticView = (view) => {
@@ -344,6 +354,7 @@ const MyProducts = () => {
                                         productSale={product.sale || ''}
                                         editOnClick={() => handleEditOnClick(product)}
                                         viewOnClick={() => viewProductRevenue(product)}
+                                        removeOnClick={() => handleRemoveOnClick(product)}
                                     />
                                 ))}
                             </div>
@@ -394,6 +405,16 @@ const MyProducts = () => {
                 dataset={revenueData}
                 totalRev={totalRevenue}
                 />
+            
+            {selectedProduct && (
+                <RemoveProductModal 
+                    open={isRemoveOpen}
+                    onClose={() => setIsRemoveOpen(false)}
+                    onRemove={() => setIsRemoveOpen(false)}
+                    productID={selectedProduct.id}
+                    productName={selectedProduct.name}
+                />
+            )}
         </>
     );
 };
