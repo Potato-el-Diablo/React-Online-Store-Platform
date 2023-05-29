@@ -114,7 +114,9 @@ const OurStore = () => {
                     <div className="products-list ">
                         <div className="d-flex flex-wrap gap-20">
 
-                            {products.map((product) => (
+                            {products
+                            .filter((product) => product.stock > 0) // Filter products with stock > 0
+                            .map((product) => (
                                 <ProductCard
                                     key={product.id}
                                     productId={product.id}
@@ -131,6 +133,7 @@ const OurStore = () => {
                                     // editOnClick={() => handleEditOnClick(product)}
                                     // onClick={() => handleProductCardClick(product.id)}
                                     className="productCard"
+                                    sale = {product.stock}
                                 />
                             ))}
 

@@ -12,6 +12,9 @@ import UpdateProductModal from '../components/UpdateProductModal';
 import ViewRevenueModal from '../components/ViewRevenueModal';
 import ViewProductRevenueModal from '../components/ViewProductRevenueModal';
 import RemoveProductModal from '../components/RemoveProductModal';
+import { doc, updateDoc } from 'firebase/firestore';
+
+
 
 const MyProducts = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -53,7 +56,9 @@ const MyProducts = () => {
     }, []);
 
     console.log(products);
+    // manages removing products
 
+      
     //Manages making updates to products
     const handleEditOnClick = (product) => {
         setSelectedProduct(product);
@@ -70,13 +75,27 @@ const MyProducts = () => {
         setProducts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
 
-    //Manages view of removing products 
-    const handleRemoveOnClick = (product) => {
-        setSelectedProduct(product);
-        setIsRemoveOpen(true);
-    };
+// Manages view of removing products 
+const handleRemoveOnClick = (product) => {
+    setSelectedProduct(product);
+    setIsRemoveOpen(true);
+  };
+  
+  const handleRemoveConfirm = async () => {
+    if (selectedProduct) {
+      await updateProductStockToZero(selectedProduct.id);
+    }
+    // Close the remove product modal
+    setIsRemoveOpen(false);
+  };
+  
+  const updateProductStockToZero = async (productId) => {
+    const productRef = doc(db, 'Products', productId);
+    await updateDoc(productRef, { stock: 0 });
+    refreshProducts(); // Update the product list after setting stock to zero
+  };
+  
 
-    
 
     //Handle the change in analytic View
     const handleAnalyticView = (view) => {
@@ -340,7 +359,9 @@ const MyProducts = () => {
                         </div>
                         <div className="products-list pb-5">
                             <div className="d-flex gap-10 flex-wrap">
-                                {products.map((product) => (
+                                {products
+                                .filter((product) => product.stock > 0) // Filter products with stock > 0
+                                .map((product) => (
                                     <SellerProductCard
                                         key={product.id}
                                         productId={product.id}
@@ -355,6 +376,7 @@ const MyProducts = () => {
                                         editOnClick={() => handleEditOnClick(product)}
                                         viewOnClick={() => viewProductRevenue(product)}
                                         removeOnClick={() => handleRemoveOnClick(product)}
+                                        stock = {product.stock}
                                     />
                                 ))}
                             </div>
@@ -407,14 +429,20 @@ const MyProducts = () => {
                 />
             
             {selectedProduct && (
-                <RemoveProductModal 
-                    open={isRemoveOpen}
-                    onClose={() => setIsRemoveOpen(false)}
-                    onRemove={() => setIsRemoveOpen(false)}
-                    productID={selectedProduct.id}
-                    productName={selectedProduct.name}
-                />
+              <RemoveProductModal 
+                open={isRemoveOpen}
+                onClose={() => setIsRemoveOpen(false)}
+                onRemove={handleRemoveConfirm}
+                productID={selectedProduct.id}
+                productName={selectedProduct.name}
+                stock={"0"}
+                
+              />
+              
             )}
+            
+            
+
         </>
     );
 };

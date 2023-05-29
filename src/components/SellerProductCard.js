@@ -18,6 +18,7 @@ const SellerProductCard = ({
                                viewOnClick,
                                productId,
                                productSale,
+                               stock,
                            }) => {
     let location = useLocation();
     const [salePrice, setSalePrice] = useState(null);
@@ -112,6 +113,10 @@ const SellerProductCard = ({
             </button>
         </>
     ) : null;
+
+    if(stock === "0"){
+        return null;
+    }
 
     return (
         <>

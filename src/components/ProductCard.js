@@ -20,6 +20,7 @@ const ProductCard = ({
                          productSale,
                          productCategory,
                          averageRating,
+                         stock,
 
                       
                      }) => {
@@ -35,10 +36,10 @@ const ProductCard = ({
         return 0;
       };
 
-    // const handleClick = () =>{
-    // history.push('/product/${product.id}')
-    // };
-
+    // check if the product is in stock
+    if(stock === '0' ){
+        return null;
+    }
     return (
         <>
             <div
