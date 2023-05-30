@@ -77,6 +77,14 @@ const Header = () => {
         console.log("What is your name?", userName);
     }, [isSeller, userName]);
 
+    const [ItemsCount, setItemsCount] = useState(0);
+
+    useEffect(() => {
+        const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
+        setItemsCount(totalItems);
+    }, [cartItems]);
+
+
     return (
         <>
             {/* This header (line 8-22) is the top header with the hotline and free shipping text*/}
@@ -169,9 +177,8 @@ const Header = () => {
                                     <Link className="d-flex align-items-center gap text-white">
                                         <img src="images/cart.svg" alt="cart"/>
                                         <div className="d-flex flex-column">
-                                            <span className="badge bg-white text-dark">{cartItems.length}</span>
+                                            <span className="badge bg-white text-dark">{ItemsCount}</span>
                                             <p className="mb-0">
-                                                <NavLink className="text-white" to = "cart">R{subtotal.toFixed(2)}</NavLink>
                                             </p> {/* CART TOTAL DISPLAYED ON HEADER*/}
                                         </div>
                                     </Link>
