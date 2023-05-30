@@ -6,14 +6,9 @@ Code Coverage:
 [![codecov](https://codecov.io/gh/Potato-el-Diablo/React-Online-Store-Platform/branch/main/graph/badge.svg?token=NPMU9NENFA)](https://codecov.io/gh/Potato-el-Diablo/React-Online-Store-Platform)
 
 ## Table of contens
-*[Task 1](#Task-1)
+
 *[General info](#general)
 *[Setup](#setup)
-## Task 1
-: Add the name of your favourite softdrink name to this file using the github commands :.
-Oriinga Mountain Dew
-
-
 
 ## General
 Will setup correct file project structure shortly, keep track of your commits and we will probably set up another branch to to instead of main to avoid any issues- and then merge to main after a pull request?
