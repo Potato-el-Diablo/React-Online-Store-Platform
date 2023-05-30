@@ -99,6 +99,17 @@ const SingleProduct = () => {
     }
   }, [reviews]);
 
+  const handleQuantityChange = (e) => {
+    let enteredQuantity = parseInt(e.target.value);
+    if(enteredQuantity > productStock){
+      setQuantity(productStock);
+    } else if(enteredQuantity < 1){
+      setQuantity(1);
+    } else {
+      setQuantity(enteredQuantity);
+    }
+  }
+
   const { handleAddToCart } = useCart(userId);
   const addReview = async (e) => {
     e.preventDefault();
@@ -276,11 +287,12 @@ const SingleProduct = () => {
                           type="number"
                           name=""
                           min={1}
-                          max={location.state.quantity}
+                          max={productStock}
                           className="form-control"
                           style={{ width: "70px" }}
                           value={quantity}
                           onChange={(e) => setQuantity(parseInt(e.target.value))}
+                          onBlur={(e) => handleQuantityChange(e)}
                       />
 
                     </div>
@@ -349,7 +361,8 @@ const SingleProduct = () => {
                           edit = {true}
                           size={24}
                           activeColor="#ffd700"
-                          onChange={(newRating) => setReviewRating(newRating)}
+                          onChange={(e) => handleQuantityChange(e)}
+                          onBlur={(e) => handleQuantityChange(e)}
                       />
                     </div>
                     <div>
