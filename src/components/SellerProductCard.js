@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import ReactStars from "react-rating-stars-component";
 import { Link, useLocation } from "react-router-dom";
-import {getDocs, query, where, collection, updateDoc, doc, getDoc} from 'firebase/firestore';
+import {getDocs, query, where, collection, updateDoc, doc, getDoc, deleteDoc} from 'firebase/firestore';
 import {db} from "../pages/firebase";
 import emailjs from "@emailjs/browser";
 
@@ -98,6 +98,12 @@ const SellerProductCard = ({
         setSalePrice(null);
     }
 
+    const handleRemoveOnClick = async () => {
+        const productRef = doc(db, 'Products', productId);
+        await deleteDoc(productRef);
+        removeOnClick();  // call the passed removeOnClick function to handle updates in the parent component
+    };
+
     // show/hide sale input and button based on currentSale
     const saleElements = !currentSale && salePrice !== null ? (
         <>
@@ -144,7 +150,7 @@ const SellerProductCard = ({
                             <Link className="button" onClick={handleEditOnClick}>
                                 Update Product
                             </Link>
-                            <Link className="button" onClick={removeOnClick}>
+                            <Link className="button" onClick={handleRemoveOnClick}>
                                 Remove Product
                             </Link>
                             {currentSale ? (
