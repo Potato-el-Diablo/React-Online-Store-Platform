@@ -123,10 +123,14 @@ const Success = () => {
             const itemSnapshot = await getDoc(itemRef);
 
             if (itemSnapshot.exists()) {
-                const newStock = itemSnapshot.data().stock - item.quantity;
+                const itemData = itemSnapshot.data();
+                const newStock = itemData.stock - item.quantity;
                 await updateDoc(itemRef, {stock: newStock});
+
+                // Check if sale exists and use it instead of price
+                const price = itemData.sale !== null ? itemData.sale : item.price;
+                subtotal += price * item.quantity;
             }
-            subtotal += item.price * item.quantity;
         }
 
         // Remove the selected voucher from Firestore
@@ -164,7 +168,7 @@ const Success = () => {
                 id: item.id,
                 name: item.name,
                 image: item.image,
-                price: item.price,
+                price: item.sale !== null ? item.sale : item.price,
                 quantity: item.quantity,
                 sellerEmail: item.sellerEmail,
             }));
