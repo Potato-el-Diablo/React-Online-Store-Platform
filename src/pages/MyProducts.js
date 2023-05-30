@@ -360,7 +360,7 @@ const handleRemoveOnClick = (product) => {
                         <div className="products-list pb-5">
                             <div className="d-flex gap-10 flex-wrap">
                                 {products
-                                .filter((product) => product.stock > 0) // Filter products with stock > 0
+                                
                                 .map((product) => (
                                     <SellerProductCard
                                         key={product.id}

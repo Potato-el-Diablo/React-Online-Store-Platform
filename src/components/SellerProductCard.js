@@ -114,10 +114,7 @@ const SellerProductCard = ({
         </>
     ) : null;
 
-    if(stock === "0"){
-        return null;
-    }
-
+    
     return (
         <>
             <div className={` ${location.pathname === "/MyProducts" ? `gr-${grid}` : "col3"} `}>
