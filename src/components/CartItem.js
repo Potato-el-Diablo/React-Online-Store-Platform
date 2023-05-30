@@ -1,10 +1,28 @@
 import React, { useState, useEffect } from 'react';
+import {doc, getDoc} from "firebase/firestore";
+import {db} from "../pages/firebase";
 
 const CartItem = ({ item, quantity: initialQuantity, onUpdateSubtotal, onRemove, onUpdateQuantity }) => {
 
     const actualPrice = item.sale ? parseFloat(item.sale).toFixed(2) : parseFloat(item.price).toFixed(2); // Determine the actual price
 
     const [quantity, setQuantity] = useState(initialQuantity);
+
+    const [stock, setStock] = useState(10000); // initialize stock to a safe value
+
+    useEffect(() => {
+        const fetchProductStock = async () => {
+            const productRef = doc(db, 'Products', item.id);
+            const productSnapshot = await getDoc(productRef);
+
+            if (productSnapshot.exists()) {
+                const productData = productSnapshot.data();
+                setStock(productData.stock); // assume that your product's stock is stored in a 'stock' field
+            }
+        };
+
+        fetchProductStock();
+    }, [item.id]); // dependency on item.id
 
     useEffect(() => {
         onUpdateSubtotal(item.id, actualPrice * quantity);
@@ -13,14 +31,14 @@ const CartItem = ({ item, quantity: initialQuantity, onUpdateSubtotal, onRemove,
     const handleChange = (event) => {
         const newQuantity = parseInt(event.target.value);
 
-        if (newQuantity < 1) {
+        if (newQuantity < 1 || newQuantity > stock) {
             return;
         }
 
         setQuantity(newQuantity);
         const newSubtotal = newQuantity * actualPrice;
         onUpdateSubtotal(item.id, newSubtotal);
-        onUpdateQuantity(item.id, newQuantity); // Add this line here
+        onUpdateQuantity(item.id, newQuantity);
     };
 
     const handleRemoveClick = () => {
@@ -53,7 +71,7 @@ const CartItem = ({ item, quantity: initialQuantity, onUpdateSubtotal, onRemove,
                         name=""
                         defaultValue={initialQuantity}
                         min={1}
-                        max={99}
+                        max={stock}
                         id=""
                         onChange={handleChange} // Update this line
                         role={"spinbutton"}
