@@ -25,6 +25,7 @@ const ProductCard = ({
                      }) => {
 
     let location = useLocation();
+    
     // function to calculate discount percentage
     const calculateDiscountPercentage = () => {
         if (productSale !== '') {
@@ -35,9 +36,6 @@ const ProductCard = ({
         return 0;
       };
 
-    // const handleClick = () =>{
-    // history.push('/product/${product.id}')
-    // };
 
     return (
         <>

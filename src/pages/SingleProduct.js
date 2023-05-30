@@ -12,11 +12,14 @@ import 'react-toastify/dist/ReactToastify.css';
 import {onAuthStateChanged, getAuth} from "firebase/auth";
 import { Timestamp } from "firebase/firestore";
 
-
+// This page is for a single product 
+// displays additional information
 
 import { useLocation  } from "react-router-dom";
 import {useCart} from "./useCart";
- const grid = 12;
+
+
+const grid = 12;
 const SingleProduct = () => {
 
   const [userId, setUserId] = useState('');
