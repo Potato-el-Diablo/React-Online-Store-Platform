@@ -50,14 +50,13 @@ const MyProducts = () => {
         };
     }, []);
 
-    console.log(products);
-
     //Manages making updates to products
     const handleEditOnClick = (product) => {
         setSelectedProduct(product);
         setIsUpdateOpen(true);
     };
 
+    //handle the removal of a given productID
     const removeProduct = async (productId) => {
         const productRef = doc(db, 'Products', productId);
 
@@ -94,6 +93,7 @@ const MyProducts = () => {
     
         const analyticsCollectionRef = collection(sellerRef,seller[0].id+"/analytics");
 
+        // Handle getting all analytics from a user after getting a reference to the seller
         const handleAnalytics = async () =>{
             const analyticsData = await getDocs(analyticsCollectionRef);
                 
@@ -129,6 +129,7 @@ const MyProducts = () => {
         const currMonth = currDate.getMonth()+1;
         let tempTotal = 0;
         
+        //Set the months according to the current month
         for(let i=0;i<12;i++){
             let temp = currMonth-i; 
             if(temp<1){
@@ -137,6 +138,7 @@ const MyProducts = () => {
             tempTime.push(months[temp]);
         }
 
+        //Handle each analytics date
         analytics.forEach((object) => {
             const [day, month, year] = object.id.split("-");
 
@@ -150,6 +152,7 @@ const MyProducts = () => {
             } 
         })
 
+        //Reverse data so that it can be read left to right
         tempTime.reverse();
         tempRevenue.reverse();
 
@@ -274,6 +277,7 @@ const MyProducts = () => {
 
     }
 
+    //Do the initial view of the product revenue modal
     const viewProductRevenue = async (product) =>{
         setSelectedProduct(product); 
         await getAnalytics();
@@ -289,6 +293,7 @@ const MyProducts = () => {
         
     }
 
+    //Handle the refresh onClick for the revenue modal
     const viewProductRevenueRefresh = () =>{
         setIsProductRevenueOpen(true);
         getAnalytics();

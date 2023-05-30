@@ -17,7 +17,8 @@ export default function ViewRevenueModal({
         
     const [chartData, setChartData] = useState({labels: [], datasets:[{label:"",data:[]}]})
         
-     useEffect(() => {
+    //Every time the dataset changes, set the chart data to the new data
+    useEffect(() => {
         if(dataset.length==0){
             return;
         }else{

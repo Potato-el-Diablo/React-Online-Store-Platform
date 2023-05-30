@@ -1,8 +1,6 @@
 import React, { useState} from 'react'
 import { Link } from 'react-router-dom'
 import TagsForm from '../components/TagsForm'
-//import { addDoc, doc, updateDoc } from 'firebase/firestore';
-//import { db } from "../pages/firebase";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { saveProductToFirestore } from '../functions/firestoreFunctions';

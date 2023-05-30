@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, matchRoutes } from 'react-router-dom'
-import { db } from '../pages/firebase';
-import { collection, where,  query, getDocs, getDoc} from 'firebase/firestore';
-import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom'
 import BarChart from './BarChart';
 
 export default function ViewProductRevenueModal({
@@ -18,6 +15,7 @@ export default function ViewProductRevenueModal({
     productName}) {
     const [chartData, setChartData] = useState({labels: [], datasets:[{label:"",data:[]}]})
         
+    //Every time the dataset changes, set the chart data to the new data
     useEffect(() => {
         if(dataset.length==0){
             return;

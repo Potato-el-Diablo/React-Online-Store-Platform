@@ -1,6 +1,6 @@
 import React, { useState, useEffect} from 'react'
 // eslint-disable-next-line no-unused-vars
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 //import TagsForm from '../components/TagsForm'
 import { doc, updateDoc } from 'firebase/firestore';
 import {auth, db} from "../pages/firebase";

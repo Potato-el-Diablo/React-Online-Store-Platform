@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import ReactStars from "react-rating-stars-component";
 import { Link, useLocation } from "react-router-dom";
-import {getDocs, query, where, collection, updateDoc, doc, getDoc, deleteDoc} from 'firebase/firestore';
+import {getDocs,  collection, updateDoc, doc, getDoc} from 'firebase/firestore';
 import {db} from "../pages/firebase";
 import emailjs from "@emailjs/browser";
 
