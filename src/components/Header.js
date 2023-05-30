@@ -10,7 +10,7 @@ const Header = () => {
 
     const [searchQuery, setSearchQuery] = useState("");
     const navigate = useNavigate();
-    const { cartItems, subtotal } = useCartInfo();
+    const { cartItems} = useCartInfo();
 
 
     // Function to handle search form submission
@@ -78,6 +78,7 @@ const Header = () => {
     }, [isSeller, userName]);
 
     const [ItemsCount, setItemsCount] = useState(0);
+
 
     useEffect(() => {
         const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
@@ -174,14 +175,14 @@ const Header = () => {
                                 </div>
                                 <div>
                                     {/*Cart*/}
-                                    <Link className="d-flex align-items-center gap text-white">
+                                    <NavLink className="d-flex align-items-center gap text-white" to = "cart">
                                         <img src="images/cart.svg" alt="cart"/>
                                         <div className="d-flex flex-column">
                                             <span className="badge bg-white text-dark">{ItemsCount}</span>
                                             <p className="mb-0">
                                             </p> {/* CART TOTAL DISPLAYED ON HEADER*/}
                                         </div>
-                                    </Link>
+                                    </NavLink>
                                 </div>
                             </div>
                         </div>
