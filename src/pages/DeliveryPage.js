@@ -76,7 +76,14 @@ const DeliveryPage = () => {
     
     const now = new Date();
     let randomInteger = Math.floor(Math.random() *2) + 1;
-    setDeliveryCost(randomInteger*100 + 50);
+    let deliveryCost = randomInteger * 100 + 50;
+
+    // Check if total cart value is over 500
+    if (getTotalCartValue() > 500) {
+      deliveryCost = 0; // Make delivery free
+    }
+
+    setDeliveryCost(deliveryCost);
     randomInteger = Math.floor(Math.random() *5) + 1;
     const deliveryDate = new Date(now.getTime() + (randomInteger * 24 * 60 * 60 * 1000));
     setDeliveryDate(deliveryDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }));
@@ -109,8 +116,17 @@ const DeliveryPage = () => {
     }
   };  */
 
+  const getTotalCartValue = () => {
+    let totalValue = 0;
+    for (let item of cartItems) {
+      totalValue += item.price * item.quantity;
+    }
+    return totalValue;
+  };
 
-    // submits the user delivery details to the database
+
+
+  // submits the user delivery details to the database
 
   const handleFormSubmit = async (event) => {
     // event.preventDefault();
@@ -189,10 +205,9 @@ const DeliveryPage = () => {
     </table>
     <button className="form-submit"  onClick={(e) => handleSubmitAddress(e.target.value)} >Submit Address</button>
   </div>
-  
-
-          {deliveryCost && (
-            <p><b>Delivery cost:</b> R{deliveryCost}</p>
+          
+          {deliveryCost !== null && (
+              <p><b>Delivery cost:</b> {deliveryCost === 0 ? 'Free' : `R${deliveryCost}`}</p>
           )}
           {deliveryDate && (
             <p><b>Estimated delivery date:</b> {deliveryDate}</p>
