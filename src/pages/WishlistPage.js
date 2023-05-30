@@ -122,7 +122,7 @@ const WishlistPage = () => {
                                     </div>
                                 </div>
                                 <div className="buttonContainer">
-                                    <button className="wishlistItemBtn button" disabled={item.stock <= 0} onClick={() => handleAddToCart(item)}>Add to Cart</button>
+                                    <button className="wishlistItemBtn button" disabled={item.stock <= 0} onClick={() => handleAddToCart(item.id, 1)}>Add to Cart</button>
                                     <button className="button deleteItemBtn" onClick={() => handleDeleteFromWishlist(item.id)}>
                                         <img src="/images/trash.svg" alt="delete" />
                                     </button>
