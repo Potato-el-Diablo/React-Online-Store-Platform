@@ -98,11 +98,6 @@ const SellerProductCard = ({
         setSalePrice(null);
     }
 
-    const handleRemoveOnClick = async () => {
-        const productRef = doc(db, 'Products', productId);
-        await deleteDoc(productRef);
-        removeOnClick();  // call the passed removeOnClick function to handle updates in the parent component
-    };
 
     // show/hide sale input and button based on currentSale
     const saleElements = !currentSale && salePrice !== null ? (
@@ -150,7 +145,7 @@ const SellerProductCard = ({
                             <Link className="button" onClick={handleEditOnClick}>
                                 Update Product
                             </Link>
-                            <Link className="button" onClick={handleRemoveOnClick}>
+                            <Link className="button" onClick={removeOnClick}>
                                 Remove Product
                             </Link>
                             {currentSale ? (

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {collection, getDocs, query, where} from "firebase/firestore";
+import {collection, deleteDoc, doc, getDocs, query, where} from "firebase/firestore";
 import { auth } from "./firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Meta from '../components/Meta';
@@ -56,6 +56,16 @@ const MyProducts = () => {
     const handleEditOnClick = (product) => {
         setSelectedProduct(product);
         setIsUpdateOpen(true);
+    };
+
+    const removeProduct = async (productId) => {
+        const productRef = doc(db, 'Products', productId);
+
+        // delete the product from Firestore
+        await deleteDoc(productRef);
+
+        // update the products state to remove the product from the UI
+        setProducts(products.filter(product => product.id !== productId));
     };
 
     //Refreshes the page when any changes are made
@@ -344,6 +354,7 @@ const MyProducts = () => {
                                         productSale={product.sale || ''}
                                         editOnClick={() => handleEditOnClick(product)}
                                         viewOnClick={() => viewProductRevenue(product)}
+                                        removeOnClick={() => removeProduct(product.id)}
                                     />
                                 ))}
                             </div>
